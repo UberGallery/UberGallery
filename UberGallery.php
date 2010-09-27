@@ -100,7 +100,7 @@ class UberGallery {
                         'file_title'  => str_replace('_', ' ', pathinfo($file, PATHINFO_FILENAME)),
                         'file_path'   => realpath($directory . '/' . $file),
                         'file_hash'   => md5($file),
-                        'file_mime'	  => @exif_imagetype($file)
+                        'file_mime'   => @exif_imagetype($file)
                     );
                 }
             }
@@ -134,19 +134,19 @@ class UberGallery {
      * @return boolean
      */
     protected function isImage($fileName) {
-		@$imgInfo = getimagesize($fileName);
+        @$imgType = exif_imagetype($fileName);
 
-		$imgType = array(
-			IMAGETYPE_JPEG,
-			IMAGETYPE_GIF,
-			IMAGETYPE_PNG,
-		);
+        $allowedTypes = array(
+            IMAGETYPE_JPEG,
+            IMAGETYPE_GIF,
+            IMAGETYPE_PNG,
+        );
 
-		if (in_array($imgInfo[2], $imgType)) {
-		    return true;
-		} else {
-		    return false;
-		}
+        if (in_array($imgType, $allowedTypes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
