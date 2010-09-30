@@ -19,12 +19,17 @@ class UberGallery {
     protected $_imgDir     = NULL;
     protected $_thumbSize  = NULL;
     protected $_imgPerPage = NULL;
-    protected $_appDir     = './.ubergallery';
-    protected $_cacheDir   = './.ubergallery/cache';
-    protected $_index      = './.ubergallery/index';
     
     // Define application version
     const VERSION = '2.0.0';
+    
+    // Set default application directory
+    const APP_DIR = './.ubergallery';
+    
+    // Reserve application directory and file variables
+    protected $_appDir     = NULL;
+    protected $_cacheDir   = NULL;
+    protected $_index      = NULL;
     
     
     function __construct($imgDir = './gallery-images', $thumbSize = 100, $imgPerPage = 0) {
@@ -32,10 +37,12 @@ class UberGallery {
         // Set global variables
         $this->_imgDir = $imgDir;
         $this->_thumbSize = $thumbSize;
-
-        if ($imgPerPage > 0) {
-            $this->_imgPerPage = $imgPerPage;
-        }
+        $this->_imgPerPage = $imgPerPage;
+        
+        // Set application directory and file variables
+        $this->_appDir     = realpath(self::APP_DIR);
+        $this->_cacheDir   = $this->_appDir . '/cache';
+        $this->_index      = $this->_appDir . '/images.index';
         
         // Check if application directory exists or create it if it does not
         if (!file_exists($this->_appDir)) {
