@@ -189,17 +189,16 @@ class UberGallery {
      */
     protected function _isImage($fileName) {
         
-        // Get files real path
+        // Get real path of the file
         $realPath = realpath($directory . '/' . $file);
         
+        // Get file type
         $imgType = @exif_imagetype($realPath);
 
-        $allowedTypes = array(
-            IMAGETYPE_JPEG,
-            IMAGETYPE_GIF,
-            IMAGETYPE_PNG,
-        );
+        // Array of accepted image types
+        $allowedTypes = array(1, 2, 3);
 
+        // Determine if the file type is an acceptable image type
         if (in_array($imgType, $allowedTypes)) {
             return true;
         } else {
