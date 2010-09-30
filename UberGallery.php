@@ -23,25 +23,19 @@ class UberGallery {
     protected $_cacheDir   = './.ubergallery/cache';
     protected $_index      = './.ubergallery/index';
     
+    // Define application version
+    const VERSION = '2.0.0';
+    
+    
     function __construct($imgDir = './gallery-images', $thumbSize = 100, $imgPerPage = 0) {
         
-        // Set image directory if specified
-        if (isset($imgDir)) {
-            $this->_imgDir = $imgDir;
-        }
-        
-        // Set thumbnail size if specified
-        if (isset($thumbSize)) {
-            $this->_thumbSize = $thumbSize;
-        }
-        
-        // Set number of images per page if specified
-        if (isset($imgPerPage)) {
+        // Set global variables
+        $this->_imgDir = $imgDir;
+        $this->_thumbSize = $thumbSize;
+
+        if ($imgPerPage > 0) {
             $this->_imgPerPage = $imgPerPage;
         }
-        
-        // Define application version
-        define('VERSION', '2.0.0');
         
         // Check if application directory exists or create it if it does not
         if (!file_exists($this->_appDir)) {
@@ -69,7 +63,7 @@ class UberGallery {
      * Opens and writes to log file
      * @param string $logText
      */
-    protected function writeToLog($logText) {      
+    protected function _writeToLog($logText) {      
         // Open log for appending
         $logPath = $this->_appDir . '/log.txt';
         $log = fopen($logPath, 'a');
@@ -84,7 +78,7 @@ class UberGallery {
         fclose($log);
     }
     
-    protected function readImageDirectory($directory) {
+    protected function _readImageDirectory($directory) {
         
         $imgArray = array();
         
@@ -94,13 +88,16 @@ class UberGallery {
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
                     
+                    // Get files real path
+                    $realPath = realpath($directory . '/' . $file);
+                    
                     // Add file and meta-info to array
                     $imgArray[] = array(
                         'file_name'   => $file,
-                        'file_title'  => str_replace('_', ' ', pathinfo($file, PATHINFO_FILENAME)),
-                        'file_path'   => realpath($directory . '/' . $file),
-                        'file_hash'   => md5($file),
-                        'file_mime'   => @exif_imagetype($file)
+                        'file_title'  => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
+                        'file_path'   => $realPath,
+                        'file_hash'   => md5($realPath),
+                        'file_mime'   => @exif_imagetype($realPath)
                     );
                 }
             }
@@ -114,7 +111,7 @@ class UberGallery {
         return $imgArray;
     }
 
-    protected function readIndex() {
+    protected function _readIndex() {
         // Open index for reading
         $index = fopen($this->_index, 'r');
         
@@ -124,7 +121,7 @@ class UberGallery {
         return $indexArray;
     }
 
-    protected function createIndex() {
+    protected function _createIndex() {
 
     }
     
@@ -133,8 +130,12 @@ class UberGallery {
      * @param string $fileName
      * @return boolean
      */
-    protected function isImage($fileName) {
-        @$imgType = exif_imagetype($fileName);
+    protected function _isImage($fileName) {
+        
+        // Get files real path
+        $realPath = realpath($directory . '/' . $file);
+        
+        $imgType = @exif_imagetype($realPath);
 
         $allowedTypes = array(
             IMAGETYPE_JPEG,
