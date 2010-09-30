@@ -104,7 +104,7 @@ class UberGallery {
                     
                     // Add file and meta-info to array
                     $imgArray[] = array(
-                        'file_name'   => $file,
+                        'file_name'   => pathinfo($realPath, PATHINFO_BASENAME),
                         'file_title'  => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                         'file_path'   => $realPath,
                         'file_hash'   => md5($realPath),
