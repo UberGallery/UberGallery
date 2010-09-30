@@ -12,7 +12,6 @@
  * @param int $imgPerPage Number of images per page
  *
  */
-
 class UberGallery {
     
     // Set some default variables
@@ -58,7 +57,7 @@ class UberGallery {
             mkdir($this->_cacheDir);
         }
         
-        print_r($this->readImageDirectory($imgDir));
+        print_r($this->_readImageDirectory($imgDir));
     }
         
     function __destruct() {
@@ -85,6 +84,11 @@ class UberGallery {
         fclose($log);
     }
     
+    
+    /**
+     * Returns an array of files in the specified directory
+     * @param string $directory
+     */
     protected function _readImageDirectory($directory) {
         
         $imgArray = array();
@@ -118,6 +122,48 @@ class UberGallery {
         return $imgArray;
     }
 
+    
+    /**
+     * Create thumbnail, modified from function found on http://www.findmotive.com/tag/php/
+     * Creates a cropped, square thumbnail of given dimensions from a source image
+     * @param string $source
+     * @param string $dest
+     * @param int $thumb_size
+     */
+    protected function _createThumbnail($source, $destination, $thumbSize, $quality = 75) {
+    	$imgInfo = getimagesize($source);
+    	$width = $imgInfo[0];
+    	$height = $imgInfo[1];
+    
+    	if ($width > $height) {
+    		$x = ceil(($width - $height) / 2 );
+    		$width = $height;
+    	} elseif($height > $width) {
+    		$y = ceil(($height - $width) / 2);
+    		$height = $width;
+    	}
+    
+    	$new_im = imagecreatetruecolor($thumbSize,$thumbSize);
+    
+    	if ($imgInfo[2] == IMAGETYPE_JPEG) {
+    		$image = imagecreatefromjpeg($source);
+    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+    		imagejpeg($newImage, $destination, $quality); // Thumbnail quality (Value from 1 to 100)
+    	} elseif ($imgInfo[2] == IMAGETYPE_GIF) {
+    		$image = imagecreatefromgif($source);
+    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+    		imagegif($newImage, $destination);
+    	} elseif ($imgInfo[2] == IMAGETYPE_PNG) {
+    		$image = imagecreatefrompng($source);
+    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+    		imagepng($newImage, $destination);
+    	}
+    }
+    
+    
+    /**
+     * Return array from the index
+     */
     protected function _readIndex() {
         // Open index for reading
         $index = fopen($this->_index, 'r');
@@ -128,6 +174,10 @@ class UberGallery {
         return $indexArray;
     }
 
+    
+    /**
+     * Create index from file array
+     */
     protected function _createIndex() {
 
     }
