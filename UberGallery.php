@@ -84,8 +84,13 @@ class UberGallery {
         $imgArray = array();
         
         // Return the cached array if it exists.
-        if ($imgArray = $this->_readIndex()) {
-            return $imgArray;
+        
+        if (file_exists($this->_index)) {
+            if ((time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
+                if ($imgArray = $this->_readIndex()) {
+                    return $imgArray;
+                }
+            }
         }
         
         if ($handle = opendir($directory)) {
