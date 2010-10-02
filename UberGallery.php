@@ -163,23 +163,42 @@ class UberGallery {
     
     /**
      * Return array from the index
+     * @param string $filePath
+     * @return ArrayObject
      */
-    protected function _readIndex() {
-        // Open index for reading
-        $index = fopen($this->_index, 'r');
+    protected function _readIndex($filePath) {
+        // Set file path if not specified
+        if(!isset($filePath)) {
+            $filePath = $this->_index;
+        }
         
-        // Explode into an array
-        $indexArray = explode("\t", $index);
+        // Read index and unsearialize the array
+        $index = fopen($filePath, 'r');
+        $indexArray = unserialize($index);
         
+        // Return the array
         return $indexArray;
     }
 
     
     /**
      * Create index from file array
+     * @param string $array
+     * @param string $filePath
+     * @return boolean
      */
-    protected function _createIndex() {
-
+    protected function _createIndex($array, $filePath) {
+        // Set file path if not specified
+        if(!isset($filePath)) {
+            $filePath = $this->_index;
+        }
+        
+        // Serialize array and write it to the index
+        $index = fopen($filePath, 'w');
+        $serializedArray = serialize($array);
+        fwrite($index, $serializedArray);
+        
+        return true;
     }
     
     /**
