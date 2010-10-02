@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * UberGallery is a simple PHP image gallery.
  * @author Chris Kankiewicz (http://www.ubergallery.net)
  * @copyright 2010 Chris Kankiewicz
@@ -10,40 +9,47 @@
  * @param string $fileDir Relative path where /image and /cache are located
  * @param int $thumbSize Image thumbnail size
  * @param int $imgPerPage Number of images per page
- *
  */
 class UberGallery {
     
-    // Set some default variables
-    protected $_imgDir     = NULL;
-    protected $_thumbSize  = NULL;
-    protected $_imgPerPage = NULL;
+    // Reserve some default variables
+    protected $_imgDir      = NULL;
+    protected $_cacheExpire = NULL;
+    protected $_thumbSize   = NULL;
+    protected $_imgPerPage  = NULL;
+    
+    // Reserve application directory and file variables
+    protected $_appDir      = NULL;
+    protected $_cacheDir    = NULL;
+    protected $_index       = NULL;
     
     // Define application version
-    const VERSION = '2.0.0';
+    const VERSION = '2.0.0-dev';
     
     // Set default application directory
     const APP_DIR = './.ubergallery';
     
-    // Reserve application directory and file variables
-    protected $_appDir     = NULL;
-    protected $_cacheDir   = NULL;
-    protected $_index      = NULL;
-    
-    
-    function __construct($imgDir = './gallery-images', $thumbSize = 100, $imgPerPage = 0) {
+    /**
+     * UberGallery construct function.  Runs on object creation
+     * @param string $imgDir
+     * @param int $cacheExpire
+     * @param int $thumbSize
+     * @param int $imgPerPage
+     */
+    function __construct($imgDir = './gallery-images', $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
         
         // Set global variables
-        $this->_imgDir = $imgDir;
-        $this->_thumbSize = $thumbSize;
-        $this->_imgPerPage = $imgPerPage;
+        $this->_imgDir      = $imgDir;
+        $this->_cacheExpire = $cacheExpire;
+        $this->_thumbSize   = $thumbSize;
+        $this->_imgPerPage  = $imgPerPage;
         
         // Set application directory and file variables
-        $this->_appDir     = realpath(self::APP_DIR);
-        $this->_cacheDir   = $this->_appDir . '/cache';
-        $this->_index      = $this->_appDir . '/images.index';
+        $this->_appDir      = realpath(self::APP_DIR);
+        $this->_cacheDir    = $this->_appDir . '/cache';
+        $this->_index       = $this->_appDir . '/images.index';
         
-        // Check if application directory exists or create it if it does not
+        // Check if application directory exists and create it if it does not
         if (!file_exists($this->_appDir)) {
             if (mkdir($this->_appDir)) {
                 $this->writeToLog('Created application directory in ' . $this->_appDir);
@@ -52,9 +58,13 @@ class UberGallery {
             }
         }
         
-        // Check if cache directory exists or create it if it does not
+        // Check if cache directory exists and create it if it does not
         if (!file_exists($this->_cacheDir)) {
-            mkdir($this->_cacheDir);
+            if (mkdir($this->_cacheDir)) {
+                $this->writeToLog('Created cache directory in ' . $this->_cacheDir);
+            } else {
+                $this->writeToLog('ERROR: Failed to create cache directory in ' . $this->_cacheDir);                
+            }
         }
         
         print_r($this->_readImageDirectory($imgDir));
@@ -62,26 +72,6 @@ class UberGallery {
         
     function __destruct() {
         echo PHP_EOL . '<br/>END OF LINE';
-    }
-    
-
-    /**
-     * Opens and writes to log file
-     * @param string $logText
-     */
-    protected function _writeToLog($logText) {      
-        // Open log for appending
-        $logPath = $this->_appDir . '/log.txt';
-        $log = fopen($logPath, 'a');
-          
-        // Get current time
-        $currentTime = date("Y-m-d H:i:s");
-        
-        // Write text to log
-        fwrite($log, '[' . $currentTime . '] ' . $logText . PHP_EOL);
-        
-        // Close open file pointer
-        fclose($log);
     }
     
     
@@ -92,6 +82,11 @@ class UberGallery {
     protected function _readImageDirectory($directory) {
         
         $imgArray = array();
+        
+        // Return the cached array if it exists.
+        if ($imgArray = $this->_readIndex()) {
+            return $imgArray;
+        }
         
         if ($handle = opendir($directory)) {
             
@@ -117,6 +112,8 @@ class UberGallery {
             closedir($handle);
             
         }
+        
+        $this->_createIndex($imgArray);
         
         // Return the array
         return $imgArray;
@@ -166,15 +163,21 @@ class UberGallery {
      * @param string $filePath
      * @return ArrayObject
      */
-    protected function _readIndex($filePath) {
+    protected function _readIndex($filePath = NULL) {
         // Set file path if not specified
         if(!isset($filePath)) {
             $filePath = $this->_index;
         }
         
+        // Return false if file doesn't exist
+        if (!file_exists($filePath)) {
+            return false;
+        }
+        
         // Read index and unsearialize the array
         $index = fopen($filePath, 'r');
-        $indexArray = unserialize($index);
+        $indexString = fread($index,filesize($filePath));
+        $indexArray = unserialize($indexString);
         
         // Return the array
         return $indexArray;
@@ -187,7 +190,7 @@ class UberGallery {
      * @param string $filePath
      * @return boolean
      */
-    protected function _createIndex($array, $filePath) {
+    protected function _createIndex($array, $filePath = NULL) {
         // Set file path if not specified
         if(!isset($filePath)) {
             $filePath = $this->_index;
@@ -200,6 +203,7 @@ class UberGallery {
         
         return true;
     }
+    
     
     /**
      * Verifies wether or not a file is an image
@@ -223,6 +227,26 @@ class UberGallery {
         } else {
             return false;
         }
+    }
+    
+    
+	/**
+     * Opens and writes to log file
+     * @param string $logText
+     */
+    protected function _writeToLog($logText) {      
+        // Open log for appending
+        $logPath = $this->_appDir . '/log.txt';
+        $log = fopen($logPath, 'a');
+          
+        // Get current time
+        $currentTime = date("Y-m-d H:i:s");
+        
+        // Write text to log
+        fwrite($log, '[' . $currentTime . '] ' . $logText . PHP_EOL);
+        
+        // Close open file pointer
+        fclose($log);
     }
 
 }
