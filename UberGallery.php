@@ -78,7 +78,7 @@ class UberGallery {
             }
         }
         
-        print_r($this->_readImageDirectory($imgDir));
+//        print_r($this->_readImageDirectory($imgDir));
     }
         
     function __destruct() {
@@ -90,7 +90,7 @@ class UberGallery {
      * Returns an array of files in the specified directory
      * @param string $directory
      */
-    protected function _readImageDirectory($directory) {
+    public function readImageDirectory($directory) {
         
         $imgArray = array();
         
@@ -119,7 +119,7 @@ class UberGallery {
                             'file_name'    => pathinfo($realPath, PATHINFO_BASENAME),
                             'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                             'file_path'    => $realPath,
-                            'file_hash'    => md5($realPath),
+//    						'file_hash'    => md5($realPath),
 //                        	'file_mime'    => @exif_imagetype($realPath),
                             'thumb_path'   => $this->_createThumbnail($realPath)
                         );
