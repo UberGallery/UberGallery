@@ -21,6 +21,7 @@ class UberGallery {
     // Reserve application directory and file variables
     protected $_appDir      = NULL;
     protected $_cacheDir    = NULL;
+    protected $_thumbsDir   = NULL;
     protected $_index       = NULL;
     
     // Define application version
@@ -47,23 +48,33 @@ class UberGallery {
         // Set application directory and file variables
         $this->_appDir      = realpath(self::APP_DIR);
         $this->_cacheDir    = $this->_appDir . '/cache';
+        $this->_thumbsDir   = $this->_appDir . '/thumbs';
         $this->_index       = $this->_appDir . '/images.index';
         
         // Check if application directory exists and create it if it does not
         if (!file_exists($this->_appDir)) {
             if (mkdir($this->_appDir)) {
-                $this->writeToLog('Created application directory in ' . $this->_appDir);
+                $this->_writeToLog('Created application directory in ' . $this->_appDir);
             } else {
-                $this->writeToLog('ERROR: Failed to create application directory in ' . $this->_appDir);                
+                $this->_writeToLog('ERROR: Failed to create application directory in ' . $this->_appDir);                
             }
         }
         
         // Check if cache directory exists and create it if it does not
         if (!file_exists($this->_cacheDir)) {
             if (mkdir($this->_cacheDir)) {
-                $this->writeToLog('Created cache directory in ' . $this->_cacheDir);
+                $this->_writeToLog('Created cache directory in ' . $this->_cacheDir);
             } else {
-                $this->writeToLog('ERROR: Failed to create cache directory in ' . $this->_cacheDir);                
+                $this->_writeToLog('ERROR: Failed to create cache directory in ' . $this->_cacheDir);                
+            }
+        }
+        
+        // Check if thumbs directory exists and create it if it does not
+        if (!file_exists($this->_thumbsDir)) {
+            if (mkdir($this->_thumbsDir)) {
+                $this->_writeToLog('Created thumbnails directory in ' . $this->_thumbsDir);
+            } else {
+                $this->_writeToLog('ERROR: Failed to create thumbnails directory in ' . $this->_thumbsDir);                
             }
         }
         
@@ -102,14 +113,17 @@ class UberGallery {
                     // Get files real path
                     $realPath = realpath($directory . '/' . $file);
                     
-                    // Add file and meta-info to array
-                    $imgArray[] = array(
-                        'file_name'   => pathinfo($realPath, PATHINFO_BASENAME),
-                        'file_title'  => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
-                        'file_path'   => $realPath,
-                        'file_hash'   => md5($realPath),
-                        'file_mime'   => @exif_imagetype($realPath)
-                    );
+                    // If file is an image, add info to array
+                    if ($this->_isImage($realPath)) {
+                        $imgArray[] = array(
+                            'file_name'    => pathinfo($realPath, PATHINFO_BASENAME),
+                            'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
+                            'file_path'    => $realPath,
+                            'file_hash'    => md5($realPath),
+//                        	'file_mime'    => @exif_imagetype($realPath),
+                            'thumb_path'   => $this->_createThumbnail($realPath)
+                        );
+                    }
                 }
             }
             
@@ -129,14 +143,28 @@ class UberGallery {
      * Create thumbnail, modified from function found on http://www.findmotive.com/tag/php/
      * Creates a cropped, square thumbnail of given dimensions from a source image
      * @param string $source
-     * @param string $dest
      * @param int $thumb_size
+     * @param int $quality Thumbnail quality (Value from 1 to 100)
      */
-    protected function _createThumbnail($source, $destination, $thumbSize, $quality = 75) {
+    protected function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
+        
+        // Set defaults thumbnail size if not specified
+        if ($thumbSize === NULL) {
+            $thumbSize = $this->_thumbSize;
+        }
+        
+        // Set thumbnail destination directory
+        $fileName = pathinfo($source, PATHINFO_BASENAME);
+        $destination = $this->_thumbsDir . '/' . $fileName;
+        
+        // Get needed image information
     	$imgInfo = getimagesize($source);
     	$width = $imgInfo[0];
     	$height = $imgInfo[1];
-    
+    	$x = 0;
+    	$y = 0;
+
+    	// Make the image a square
     	if ($width > $height) {
     		$x = ceil(($width - $height) / 2 );
     		$width = $height;
@@ -144,13 +172,15 @@ class UberGallery {
     		$y = ceil(($height - $width) / 2);
     		$height = $width;
     	}
-    
-    	$new_im = imagecreatetruecolor($thumbSize,$thumbSize);
-    
+
+    	// Create new empty image of proper dimensions
+    	$newImage = imagecreatetruecolor($thumbSize,$thumbSize);
+
+    	// Create new thumbnail
     	if ($imgInfo[2] == IMAGETYPE_JPEG) {
     		$image = imagecreatefromjpeg($source);
     		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
-    		imagejpeg($newImage, $destination, $quality); // Thumbnail quality (Value from 1 to 100)
+    		imagejpeg($newImage, $destination, $quality);
     	} elseif ($imgInfo[2] == IMAGETYPE_GIF) {
     		$image = imagecreatefromgif($source);
     		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
@@ -160,6 +190,8 @@ class UberGallery {
     		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
     		imagepng($newImage, $destination);
     	}
+    	
+    	return $destination;
     }
     
     
@@ -197,7 +229,7 @@ class UberGallery {
      */
     protected function _createIndex($array, $filePath = NULL) {
         // Set file path if not specified
-        if(!isset($filePath)) {
+        if($filePath === NULL) {
             $filePath = $this->_index;
         }
         
@@ -215,13 +247,10 @@ class UberGallery {
      * @param string $fileName
      * @return boolean
      */
-    protected function _isImage($fileName) {
-        
-        // Get real path of the file
-        $realPath = realpath($directory . '/' . $file);
+    protected function _isImage($filePath) {
         
         // Get file type
-        $imgType = @exif_imagetype($realPath);
+        $imgType = @exif_imagetype($filePath);
 
         // Array of accepted image types
         $allowedTypes = array(1, 2, 3);
