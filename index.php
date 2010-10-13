@@ -26,7 +26,7 @@
     <div id="gallery-constraint">
         <ul id="gallery-images" class="clearfix">
             <?php foreach ($gallery->readImageDirectory('gallery-images') as $image) :?>
-                <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" id="img-0" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_t']; ?>"/></a></li>
+                <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" id="img-0" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
             <?php endforeach; ?>
         </ul>
         <div id="uber-footer" class="clearfix">
