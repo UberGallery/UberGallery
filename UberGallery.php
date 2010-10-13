@@ -23,12 +23,14 @@ class UberGallery {
     protected $_cacheDir    = NULL;
     protected $_thumbsDir   = NULL;
     protected $_index       = NULL;
+    protected $_rThumbsDir  = NULL;
+    protected $_rImgDir     = NULL;
     
     // Define application version
     const VERSION = '2.0.0-dev';
     
     // Set default application directory
-    const APP_DIR = './.ubergallery';
+    const APP_DIR = '.ubergallery';
     
     /**
      * UberGallery construct function.  Runs on object creation
@@ -37,19 +39,21 @@ class UberGallery {
      * @param int $thumbSize
      * @param int $imgPerPage
      */
-    function __construct($imgDir = './gallery-images', $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
+    function __construct($imgDir = 'gallery-images', $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
         
         // Set global variables
-        $this->_imgDir      = $imgDir;
+        $this->_imgDir      = realpath($imgDir);
         $this->_cacheExpire = $cacheExpire;
         $this->_thumbSize   = $thumbSize;
         $this->_imgPerPage  = $imgPerPage;
         
-        // Set application directory and file variables
+        // Set application directory and file paths
         $this->_appDir      = realpath(self::APP_DIR);
         $this->_cacheDir    = $this->_appDir . '/cache';
         $this->_thumbsDir   = $this->_appDir . '/thumbs';
         $this->_index       = $this->_appDir . '/images.index';
+        $this->_rThumbsDir  = self::APP_DIR . '/thumbs';
+        $this->_rImgDir     = $imgDir;
         
         // Check if application directory exists and create it if it does not
         if (!file_exists($this->_appDir)) {
@@ -113,12 +117,15 @@ class UberGallery {
                     // Get files real path
                     $realPath = realpath($directory . '/' . $file);
                     
+                    // Get files relative path
+                    $relativePath = $this->_rImgDir . '/' . $file;
+                    
                     // If file is an image, add info to array
                     if ($this->_isImage($realPath)) {
                         $imgArray[] = array(
                             'file_name'    => pathinfo($realPath, PATHINFO_BASENAME),
                             'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
-                            'file_path'    => $realPath,
+                            'file_path'    => $relativePath,
 //    						'file_hash'    => md5($realPath),
 //                        	'file_mime'    => @exif_imagetype($realPath),
                             'thumb_path'   => $this->_createThumbnail($realPath)
@@ -191,7 +198,10 @@ class UberGallery {
     		imagepng($newImage, $destination);
     	}
     	
-    	return $destination;
+    	
+    	// Return relative path to thumbnail
+    	$relativePath = $this->_rThumbsDir . '/' . $fileName;
+    	return $relativePath;
     }
     
     
