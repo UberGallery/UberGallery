@@ -126,8 +126,8 @@ class UberGallery {
                             'file_name'    => pathinfo($realPath, PATHINFO_BASENAME),
                             'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                             'file_path'    => $relativePath,
-//    						'file_hash'    => md5($realPath),
-//                        	'file_mime'    => @exif_imagetype($realPath),
+//                          'file_hash'    => md5($realPath),
+//                          'file_mime'    => @exif_imagetype($realPath),
                             'thumb_path'   => $this->_createThumbnail($realPath)
                         );
                     }
@@ -165,43 +165,43 @@ class UberGallery {
         $destination = $this->_thumbsDir . '/' . $fileName;
         
         // Get needed image information
-    	$imgInfo = getimagesize($source);
-    	$width = $imgInfo[0];
-    	$height = $imgInfo[1];
-    	$x = 0;
-    	$y = 0;
+        $imgInfo = getimagesize($source);
+        $width = $imgInfo[0];
+        $height = $imgInfo[1];
+        $x = 0;
+        $y = 0;
 
-    	// Make the image a square
-    	if ($width > $height) {
-    		$x = ceil(($width - $height) / 2 );
-    		$width = $height;
-    	} elseif($height > $width) {
-    		$y = ceil(($height - $width) / 2);
-    		$height = $width;
-    	}
+        // Make the image a square
+        if ($width > $height) {
+            $x = ceil(($width - $height) / 2 );
+            $width = $height;
+        } elseif($height > $width) {
+            $y = ceil(($height - $width) / 2);
+            $height = $width;
+        }
 
-    	// Create new empty image of proper dimensions
-    	$newImage = imagecreatetruecolor($thumbSize,$thumbSize);
+        // Create new empty image of proper dimensions
+        $newImage = imagecreatetruecolor($thumbSize,$thumbSize);
 
-    	// Create new thumbnail
-    	if ($imgInfo[2] == IMAGETYPE_JPEG) {
-    		$image = imagecreatefromjpeg($source);
-    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
-    		imagejpeg($newImage, $destination, $quality);
-    	} elseif ($imgInfo[2] == IMAGETYPE_GIF) {
-    		$image = imagecreatefromgif($source);
-    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
-    		imagegif($newImage, $destination);
-    	} elseif ($imgInfo[2] == IMAGETYPE_PNG) {
-    		$image = imagecreatefrompng($source);
-    		imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
-    		imagepng($newImage, $destination);
-    	}
-    	
-    	
-    	// Return relative path to thumbnail
-    	$relativePath = $this->_rThumbsDir . '/' . $fileName;
-    	return $relativePath;
+        // Create new thumbnail
+        if ($imgInfo[2] == IMAGETYPE_JPEG) {
+            $image = imagecreatefromjpeg($source);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagejpeg($newImage, $destination, $quality);
+        } elseif ($imgInfo[2] == IMAGETYPE_GIF) {
+            $image = imagecreatefromgif($source);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagegif($newImage, $destination);
+        } elseif ($imgInfo[2] == IMAGETYPE_PNG) {
+            $image = imagecreatefrompng($source);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagepng($newImage, $destination);
+        }
+        
+        
+        // Return relative path to thumbnail
+        $relativePath = $this->_rThumbsDir . '/' . $fileName;
+        return $relativePath;
     }
     
     
@@ -274,7 +274,7 @@ class UberGallery {
     }
     
     
-	/**
+    /**
      * Opens and writes to log file
      * @param string $logText
      */
