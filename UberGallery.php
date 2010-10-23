@@ -1,3 +1,20 @@
+<?php include_once('UberGallery.php'); $gallery = new UberGallery(); ?>
+
+<!-- Start UberGallery <?php echo UberGallery::VERSION; ?> - Copyright (c) <?php echo date('Y'); ?> Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
+<div id="gallery-wrapper">
+    <div id="gallery-constraint">
+        <ul id="gallery-images" class="clearfix">
+            <?php foreach ($gallery->readImageDirectory('images') as $image) :?>
+                <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" id="img-0" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
+            <?php endforeach; ?>
+        </ul>
+        <div id="uber-footer" class="clearfix">
+            <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>
+        </div>
+    </div>
+</div>
+<!-- End UberGallery - Licensed under the MIT License <http://creativecommons.org/licenses/MIT/> -->
+
 <?php
 
 /**
@@ -19,18 +36,14 @@ class UberGallery {
     protected $_imgPerPage  = NULL;
     
     // Reserve application directory and file variables
-    protected $_appDir      = NULL;
+    protected $_workingDir  = NULL;
     protected $_cacheDir    = NULL;
-    protected $_thumbsDir   = NULL;
     protected $_index       = NULL;
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
     
     // Define application version
     const VERSION = '2.0.0-dev';
-    
-    // Set default application directory
-    const APP_DIR = '.ubergallery';
     
     /**
      * UberGallery construct function.  Runs on object creation
@@ -48,21 +61,12 @@ class UberGallery {
         $this->_imgPerPage  = $imgPerPage;
         
         // Set application directory and file paths
-        $this->_appDir      = realpath(self::APP_DIR);
-        $this->_cacheDir    = $this->_appDir . '/cache';
-        $this->_thumbsDir   = $this->_appDir . '/thumbs';
-        $this->_index       = $this->_appDir . '/images.index';
-        $this->_rThumbsDir  = self::APP_DIR . '/thumbs';
+//        $this->_appDir      = realpath(self::APP_DIR);
+        $this->_workingDir  = getcwd();
+        $this->_cacheDir    = $this->_workingDir . '/cache';
+        $this->_index       = $this->_cacheDir . '/imageArray.index';
+        $this->_rThumbsDir  = '/cache';
         $this->_rImgDir     = $imgDir;
-        
-        // Check if application directory exists and create it if it does not
-        if (!file_exists($this->_appDir)) {
-            if (mkdir($this->_appDir)) {
-                $this->_writeToLog('Created application directory in ' . $this->_appDir);
-            } else {
-                $this->_writeToLog('ERROR: Failed to create application directory in ' . $this->_appDir);                
-            }
-        }
         
         // Check if cache directory exists and create it if it does not
         if (!file_exists($this->_cacheDir)) {
@@ -74,11 +78,11 @@ class UberGallery {
         }
         
         // Check if thumbs directory exists and create it if it does not
-        if (!file_exists($this->_thumbsDir)) {
-            if (mkdir($this->_thumbsDir)) {
-                $this->_writeToLog('Created thumbnails directory in ' . $this->_thumbsDir);
+        if (!file_exists($this->_cacheDir)) {
+            if (mkdir($this->_cacheDir)) {
+                $this->_writeToLog('Created thumbnails directory in ' . $this->_cacheDir);
             } else {
-                $this->_writeToLog('ERROR: Failed to create thumbnails directory in ' . $this->_thumbsDir);                
+                $this->_writeToLog('ERROR: Failed to create thumbnails directory in ' . $this->_cacheDir);                
             }
         }
         
@@ -162,7 +166,7 @@ class UberGallery {
         
         // Set thumbnail destination directory
         $fileName = pathinfo($source, PATHINFO_BASENAME);
-        $destination = $this->_thumbsDir . '/' . $fileName;
+        $destination = $this->_cacheDir . '/' . $fileName;
         
         // Get needed image information
         $imgInfo = getimagesize($source);
@@ -280,7 +284,7 @@ class UberGallery {
      */
     protected function _writeToLog($logText) {      
         // Open log for appending
-        $logPath = $this->_appDir . '/log.txt';
+        $logPath = $this->_cacheDir . '/log.txt';
         $log = fopen($logPath, 'a');
           
         // Get current time
@@ -294,6 +298,5 @@ class UberGallery {
     }
 
 }
-
 
 ?>

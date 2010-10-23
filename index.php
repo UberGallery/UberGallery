@@ -3,13 +3,13 @@
 
 <head>
     <title>UberGallery</title>
-    <link rel="shortcut icon" href="ubergallery/resources/images/images.png" />
+    <link rel="shortcut icon" href="resources/images/images.png" />
     
-    <link rel="stylesheet" type="text/css" href="ubergallery/resources/css/ubergallery.css" />
-    <link rel="stylesheet" type="text/css" href="ubergallery/resources/css/colorbox.css" />
+    <link rel="stylesheet" type="text/css" href="resources/css/ubergallery.css" />
+    <link rel="stylesheet" type="text/css" href="resources/css/colorbox.css" />
     
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script type="text/javascript" src="ubergallery/resources/js/jquery.colorbox.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script type="text/javascript" src="resources/js/jquery.colorbox.js"></script>
     
     <script type="text/javascript">
     $(document).ready(function(){
