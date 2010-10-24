@@ -35,7 +35,7 @@ class UberGallery {
      * @param int $thumbSize
      * @param int $imgPerPage
      */
-    function __construct($imgDir = 'gallery-images', $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
+    function __construct($imgDir, $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
         
         // Set global variables
         $this->_imgDir      = realpath($imgDir);
@@ -60,7 +60,7 @@ class UberGallery {
     }
         
     function __destruct() {
-        echo PHP_EOL . '<br/>END OF LINE';
+        // echo PHP_EOL . '<br/>END OF LINE';
     }
     
     
@@ -68,12 +68,17 @@ class UberGallery {
      * Returns an array of files in the specified directory
      * @param string $directory
      */
-    public function readImageDirectory($directory) {
+    public function readImageDirectory($directory = NULL) {
         
+        // Set defaults image directory if not specified
+        if ($directory === NULL) {
+            $directory = $this->_rImgDir;
+        }
+        
+        // Instantiate image array
         $imgArray = array();
         
         // Return the cached array if it exists.
-        
         if (file_exists($this->_index)) {
             if ((time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
                 if ($imgArray = $this->_readIndex()) {
@@ -117,6 +122,10 @@ class UberGallery {
         
         // Return the array
         return $imgArray;
+    }
+    
+    public function readVersion() {
+        return UberGallery::VERSION;
     }
 
     
