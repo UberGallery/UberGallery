@@ -53,20 +53,7 @@ class UberGallery {
         
         // Check if cache directory exists and create it if it does not
         if (!file_exists($this->_cacheDir)) {
-            if (mkdir($this->_cacheDir)) {
-                $this->_writeToLog('Created cache directory in ' . $this->_cacheDir);
-            } else {
-                $this->_writeToLog('ERROR: Failed to create cache directory in ' . $this->_cacheDir);                
-            }
-        }
-        
-        // Check if thumbs directory exists and create it if it does not
-        if (!file_exists($this->_cacheDir)) {
-            if (mkdir($this->_cacheDir)) {
-                $this->_writeToLog('Created thumbnails directory in ' . $this->_cacheDir);
-            } else {
-                $this->_writeToLog('ERROR: Failed to create thumbnails directory in ' . $this->_cacheDir);                
-            }
+            mkdir($this->_cacheDir);
         }
         
 //        print_r($this->_readImageDirectory($imgDir));
