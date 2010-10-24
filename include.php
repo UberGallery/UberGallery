@@ -1,9 +1,9 @@
-<?php include_once('UberGallery.php'); $gallery = new UberGallery(); ?>
+<?php include_once('UberGallery.php'); $gallery = new UberGallery('gallery-images'); ?>
 
-<!-- Start UberGallery <?php echo UberGallery::VERSION; ?> - Copyright (c) <?php echo date('Y'); ?> Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
+<!-- Start UberGallery <?php echo $gallery->readVersion(); ?> - Copyright (c) <?php echo date('Y'); ?> Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
 <div id="galleryWrapper">
     <ul id="galleryList" class="clearfix">
-        <?php foreach ($gallery->readImageDirectory('gallery-images') as $image) :?>
+        <?php foreach ($gallery->readImageDirectory() as $image) :?>
             <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" id="img-0" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
         <?php endforeach; ?>
     </ul>
