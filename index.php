@@ -3,7 +3,7 @@
 
 <head>
     <title>UberGallery</title>
-    <link rel="shortcut icon" href="resources/images/images.png" />
+    <link rel="shortcut icon" href="resources/images/favicon.png" />
     
     <link rel="stylesheet" type="text/css" href="resources/css/ubergallery.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/colorbox.css" />
@@ -19,22 +19,7 @@
 </head>
 <body>
 
-<?php include_once('UberGallery.php'); $gallery = new UberGallery(); ?>
-
-<!-- Start UberGallery <?php echo UberGallery::VERSION; ?> - Copyright (c) <?php echo date('Y'); ?> Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
-<div id="gallery-wrapper">
-    <div id="gallery-constraint">
-        <ul id="gallery-images" class="clearfix">
-            <?php foreach ($gallery->readImageDirectory('gallery-images') as $image) :?>
-                <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" id="img-0" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
-            <?php endforeach; ?>
-        </ul>
-        <div id="uber-footer" class="clearfix">
-            <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>
-        </div>
-    </div>
-</div>
-<!-- End UberGallery - Licensed under the MIT License <http://creativecommons.org/licenses/MIT/> -->
+<?php include('include.php'); ?>
 
 </body>
 </html>
