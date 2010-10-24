@@ -134,9 +134,23 @@ class UberGallery {
             $thumbSize = $this->_thumbSize;
         }
         
-        // Set thumbnail destination directory
-        $fileName = pathinfo($source, PATHINFO_BASENAME);
+        // MD5 hash of source image
+        $fileHash = md5_file($source);
+        
+        // Get file extension from source image
+        $fileExtension = pathinfo($source, PATHINFO_EXTENSION);
+        
+        // Build file name
+        $fileName = $thumbSize . '-' . $fileHash . '.' . $fileExtension;
+        
+        // Build thumbnail destination path
         $destination = $this->_cacheDir . '/' . $fileName;
+        
+        // If file already exists return relative path to thumbnail
+        if (file_exists($destination)) {
+            $relativePath = $this->_rThumbsDir . '/' . $fileName;
+            return $relativePath;
+        }
         
         // Get needed image information
         $imgInfo = getimagesize($source);
