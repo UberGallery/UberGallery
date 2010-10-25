@@ -48,7 +48,7 @@ class UberGallery {
         $this->_workingDir  = getcwd();
         $this->_cacheDir    = $this->_workingDir . '/cache';
         $this->_index       = $this->_cacheDir . '/imageArray.index';
-        $this->_rThumbsDir  = '/cache';
+        $this->_rThumbsDir  = 'cache';
         $this->_rImgDir     = $imgDir;
         
         // Check if cache directory exists and create it if it does not
