@@ -1,14 +1,10 @@
 <?php
 
 /**
- * UberGallery is a simple PHP image gallery.
- * @author Chris Kankiewicz (http://www.ubergallery.net)
- * @copyright 2010 Chris Kankiewicz
+ * UberGallery is a simple PHP image gallery. (http://www.ubergallery.net)
+ * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
+ * @copyright 2008-2010 Chris Kankiewicz
  * @version 2.0.0-dev
- * 
- * @param string $fileDir Relative path where /image and /cache are located
- * @param int $thumbSize Image thumbnail size
- * @param int $imgPerPage Number of images per page
  */
 class UberGallery {
     
@@ -17,8 +13,6 @@ class UberGallery {
     protected $_cacheExpire = NULL;
     protected $_thumbSize   = NULL;
     protected $_imgPerPage  = NULL;
-    
-    // Reserve application directory and file variables
     protected $_workingDir  = NULL;
     protected $_cacheDir    = NULL;
     protected $_index       = NULL;
@@ -30,10 +24,12 @@ class UberGallery {
     
     /**
      * UberGallery construct function.  Runs on object creation
-     * @param string $imgDir
-     * @param int $cacheExpire
-     * @param int $thumbSize
-     * @param int $imgPerPage
+     * @param string $imgDir Relative path to images directory
+     * @param int $cacheExpire Cache expiration time in minutes
+     * @param int $thumbSize Image thumbnail size
+     * @param int $imgPerPage Number of images per page
+     * 
+     * TODO: Pagination 
      */
     function __construct($imgDir, $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
         
@@ -44,7 +40,6 @@ class UberGallery {
         $this->_imgPerPage  = $imgPerPage;
         
         // Set application directory and file paths
-//        $this->_appDir      = realpath(self::APP_DIR);
         $this->_workingDir  = getcwd();
         $this->_cacheDir    = $this->_workingDir . '/cache';
         $this->_index       = $this->_cacheDir . '/' . md5($imgDir) . '.index';
@@ -52,15 +47,14 @@ class UberGallery {
         $this->_rImgDir     = $imgDir;
         
         // Check if cache directory exists and create it if it does not
+        // TODO: chmod 777 cache dir and/or throw error if not correct
         if (!file_exists($this->_cacheDir)) {
             mkdir($this->_cacheDir);
         }
-        
-//        print_r($this->_readImageDirectory($imgDir));
     }
         
     function __destruct() {
-        // echo PHP_EOL . '<br/>END OF LINE';
+        // TODO: Cache directory clean up
     }
     
     
@@ -90,6 +84,7 @@ class UberGallery {
         if ($handle = opendir($directory)) {
             
             // Loop through directory and add information to array
+            // TODO: Move this into a readDirectory function with ability to sort
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
                     
@@ -289,6 +284,8 @@ class UberGallery {
         // Close open file pointer
         fclose($log);
     }
+    
+    // TODO: Create a createGallery() function to return html and all
 
 }
 
