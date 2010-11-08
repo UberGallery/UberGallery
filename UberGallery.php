@@ -47,7 +47,7 @@ class UberGallery {
 //        $this->_appDir      = realpath(self::APP_DIR);
         $this->_workingDir  = getcwd();
         $this->_cacheDir    = $this->_workingDir . '/cache';
-        $this->_index       = $this->_cacheDir . '/imageArray.index';
+        $this->_index       = $this->_cacheDir . '/' . md5($imgDir) . '.index';
         $this->_rThumbsDir  = 'cache';
         $this->_rImgDir     = $imgDir;
         
