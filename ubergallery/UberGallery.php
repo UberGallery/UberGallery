@@ -42,7 +42,7 @@ class UberGallery {
         // Set application directory and file paths
         $this->_workingDir  = getcwd();
         $this->_cacheDir    = __DIR__ . '/cache';
-        $this->_rThumbsDir  = 'ubergallery/cache';  // TODO: Make this dynamic
+        $this->_rThumbsDir  = substr($this->_cacheDir, strlen($this->_workingDir) + 1);
         
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
@@ -51,7 +51,7 @@ class UberGallery {
         
         // Check if cache directory is writeable and warn if it isn't
         if(!is_writable($this->_cacheDir)) {
-            die("Cache directory needs write permissions, please run: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
+            die("Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
         }
         
         // TODO: Do that thing that Evan said to allow funtion chaining
