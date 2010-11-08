@@ -19,7 +19,11 @@
 </head>
 <body>
 
-<?php include('include.php'); ?>
+<?php
+    include_once('ubergallery/UberGallery.php');
+    $gallery = new UberGallery();
+    $gallery->createGallery('gallery-images');
+?>
 
 </body>
 </html>

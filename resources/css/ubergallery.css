@@ -17,9 +17,11 @@
 #galleryList li a {
     background-color: #FFF;
     border: 1px solid #CCC;
+    border-radius: 3px;
     display: block;
     padding: 4px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 #galleryList li a:hover {

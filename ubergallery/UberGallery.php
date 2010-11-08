@@ -3,16 +3,21 @@
 /**
  * UberGallery is a simple PHP image gallery. (http://www.ubergallery.net)
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
- * @copyright 2008-2010 Chris Kankiewicz
+ * @copyright 2010 Chris Kankiewicz
  * @version 2.0.0-dev
+ * 
+ * TODO: Pagination
  */
 class UberGallery {
     
-    // Reserve some default variables
+    // Set some default variables
+    protected $_cacheExpire = 0;
+    protected $_imgPerPage  = 0;
+    protected $_thumbSize   = 100;
+    
+    // Reserve some other variables
     protected $_imgDir      = NULL;
-    protected $_cacheExpire = NULL;
-    protected $_thumbSize   = NULL;
-    protected $_imgPerPage  = NULL;
+    protected $_appDir      = NULL;
     protected $_workingDir  = NULL;
     protected $_cacheDir    = NULL;
     protected $_index       = NULL;
@@ -22,52 +27,78 @@ class UberGallery {
     // Define application version
     const VERSION = '2.0.0-dev';
     
+    
     /**
-     * UberGallery construct function.  Runs on object creation
-     * @param string $imgDir Relative path to images directory
-     * @param int $cacheExpire Cache expiration time in minutes
-     * @param int $thumbSize Image thumbnail size
-     * @param int $imgPerPage Number of images per page
-     * 
-     * TODO: Pagination 
+     * UberGallery construct function. Runs on object creation.
      */
-    function __construct($imgDir, $cacheExpire = 0, $thumbSize = 100, $imgPerPage = 0) {
+    function __construct() {
         
-        // Set global variables
-        $this->_imgDir      = realpath($imgDir);
-        $this->_cacheExpire = $cacheExpire;
-        $this->_thumbSize   = $thumbSize;
-        $this->_imgPerPage  = $imgPerPage;
+        // Set class directory constant
+        if(!defined('__DIR__')) {
+            $iPos = strrpos(__FILE__, "/");
+            define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
+        }
         
         // Set application directory and file paths
         $this->_workingDir  = getcwd();
-        $this->_cacheDir    = $this->_workingDir . '/cache';
-        $this->_index       = $this->_cacheDir . '/' . md5($imgDir) . '.index';
-        $this->_rThumbsDir  = 'cache';
-        $this->_rImgDir     = $imgDir;
+        $this->_cacheDir    = __DIR__ . '/cache';
+        $this->_rThumbsDir  = 'ubergallery/cache';  // TODO: Make this dynamic
         
-        // Check if cache directory exists and create it if it does not
-        // TODO: chmod 777 cache dir and/or throw error if not correct
+        // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             mkdir($this->_cacheDir);
         }
-    }
         
+        // Check if cache directory is writeable and warn if it isn't
+        if(!is_writable($this->_cacheDir)) {
+            die("Cache directory needs write permissions, please run: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
+        }
+        
+        // TODO: Do that thing that Evan said to allow funtion chaining
+        
+    }
+    
+    /**
+     * UberGallery destruct function. Runs on object destruction.
+     * 
+     * TODO: Cache directory clean up
+     */
     function __destruct() {
-        // TODO: Cache directory clean up
+        
+    }
+
+    
+    /**
+     * Returns formatted HTML of a gallery
+     * @param string $directory Relative path to images directory
+     */
+    public function createGallery($directory) {
+        
+        // Set relative image directory
+        $this->setRelativeImageDirectory($directory);
+        
+        // Echo formatted gallery markup
+        echo '<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->';
+        echo '    <ul id="galleryList" class="clearfix">';
+        foreach ($this->readImageDirectory($directory) as $image) {
+            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"colorbox\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>";
+        }
+        echo '    </ul>';
+        echo '    <div id="galleryFooter" class="clearfix">';
+        echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>';
+        echo '    </div>';
+        echo '<!-- End UberGallery - Dual licensed under the MIT & GPL license -->';
     }
     
     
     /**
      * Returns an array of files in the specified directory
-     * @param string $directory
+     * @param string $directory Relative path to images directory
      */
-    public function readImageDirectory($directory = NULL) {
+    public function readImageDirectory($directory) {
         
-        // Set defaults image directory if not specified
-        if ($directory === NULL) {
-            $directory = $this->_rImgDir;
-        }
+        // Set relative image directory
+        $this->setRelativeImageDirectory($directory);
         
         // Instantiate image array
         $imgArray = array();
@@ -119,10 +150,51 @@ class UberGallery {
         return $imgArray;
     }
     
+    
+    /**
+     * Returns script version
+     */
     public function readVersion() {
         return UberGallery::VERSION;
     }
 
+    /**
+     * Set cache expiration time in minutes
+     * @param unknown_type $time Cache expiration time in minutes
+     */
+    public function setCacheExpiration($time) {
+        $this->_cacheExpire = $time;
+    }
+    
+    
+    /**
+     * Set the number of images to be displayed per page
+     * @param unknown_type $imgPerPage Number of images to display per page
+     */
+    public function setImagesPerPage($imgPerPage) {
+        $this->_imgPerPage = $imgPerPage;
+    }
+    
+    
+    /**
+     * Set thumbnail size
+     * @param unknown_type $size Thumbnail size
+     */
+    public function setThumbSize($size) {
+        $this->_thumbSize = $size;
+    }
+    
+    
+    /**
+     * Sets the relative path to the image directory
+     * @param string $directory Relative path to image directory
+     */
+    public function setRelativeImageDirectory($directory) {
+        $this->_imgDir  = realpath($directory);
+        $this->_rImgDir = $directory;
+        $this->_index   = $this->_cacheDir . '/' . md5($directory) . '.index';
+    }
+    
     
     /**
      * Create thumbnail, modified from function found on http://www.findmotive.com/tag/php/
@@ -270,7 +342,7 @@ class UberGallery {
      * Opens and writes to log file
      * @param string $logText
      */
-    protected function _writeToLog($logText) {      
+    protected function _writeToLog($logText) {
         // Open log for appending
         $logPath = $this->_cacheDir . '/log.txt';
         $log = fopen($logPath, 'a');
@@ -284,8 +356,6 @@ class UberGallery {
         // Close open file pointer
         fclose($log);
     }
-    
-    // TODO: Create a createGallery() function to return html and all
 
 }
 
