@@ -5,11 +5,11 @@
     <title>UberGallery</title>
     <link rel="shortcut icon" href="resources/images/favicon.png" />
     
-    <link rel="stylesheet" type="text/css" href="resources/css/ubergallery.css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/colorbox.css" />
+    <link rel="stylesheet" type="text/css" href="css/ubergallery.css" />
+    <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-    <script type="text/javascript" src="resources/js/jquery.colorbox.js"></script>
+    <script type="text/javascript" src="js/jquery.colorbox.js"></script>
     
     <script type="text/javascript">
     $(document).ready(function(){
@@ -19,9 +19,7 @@
 </head>
 <body>
 
-<?php
-    include_once('ubergallery/UberGallery.php'); $gallery = UberGallery::factory()->createGallery('gallery-images');
-?>
+<?php include_once('resources/UberGallery.php'); $gallery = UberGallery::factory()->createGallery('gallery-images'); ?>
 
 </body>
 </html>
