@@ -85,16 +85,18 @@ class UberGallery {
         $this->setRelativeImageDirectory($directory);
         
         // Echo formatted gallery markup
-        echo '<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->';
-        echo '    <ul id="galleryList" class="clearfix">';
+        echo '<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->' . PHP_EOL;
+        echo '<div id="galleryWrapper">' . PHP_EOL;
+        echo '    <ul id="galleryList" class="clearfix">' . PHP_EOL;
         foreach ($this->readImageDirectory($directory) as $image) {
-            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"colorbox\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>";
+            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"colorbox\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>" . PHP_EOL;
         }
-        echo '    </ul>';
-        echo '    <div id="galleryFooter" class="clearfix">';
-        echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>';
-        echo '    </div>';
-        echo '<!-- End UberGallery - Dual licensed under the MIT & GPL license -->';
+        echo '    </ul>' . PHP_EOL;
+        echo '    <div id="galleryFooter" class="clearfix">' . PHP_EOL;
+        echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>' . PHP_EOL;
+        echo '    </div>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
+        echo '<!-- End UberGallery - Dual licensed under the MIT & GPL license -->' . PHP_EOL;
         
         return $this;
     }
