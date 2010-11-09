@@ -54,13 +54,10 @@ class UberGallery {
             die("Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
         }
         
-        // TODO: Do that thing that Evan said to allow funtion chaining
-        
     }
     
     /**
      * UberGallery destruct function. Runs on object destruction.
-     * 
      * TODO: Cache directory clean up
      */
     function __destruct() {
@@ -88,6 +85,8 @@ class UberGallery {
         echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>';
         echo '    </div>';
         echo '<!-- End UberGallery - Dual licensed under the MIT & GPL license -->';
+        
+        return $this;
     }
     
     
@@ -164,6 +163,8 @@ class UberGallery {
      */
     public function setCacheExpiration($time) {
         $this->_cacheExpire = $time;
+        
+        return $this;
     }
     
     
@@ -173,6 +174,8 @@ class UberGallery {
      */
     public function setImagesPerPage($imgPerPage) {
         $this->_imgPerPage = $imgPerPage;
+        
+        return $this;
     }
     
     
@@ -182,6 +185,15 @@ class UberGallery {
      */
     public function setThumbSize($size) {
         $this->_thumbSize = $size;
+        
+        return $this;
+    }
+    
+    
+    public function setCacheDirectory($directory) {
+        $this->_cacheDir = realpath($directory);
+        
+        return $this;
     }
     
     
@@ -193,6 +205,8 @@ class UberGallery {
         $this->_imgDir  = realpath($directory);
         $this->_rImgDir = $directory;
         $this->_index   = $this->_cacheDir . '/' . md5($directory) . '.index';
+        
+        return $this;
     }
     
     
