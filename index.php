@@ -20,7 +20,7 @@
 <body>
 
 <?php
-    include_once('ubergallery/UberGallery.php'); $gallery = new UberGallery(); $gallery->createGallery('gallery-images');
+    include_once('ubergallery/UberGallery.php'); $gallery = UberGallery::factory()->createGallery('gallery-images');
 ?>
 
 </body>

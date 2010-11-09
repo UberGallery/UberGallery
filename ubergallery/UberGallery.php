@@ -69,8 +69,7 @@ class UberGallery {
     /**
      * Special factory method for simple one-line interface.
      */
-    public static function factory()
-    {
+    public static function factory() {
         $reflection = new ReflectionClass(__CLASS__);
         return $reflection->newInstanceArgs(func_get_args());
     }
