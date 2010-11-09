@@ -55,6 +55,7 @@ class UberGallery {
         }
         
     }
+
     
     /**
      * UberGallery destruct function. Runs on object destruction.
@@ -62,6 +63,16 @@ class UberGallery {
      */
     function __destruct() {
         
+    }
+
+
+    /**
+     * Special factory method for simple one-line interface.
+     */
+    public static function factory()
+    {
+        $reflection = new ReflectionClass(__CLASS__);
+        return $reflection->newInstanceArgs(func_get_args());
     }
 
     
