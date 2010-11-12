@@ -62,7 +62,7 @@ class UberGallery {
      * TODO: Cache directory clean up
      */
     function __destruct() {
-        
+        // NULL
     }
 
 
@@ -126,7 +126,7 @@ class UberGallery {
         if ($handle = opendir($directory)) {
             
             // Loop through directory and add information to array
-            // TODO: Move this into a readDirectory function with ability to sort
+            // TODO: Move this into a readDirectory function with ability to sort and paginate
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
                     
@@ -138,12 +138,9 @@ class UberGallery {
                     
                     // If file is an image, add info to array
                     if ($this->_isImage($realPath)) {
-                        $imgArray[] = array(
-                            'file_name'    => pathinfo($realPath, PATHINFO_BASENAME),
+                        $imgArray[pathinfo($realPath, PATHINFO_BASENAME)] = array(
                             'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                             'file_path'    => $relativePath,
-//                          'file_hash'    => md5($realPath),
-//                          'file_mime'    => @exif_imagetype($realPath),
                             'thumb_path'   => $this->_createThumbnail($realPath)
                         );
                     }
@@ -155,7 +152,9 @@ class UberGallery {
             
         }
         
-        $this->_createIndex($imgArray);
+        // Sort and save array
+        $sortedArray = sort($imgArray);
+        $this->_createIndex($sortedArray);
         
         // Return the array
         return $imgArray;
