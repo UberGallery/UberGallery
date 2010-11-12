@@ -64,7 +64,9 @@ class UberGallery {
         
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
-            mkdir($this->_cacheDir);
+            if (!@mkdir($this->_cacheDir)) {
+                die("Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre>");
+            }
         }
         
         // Check if cache directory is writeable and warn if it isn't
@@ -154,11 +156,13 @@ class UberGallery {
                     // Get files relative path
                     $relativePath = $this->_rImgDir . '/' . $file;
                     
+                    
+                    
                     // If file is an image, add info to array
                     if ($this->_isImage($realPath)) {
                         $imgArray[pathinfo($realPath, PATHINFO_BASENAME)] = array(
                             'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
-                            'file_path'    => $relativePath,
+                            'file_path'    => htmlentities($relativePath),
                             'thumb_path'   => $this->_createThumbnail($realPath)
                         );
                     }
@@ -170,12 +174,23 @@ class UberGallery {
             
         }
         
-        // Sort and save array
-        $sortedArray = sort($imgArray);
-        $this->_createIndex($sortedArray);
+        // Create empty array
+        $sortedArray = array();
         
+        // Create new array of just the keys and sort it
+        $keys = array_keys($imgArray); 
+        natcasesort($keys);
+        
+        // Loop through the sorted values and move over the data
+        foreach ($keys as $key) {
+            $sortedArray[$key] = $imgArray[$key];
+        }
+        
+        // Save array
+        $this->_createIndex($sortedArray);
+
         // Return the array
-        return $imgArray;
+        return $sortedArray;
     }
     
     
