@@ -40,5 +40,72 @@
 }
 
 #credit {
-    text-align: right;
+    float: right;
+    font-size: 0.9em;
+    margin: 4px 0;
 }
+
+#galleryFooter #credit a {
+    color: #369;
+}
+
+
+/* ---------------------------------------- */
+/* ----|  PAGINATION  |-------------------- */
+/* ---------------------------------------- */
+
+#galleryPagination {
+    color: #369;
+    float: left;
+    font-size: .9em;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+}
+
+#galleryPagination li {
+    border: 1px solid transparent;
+    border-radius: 3px;
+    display: block;
+    float: left;
+    list-style: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#galleryPagination li:hover {
+    background-color: #EFEFEF;
+    border: 1px solid #CCC;
+}
+
+#galleryPagination li.title {
+    background: transparent url(../images/page_white_stack.png) no-repeat left center;
+    border: 1px solid transparent;
+    font-weight: normal;
+    padding: 3px 6px 3px 22px;
+}
+
+#galleryPagination li a, #galleryPagination li a:visited {
+    color: #369;
+    display: block;
+    padding: 3px 6px;
+    text-decoration: none;
+}
+
+#galleryPagination li.current {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #333;
+    font-weight: bold;
+    padding: 3px 6px;
+}
+
+#galleryPagination li.inactive {
+    background-color: transparent;
+    color: #ACACAC;
+    border: 1px solid transparent;
+    display: block;
+    padding: 3px 6px;
+}
+
+/* ubergallery.css Created by, Chris Kankiewicz <http://www.ChrisKankiewicz.com> */

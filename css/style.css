@@ -14,12 +14,44 @@ body {
 }
 
 #galleryWrapper {
-    background-color: #FFF;
-    border: 20px solid #369;
     border-radius: 10px;
     margin: 20px auto;
+    width: 870px;
+}
+
+#galleryHeader {
+    background-color: #DDF;
+    color: #369;
+    padding: 8px 10px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+}
+
+#galleryHeader h1 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0;
+}
+
+#galleryListWrapper {
+    background-color: #FFF;
     padding: 10px;
-    width: 850px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+}
+
+#galleryFooter {
+    background-color: #DDF;
+    border: none !important;
+    color: #369;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+}
+
+#galleryFooter .credit a {
+    color: #369;
+}
+
+#galleryFooter .credit a:hover {
+    color: #333;
 }
