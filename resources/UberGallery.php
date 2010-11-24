@@ -32,6 +32,7 @@ class UberGallery {
     protected $_cacheExpire = 0;
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
+    protected $_page        = 1;
     
     // Reserve some other variables
     protected $_imgDir      = NULL;
@@ -51,6 +52,11 @@ class UberGallery {
      */
     function __construct() {
         
+        // Set sanitized page number
+        if (is_numeric(@$_GET['page'])) {
+            $this->_page = $_GET['page'];
+        }
+        
         // Set class directory constant
         if(!defined('__DIR__')) {
             $iPos = strrpos(__FILE__, "/");
@@ -65,13 +71,13 @@ class UberGallery {
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             if (!@mkdir($this->_cacheDir)) {
-                die("Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre>");
+                die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
             }
         }
         
         // Check if cache directory is writeable and warn if it isn't
         if(!is_writable($this->_cacheDir)) {
-            die("Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
+            die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre></div>");
         }
         
     }
