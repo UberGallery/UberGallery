@@ -63,9 +63,17 @@ class UberGallery {
             define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
         }
         
-        // Set application directory and file paths
+        // Get gallery configuration
+        $this->_settings = parse_ini_file(__DIR__ . '/galleryConfig.ini', true);
+        
+        // Apply configuration
+        $this->_cacheExpire = $this->_settings['basic_settings']['cache_expiration'];
+        $this->_imgPerPage  = $this->_settings['basic_settings']['images_per_page'];
+        $this->_thumbSize   = $this->_settings['basic_settings']['thumbnail_size'];
+        $this->_cacheDir    = __DIR__ . '/' . $this->_settings['advanced_settings']['cache_directory'];
+                
+        // Set application directory and relative path
         $this->_workingDir  = getcwd();
-        $this->_cacheDir    = __DIR__ . '/cache';
         $this->_rThumbsDir  = substr($this->_cacheDir, strlen($this->_workingDir) + 1);
         
         // Check if cache directory exists and create it if it doesn't
