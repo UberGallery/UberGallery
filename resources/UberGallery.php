@@ -52,9 +52,11 @@ class UberGallery {
      */
     function __construct() {
         
-        // Set sanitized page number
-        if (is_numeric(@$_GET['page'])) {
-            $this->_page = $_GET['page'];
+        // Sanitize input and set current page
+        if (isset($_GET['page'])) {
+            $this->_page = (integer) $_GET['page'];
+        } else {
+            $this->_page = 1;
         }
         
         // Set class directory constant
@@ -200,11 +202,14 @@ class UberGallery {
             $sortedArray[$key] = $imgArray[$key];
         }
         
-        // Save array
+        // Save the sorted array
         $this->_createIndex($sortedArray);
+        
+        // Paginate the array and return current page
+        $finalArray = $this->_arrayPaginate($sortedArray);
 
         // Return the array
-        return $sortedArray;
+        return $finalArray;
     }
     
     
@@ -385,6 +390,74 @@ class UberGallery {
         fwrite($index, $serializedArray);
         
         return true;
+    }
+    
+    
+    /**
+     * Sorts an array
+     * @param string $array Array to be sorted
+     * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
+     * @return array
+     */
+    protected function _arraySort($array, $sort) {
+        
+    }
+    
+    
+    /**
+     * Paginates array and returns partial array of current page
+     * @param string $array Array to be paginated
+     * @return array
+     */
+    protected function _arrayPaginate($array) {
+        // Page varriables
+        $totalImages = count($array);
+        
+        if ($this->_imgPerPage <= 0 || $this->_imgPerPage >= $totalImages) {
+            $firstImage = 0;
+            $lastImage = $totalImages;
+            $totalPages = 1;
+        } else {
+            // Calculate total pages
+            $totalPages = ceil($totalImages / $this->_imgPerPage);
+            
+            // Set current page
+            if ($this->_page < 1) {
+                $currentPage = 1;
+            } elseif ($this->_page > $totalPages) {
+                $currentPage = $totalPages;
+            } else {
+                $currentPage = (integer) $this->_page;
+            }
+            
+            // Calculate starting image
+            $firstImage = ($currentPage - 1) * $this->_imgPerPage;
+            
+            // Calculate last image
+            if($currentPage * $this->_imgPerPage > $totalImages) {
+                $lastImage = $totalImages;
+            } else {
+                $lastImage = $currentPage * $this->_imgPerPage;
+            }
+        }
+        
+        // Initiate counter
+        $x = 0;
+        
+        // Run loop to paginate images and add them to array
+        foreach ($array as $key => $element) {
+            
+            // Add image to array if within current page
+            if ($x >= $firstImage && $x <= $lastImage) {
+                $paginatedArray[$key] = $array[$key];
+            }
+            
+            // Increment counter
+            $x++;
+        }
+        
+        // Return paginated array
+        return $paginatedArray;
     }
     
     
