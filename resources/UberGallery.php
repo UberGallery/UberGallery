@@ -150,63 +150,53 @@ class UberGallery {
         // Instantiate image array
         $imgArray = array();
         
-        // Return the cached array if it exists.
-        if (file_exists($this->_index)) {
-            if ((time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
-                if ($imgArray = $this->_readIndex()) {
-                    return $imgArray;
-                }
-            }
-        }
-        
-        if ($handle = opendir($directory)) {
+        // Return the cached array if it exists and hasn't expired
+        if (file_exists($this->_index) && (time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
+                
+            $imgArray = $this->_readIndex();
             
-            // Loop through directory and add information to array
-            // TODO: Move this into a readDirectory function with ability to sort and paginate
-            while (false !== ($file = readdir($handle))) {
-                if ($file != "." && $file != "..") {
-                    
-                    // Get files real path
-                    $realPath = realpath($directory . '/' . $file);
-                    
-                    // Get files relative path
-                    $relativePath = $this->_rImgDir . '/' . $file;
-                    
-                    
-                    
-                    // If file is an image, add info to array
-                    if ($this->_isImage($realPath)) {
-                        $imgArray[pathinfo($realPath, PATHINFO_BASENAME)] = array(
-                            'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
-                            'file_path'    => htmlentities($relativePath),
-                            'thumb_path'   => $this->_createThumbnail($realPath)
-                        );
+        } else {
+        
+            if ($handle = opendir($directory)) {
+                
+                // Loop through directory and add information to array
+                // TODO: Move this into a readDirectory function with ability to sort and paginate
+                while (false !== ($file = readdir($handle))) {
+                    if ($file != "." && $file != "..") {
+                        
+                        // Get files real path
+                        $realPath = realpath($directory . '/' . $file);
+                        
+                        // Get files relative path
+                        $relativePath = $this->_rImgDir . '/' . $file;
+                        
+                        
+                        
+                        // If file is an image, add info to array
+                        if ($this->_isImage($realPath)) {
+                            $imgArray[pathinfo($realPath, PATHINFO_BASENAME)] = array(
+                                'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
+                                'file_path'    => htmlentities($relativePath),
+                                'thumb_path'   => $this->_createThumbnail($realPath)
+                            );
+                        }
                     }
                 }
+                
+                // Close open file handle
+                closedir($handle);
             }
-            
-            // Close open file handle
-            closedir($handle);
-            
+
+            // Sort the array
+            $imgArray = $this->_arraySort($imgArray, 'natcasesort');
+        
+            // Save the sorted array
+            $this->_createIndex($imgArray);
+        
         }
-        
-        // Create empty array
-        $sortedArray = array();
-        
-        // Create new array of just the keys and sort it
-        $keys = array_keys($imgArray); 
-        natcasesort($keys);
-        
-        // Loop through the sorted values and move over the data
-        foreach ($keys as $key) {
-            $sortedArray[$key] = $imgArray[$key];
-        }
-        
-        // Save the sorted array
-        $this->_createIndex($sortedArray);
         
         // Paginate the array and return current page
-        $finalArray = $this->_arrayPaginate($sortedArray, $this->_imgPerPage, $this->_page);
+        $finalArray = $this->_arrayPaginate($imgArray, $this->_imgPerPage, $this->_page);
 
         // Return the array
         return $finalArray;
@@ -399,7 +389,25 @@ class UberGallery {
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
      */
-    protected function _arraySort($array, $sort) {
+    protected function _arraySort($array, $sortMethod) {
+        
+        // Create empty array
+        $sortedArray = array();
+        
+        // Create new array of just the keys and sort it
+        $keys = array_keys($array); 
+        
+        if ($sortMethod == 'natcasesort') {
+            natcasesort($keys);
+        }
+        
+        // Loop through the sorted values and move over the data
+        foreach ($keys as $key) {
+            $sortedArray[$key] = $array[$key];
+        }
+        
+        // Return sorted array
+        return $sortedArray;
         
     }
     
