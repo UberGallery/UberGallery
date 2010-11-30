@@ -206,7 +206,7 @@ class UberGallery {
         $this->_createIndex($sortedArray);
         
         // Paginate the array and return current page
-        $finalArray = $this->_arrayPaginate($sortedArray);
+        $finalArray = $this->_arrayPaginate($sortedArray, $this->_imgPerPage, $this->_page);
 
         // Return the array
         return $finalArray;
@@ -409,46 +409,47 @@ class UberGallery {
      * @param string $array Array to be paginated
      * @return array
      */
-    protected function _arrayPaginate($array) {
-        // Page varriables
-        $totalImages = count($array);
+    protected function _arrayPaginate($array, $resultsPerPage, $currentPage) {
         
-        if ($this->_imgPerPage <= 0 || $this->_imgPerPage >= $totalImages) {
-            $firstImage = 0;
-            $lastImage = $totalImages;
+        // Page varriables
+        $totalElements = count($array);
+        
+        if ($resultsPerPage <= 0 || $resultsPerPage >= $totalElements) {
+            $firstElement = 0;
+            $lastElement = $totalElements;
             $totalPages = 1;
         } else {
             // Calculate total pages
-            $totalPages = ceil($totalImages / $this->_imgPerPage);
+            $totalPages = ceil($totalElements / $resultsPerPage);
             
             // Set current page
-            if ($this->_page < 1) {
+            if ($currentPage < 1) {
                 $currentPage = 1;
-            } elseif ($this->_page > $totalPages) {
+            } elseif ($currentPage > $totalPages) {
                 $currentPage = $totalPages;
             } else {
-                $currentPage = (integer) $this->_page;
+                $currentPage = (integer) $currentPage;
             }
             
             // Calculate starting image
-            $firstImage = ($currentPage - 1) * $this->_imgPerPage;
+            $firstElement = ($currentPage - 1) * $resultsPerPage;
             
             // Calculate last image
-            if($currentPage * $this->_imgPerPage > $totalImages) {
-                $lastImage = $totalImages;
+            if($currentPage * $resultsPerPage > $totalElements) {
+                $lastElement = $totalElements;
             } else {
-                $lastImage = $currentPage * $this->_imgPerPage;
+                $lastElement = $currentPage * $resultsPerPage;
             }
         }
         
         // Initiate counter
-        $x = 0;
+        $x = 1;
         
         // Run loop to paginate images and add them to array
         foreach ($array as $key => $element) {
             
             // Add image to array if within current page
-            if ($x >= $firstImage && $x <= $lastImage) {
+            if ($x > $firstElement && $x <= $lastElement) {
                 $paginatedArray[$key] = $array[$key];
             }
             
