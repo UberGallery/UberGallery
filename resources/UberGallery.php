@@ -33,12 +33,12 @@ class UberGallery {
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
     protected $_page        = 1;
+    protected $_cacheDir    = 'cache';
     
     // Reserve some other variables
     protected $_imgDir      = NULL;
     protected $_appDir      = NULL;
     protected $_workingDir  = NULL;
-    protected $_cacheDir    = NULL;
     protected $_index       = NULL;
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
@@ -65,14 +65,20 @@ class UberGallery {
             define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
         }
         
-        // Parse gallery configuration
-        $config = parse_ini_file(__DIR__ . '/galleryConfig.ini', true);
+        $configPath = __DIR__ . '/galleryConfig.ini';
         
-        // Apply configuration
-        $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
-        $this->_imgPerPage  = $config['basic_settings']['images_per_page'];
-        $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
-        $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
+        if (file_exists($configPath)) {
+            // Parse gallery configuration
+            $config = parse_ini_file($configPath, true);
+            
+            // Apply configuration
+            $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
+            $this->_imgPerPage  = $config['basic_settings']['images_per_page'];
+            $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
+            $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
+        } else {
+            die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
+        }
                 
         // Set working directory and relative path
         $this->_workingDir  = getcwd();
