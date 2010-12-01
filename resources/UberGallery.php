@@ -65,16 +65,16 @@ class UberGallery {
             define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
         }
         
-        // Get gallery configuration
-        $this->_settings = parse_ini_file(__DIR__ . '/galleryConfig.ini', true);
+        // Parse gallery configuration
+        $config = parse_ini_file(__DIR__ . '/galleryConfig.ini', true);
         
         // Apply configuration
-        $this->_cacheExpire = $this->_settings['basic_settings']['cache_expiration'];
-        $this->_imgPerPage  = $this->_settings['basic_settings']['images_per_page'];
-        $this->_thumbSize   = $this->_settings['basic_settings']['thumbnail_size'];
-        $this->_cacheDir    = __DIR__ . '/' . $this->_settings['advanced_settings']['cache_directory'];
+        $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
+        $this->_imgPerPage  = $config['basic_settings']['images_per_page'];
+        $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
+        $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
                 
-        // Set application directory and relative path
+        // Set working directory and relative path
         $this->_workingDir  = getcwd();
         $this->_rThumbsDir  = substr($this->_cacheDir, strlen($this->_workingDir) + 1);
         
@@ -204,7 +204,9 @@ class UberGallery {
     
     
     /**
-     * Returns script version
+     * Returns current script version
+     * @return string Current script version
+     * @access public
      */
     public function readVersion() {
         return UberGallery::VERSION;
@@ -212,7 +214,8 @@ class UberGallery {
 
     /**
      * Set cache expiration time in minutes
-     * @param unknown_type $time Cache expiration time in minutes
+     * @param int $time Cache expiration time in minutes
+     * @access public
      */
     public function setCacheExpiration($time) {
         $this->_cacheExpire = $time;
@@ -223,7 +226,8 @@ class UberGallery {
     
     /**
      * Set the number of images to be displayed per page
-     * @param unknown_type $imgPerPage Number of images to display per page
+     * @param int $imgPerPage Number of images to display per page
+     * @access public
      */
     public function setImagesPerPage($imgPerPage) {
         $this->_imgPerPage = $imgPerPage;
@@ -234,7 +238,8 @@ class UberGallery {
     
     /**
      * Set thumbnail size
-     * @param unknown_type $size Thumbnail size
+     * @param int $size Thumbnail size
+     * @access public
      */
     public function setThumbSize($size) {
         $this->_thumbSize = $size;
@@ -242,7 +247,11 @@ class UberGallery {
         return $this;
     }
     
-    
+    /**
+     * Set the cache directory name
+     * @param string $directory
+     * @access public
+     */
     public function setCacheDirectory($directory) {
         $this->_cacheDir = realpath($directory);
         
@@ -253,6 +262,7 @@ class UberGallery {
     /**
      * Sets the relative path to the image directory
      * @param string $directory Relative path to image directory
+     * @access public
      */
     public function setRelativeImageDirectory($directory) {
         $this->_imgDir  = realpath($directory);

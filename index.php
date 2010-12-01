@@ -25,7 +25,7 @@
 
 <?php include_once('resources/UberGallery.php'); $gallery = new UberGallery(); ?>
 
-<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
+<!-- Start UberGallery v<?php echo UberGallery::VERSION; ?> - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
 <div id="galleryWrapper">
     <div id="galleryHeader" class="clearfix">
         <h1>Uber Gallery</h1>
