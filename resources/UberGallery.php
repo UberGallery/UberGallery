@@ -28,7 +28,7 @@
  */
 class UberGallery {
     
-    // Set some default variables
+    // Set default config variables
     protected $_cacheExpire = 0;
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
