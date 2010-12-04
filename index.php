@@ -23,7 +23,7 @@
 
 <?php // include_once('resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('gallery-images'); ?>
 
-<?php include_once('resources/UberGallery.php'); $gallery = new UberGallery(); ?>
+<?php include_once('resources/UberGallery.php'); $gallery = UberGallery::init()->readImageDirectory('gallery-images'); ?>
 
 <!-- Start UberGallery v<?php echo UberGallery::VERSION; ?> - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
 <div id="galleryWrapper">
@@ -33,21 +33,40 @@
     
     <div id="galleryListWrapper">
         <ul id="galleryList" class="clearfix">
-            <?php foreach ($gallery->readImageDirectory('gallery-images') as $image): ?>
+            <?php foreach ($gallery['images'] as $image): ?>
                 <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" rel="colorbox"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
             <?php endforeach; ?>
         </ul>
     </div>
     
     <div id="galleryFooter" class="clearfix">
+    
+        <?php if ($gallery['stats']['total_pages'] > 1): ?>
         <ul id="galleryPagination">
-            <li class="title">Page 1 of 3</li>
-            <li class="inactive">&lt;</li>
-            <li class="current">1</li>
-            <li><a title="Page 2" href="index.php?page=2">2</a></li>
-            <li><a title="Page 3" href="index.php?page=3">3</a></li>
-            <li><a title="Next Page" href="index.php?page=2">&gt;</a></li>
-          </ul>
+            <li class="title">Page <?php echo $gallery['stats']['current_page']; ?> of <?php echo $gallery['stats']['total_pages']; ?></li>
+            
+            <?php if ($gallery['stats']['current_page'] > 1): ?>
+                <li><a title="Previous Page" href="index.php?page=<?php echo $gallery['stats']['current_page'] - 1; ?>">&lt;</a></li>
+            <? else: ?>
+                <li class="inactive">&lt;</li>
+            <? endif; ?>
+            
+            <?php for($x = 1; $x <= $gallery['stats']['total_pages']; $x++): ?>
+                <?php if($x == $gallery['stats']['current_page']): ?>
+                    <li class="current"><?php echo $x; ?></li>
+                <?php else: ?>
+                    <li><a title="Page <?php echo $x; ?>" href="index.php?page=<?php echo $x; ?>"><?php echo $x; ?></a></li>
+                <?php endif; ?>
+            <?php endfor; ?>
+            
+            <?php if ($gallery['stats']['current_page'] < $gallery['stats']['total_pages']): ?>
+                <li><a title="Next Page" href="index.php?page=<?php echo $gallery['stats']['current_page'] + 1; ?>">&gt;</a></li>
+            <? else: ?>
+                <li class="inactive">&gt;</li>
+            <? endif; ?>
+        </ul>
+        <?php endif; ?>
+        
         <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>
     </div>
 </div>

@@ -46,7 +46,6 @@ class UberGallery {
     // Define application version
     const VERSION = '2.0.0-dev';
     
-    
     /**
      * UberGallery construct function. Runs on object creation.
      */
@@ -97,7 +96,6 @@ class UberGallery {
         }
         
     }
-
     
     /**
      * UberGallery destruct function. Runs on object destruction.
@@ -107,7 +105,6 @@ class UberGallery {
         // NULL
     }
 
-
     /**
      * Special init method for simple one-line interface.
      */
@@ -115,7 +112,6 @@ class UberGallery {
         $reflection = new ReflectionClass(__CLASS__);
         return $reflection->newInstanceArgs(func_get_args());
     }
-
     
     /**
      * Returns formatted HTML of a gallery
@@ -143,12 +139,11 @@ class UberGallery {
         return $this;
     }
     
-    
     /**
      * Returns an array of files in the specified directory
      * @param string $directory Relative path to images directory
      */
-    public function readImageDirectory($directory) {
+    public function readImageDirectory($directory, $paginate = true) {
         
         // Set relative image directory
         $this->setRelativeImageDirectory($directory);
@@ -158,8 +153,8 @@ class UberGallery {
         
         // Return the cached array if it exists and hasn't expired
         if (file_exists($this->_index) && (time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
-                
-            $imgArray = $this->_readIndex();
+            
+            $imgArray = $this->_readIndex($this->_index);
             
         } else {
         
@@ -176,11 +171,9 @@ class UberGallery {
                         // Get files relative path
                         $relativePath = $this->_rImgDir . '/' . $file;
                         
-                        
-                        
                         // If file is an image, add info to array
                         if ($this->_isImage($realPath)) {
-                            $imgArray[pathinfo($realPath, PATHINFO_BASENAME)] = array(
+                            $galleryArray['images'][pathinfo($realPath, PATHINFO_BASENAME)] = array(
                                 'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                                 'file_path'    => htmlentities($relativePath),
                                 'thumb_path'   => $this->_createThumbnail($realPath)
@@ -194,20 +187,24 @@ class UberGallery {
             }
 
             // Sort the array
-            $imgArray = $this->_arraySort($imgArray, 'natcasesort');
+            $galleryArray['images'] = $this->_arraySort($galleryArray['images'], 'natcasesort');
         
             // Save the sorted array
-            $this->_createIndex($imgArray);
+            $this->_createIndex($galleryArray, $this->_index);
         
         }
-        
-        // Paginate the array and return current page
-        $finalArray = $this->_arrayPaginate($imgArray, $this->_imgPerPage, $this->_page);
 
+        // Add statistics to gallery array
+        $galleryArray['stats'] = $this->_readGalleryStats($galleryArray['images']);
+        
+        // Paginate the array and return current page if enabled
+        if ($paginate == true && $this->_imgPerPage > 0) {
+            $galleryArray['images'] = $this->_arrayPaginate($galleryArray['images'], $this->_imgPerPage, $this->_page);
+        }
+        
         // Return the array
-        return $finalArray;
+        return $galleryArray;
     }
-    
     
     /**
      * Returns current script version
@@ -229,7 +226,6 @@ class UberGallery {
         return $this;
     }
     
-    
     /**
      * Set the number of images to be displayed per page
      * @param int $imgPerPage Number of images to display per page
@@ -240,7 +236,6 @@ class UberGallery {
         
         return $this;
     }
-    
     
     /**
      * Set thumbnail size
@@ -264,7 +259,6 @@ class UberGallery {
         return $this;
     }
     
-    
     /**
      * Sets the relative path to the image directory
      * @param string $directory Relative path to image directory
@@ -277,7 +271,6 @@ class UberGallery {
         
         return $this;
     }
-    
     
     /**
      * Create thumbnail, modified from function found on http://www.findmotive.com/tag/php/
@@ -351,18 +344,12 @@ class UberGallery {
         return $relativePath;
     }
     
-    
     /**
      * Return array from the index
      * @param string $filePath
      * @return ArrayObject
      */
-    protected function _readIndex($filePath = NULL) {
-        // Set file path if not specified
-        if(!isset($filePath)) {
-            $filePath = $this->_index;
-        }
-        
+    protected function _readIndex($filePath) {        
         // Return false if file doesn't exist
         if (!file_exists($filePath)) {
             return false;
@@ -377,19 +364,13 @@ class UberGallery {
         return $indexArray;
     }
 
-    
     /**
      * Create index from file array
      * @param string $array
      * @param string $filePath
      * @return boolean
      */
-    protected function _createIndex($array, $filePath = NULL) {
-        // Set file path if not specified
-        if($filePath === NULL) {
-            $filePath = $this->_index;
-        }
-        
+    protected function _createIndex($array, $filePath) {
         // Serialize array and write it to the index
         $index = fopen($filePath, 'w');
         $serializedArray = serialize($array);
@@ -398,6 +379,43 @@ class UberGallery {
         return true;
     }
     
+    /**
+     * Returns an array of gallery statistics
+     * @param $array Array to gather stats from
+     * @return array
+     * @access private
+     */
+    private function _readGalleryStats($array) {
+        
+        // Caclulate total array elements
+        $totalElements = count($array);
+        
+        // Calculate total pages
+        if ($this->_imgPerPage > 0) {
+            $totalPages = ceil($totalElements / $this->_imgPerPage);
+        } else {
+            $totalPages = 1;
+        }
+                
+        // Set current page
+        if ($this->_page < 1) {
+            $currentPage = 1;
+        } elseif ($this->_page > $totalPages) {
+            $currentPage = $totalPages;
+        } else {
+            $currentPage = (integer) $this->_page;
+        }
+        
+        // Add stats to array
+        $statsArray = array(
+            'current_page' => $currentPage,
+            'total_images' => $totalElements,
+            'total_pages'  => $totalPages
+        );
+        
+        // Return array
+        return $statsArray;
+    }
     
     /**
      * Sorts an array
@@ -426,7 +444,6 @@ class UberGallery {
         return $sortedArray;
         
     }
-    
     
     /**
      * Paginates array and returns partial array of current page
@@ -485,7 +502,6 @@ class UberGallery {
         return $paginatedArray;
     }
     
-    
     /**
      * Verifies wether or not a file is an image
      * @param string $fileName
@@ -506,7 +522,6 @@ class UberGallery {
             return false;
         }
     }
-    
     
     /**
      * Opens and writes to log file
