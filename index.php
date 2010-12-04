@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<?php // include_once('resources/UberGallery.php'); $gallery = UberGallery::factory()->createGallery('gallery-images'); ?>
+<?php // include_once('resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('gallery-images'); ?>
 
 <?php include_once('resources/UberGallery.php'); $gallery = new UberGallery(); ?>
 
