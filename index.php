@@ -47,9 +47,9 @@
             
             <?php if ($gallery['stats']['current_page'] > 1): ?>
                 <li><a title="Previous Page" href="index.php?page=<?php echo $gallery['stats']['current_page'] - 1; ?>">&lt;</a></li>
-            <? else: ?>
+            <?php else: ?>
                 <li class="inactive">&lt;</li>
-            <? endif; ?>
+            <?php endif; ?>
             
             <?php for($x = 1; $x <= $gallery['stats']['total_pages']; $x++): ?>
                 <?php if($x == $gallery['stats']['current_page']): ?>
@@ -61,9 +61,9 @@
             
             <?php if ($gallery['stats']['current_page'] < $gallery['stats']['total_pages']): ?>
                 <li><a title="Next Page" href="index.php?page=<?php echo $gallery['stats']['current_page'] + 1; ?>">&gt;</a></li>
-            <? else: ?>
+            <?php else: ?>
                 <li class="inactive">&gt;</li>
-            <? endif; ?>
+            <?php endif; ?>
         </ul>
         <?php endif; ?>
         
