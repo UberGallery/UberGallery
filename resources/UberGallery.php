@@ -46,6 +46,7 @@ class UberGallery {
     // Define application version
     const VERSION = '2.0.0-dev';
     
+    
     /**
      * UberGallery construct function. Runs on object creation.
      */
@@ -64,8 +65,11 @@ class UberGallery {
             define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
         }
         
+        // Set configuration file path
         $configPath = __DIR__ . '/galleryConfig.ini';
         
+        
+        // Read and apply gallery config or throw error on fail
         if (file_exists($configPath)) {
             // Parse gallery configuration
             $config = parse_ini_file($configPath, true);
@@ -76,7 +80,7 @@ class UberGallery {
             $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
             $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
         } else {
-            die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
+            die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
         }
                 
         // Set working directory and relative path
@@ -86,36 +90,39 @@ class UberGallery {
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             if (!@mkdir($this->_cacheDir)) {
-                die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
+                die("<div id=\"errorMessage\">Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
             }
         }
         
         // Check if cache directory is writeable and warn if it isn't
         if(!is_writable($this->_cacheDir)) {
-            die("<div style=\"background-color: #DDF; display: block; line-height: 1.4em; margin: 20px; padding: 20px; text-align: center;\">Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre></div>");
+            die("<div id=\"errorMessage\">Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre></div>");
         }
-        
     }
+    
     
     /**
      * UberGallery destruct function. Runs on object destruction.
-     * TODO: Cache directory clean up
      */
     function __destruct() {
         // NULL
     }
 
+
     /**
      * Special init method for simple one-line interface.
+     * @access public
      */
     public static function init() {
         $reflection = new ReflectionClass(__CLASS__);
         return $reflection->newInstanceArgs(func_get_args());
     }
     
+    
     /**
-     * Returns formatted HTML of a gallery
+     * Returns formatted HTML of a gallery.
      * @param string $directory Relative path to images directory
+     * @access public
      */
     public function createGallery($directory) {
         
@@ -139,9 +146,11 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Returns an array of files in the specified directory
+     * Returns an array of files in the specified directory.
      * @param string $directory Relative path to images directory
+     * @access public
      */
     public function readImageDirectory($directory, $paginate = true) {
         
@@ -206,8 +215,9 @@ class UberGallery {
         return $galleryArray;
     }
     
+    
     /**
-     * Returns current script version
+     * Returns current script version.
      * @return string Current script version
      * @access public
      */
@@ -215,8 +225,9 @@ class UberGallery {
         return UberGallery::VERSION;
     }
 
+
     /**
-     * Set cache expiration time in minutes
+     * Set cache expiration time in minutes.
      * @param int $time Cache expiration time in minutes
      * @access public
      */
@@ -226,8 +237,9 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Set the number of images to be displayed per page
+     * Set the number of images to be displayed per page.
      * @param int $imgPerPage Number of images to display per page
      * @access public
      */
@@ -237,8 +249,9 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Set thumbnail size
+     * Set thumbnail size.
      * @param int $size Thumbnail size
      * @access public
      */
@@ -248,8 +261,9 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Set the cache directory name
+     * Set the cache directory name.
      * @param string $directory
      * @access public
      */
@@ -259,8 +273,9 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Sets the relative path to the image directory
+     * Sets the relative path to the image directory.
      * @param string $directory Relative path to image directory
      * @access public
      */
@@ -272,12 +287,14 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
-     * Create thumbnail, modified from function found on http://www.findmotive.com/tag/php/
-     * Creates a cropped, square thumbnail of given dimensions from a source image
+     * Creates a cropped, square thumbnail of given dimensions from a source image,
+     * modified from function found on http://www.findmotive.com/tag/php/
      * @param string $source
      * @param int $thumb_size
      * @param int $quality Thumbnail quality (Value from 1 to 100)
+     * @access protected
      */
     protected function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
         
@@ -338,16 +355,17 @@ class UberGallery {
             imagepng($newImage, $destination);
         }
         
-        
         // Return relative path to thumbnail
         $relativePath = $this->_rThumbsDir . '/' . $fileName;
         return $relativePath;
     }
+
     
     /**
      * Return array from the index
      * @param string $filePath
-     * @return ArrayObject
+     * @return array
+     * @access protected
      */
     protected function _readIndex($filePath) {        
         // Return false if file doesn't exist
@@ -363,12 +381,14 @@ class UberGallery {
         // Return the array
         return $indexArray;
     }
+    
 
     /**
      * Create index from file array
      * @param string $array
      * @param string $filePath
      * @return boolean
+     * @access protected
      */
     protected function _createIndex($array, $filePath) {
         // Serialize array and write it to the index
@@ -379,13 +399,14 @@ class UberGallery {
         return true;
     }
     
+    
     /**
      * Returns an array of gallery statistics
      * @param $array Array to gather stats from
      * @return array
-     * @access private
+     * @access protected
      */
-    private function _readGalleryStats($array) {
+    protected function _readGalleryStats($array) {
         
         // Caclulate total array elements
         $totalElements = count($array);
@@ -417,11 +438,13 @@ class UberGallery {
         return $statsArray;
     }
     
+    
     /**
      * Sorts an array
      * @param string $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
+     * @access protected
      */
     protected function _arraySort($array, $sortMethod) {
         
@@ -444,11 +467,13 @@ class UberGallery {
         return $sortedArray;
         
     }
+
     
     /**
      * Paginates array and returns partial array of current page
      * @param string $array Array to be paginated
      * @return array
+     * @access protected
      */
     protected function _arrayPaginate($array, $resultsPerPage, $currentPage) {
         
@@ -501,11 +526,13 @@ class UberGallery {
         // Return paginated array
         return $paginatedArray;
     }
+
     
     /**
      * Verifies wether or not a file is an image
      * @param string $fileName
      * @return boolean
+     * @access protected
      */
     protected function _isImage($filePath) {
         
@@ -523,9 +550,11 @@ class UberGallery {
         }
     }
     
+    
     /**
      * Opens and writes to log file
      * @param string $logText
+     * @access protected
      */
     protected function _writeToLog($logText) {
         // Open log for appending
@@ -541,7 +570,6 @@ class UberGallery {
         // Close open file pointer
         fclose($log);
     }
-
 }
 
 ?>

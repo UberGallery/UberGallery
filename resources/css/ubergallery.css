@@ -108,4 +108,17 @@
     padding: 3px 6px;
 }
 
+/* ---------------------------------------- */
+/* ----|  MISCELLANEOUS  |----------------- */
+/* ---------------------------------------- */
+
+#errorMessage {
+    background-color: #DDF;
+    display: block;
+    line-height: 1.4em;
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
 /* ubergallery.css Created by, Chris Kankiewicz <http://www.ChrisKankiewicz.com> */
