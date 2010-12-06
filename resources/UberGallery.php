@@ -126,18 +126,49 @@ class UberGallery {
      */
     public function createGallery($directory) {
         
-        // Set relative image directory
-        $this->setRelativeImageDirectory($directory);
+        $gallery = $this->readImageDirectory($directory);
         
         // Echo formatted gallery markup
         echo '<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->' . PHP_EOL;
         echo '<div id="galleryWrapper">' . PHP_EOL;
         echo '    <ul id="galleryList" class="clearfix">' . PHP_EOL;
-        foreach ($this->readImageDirectory($directory) as $image) {
+        
+        foreach ($gallery['images'] as $image) {
             echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"colorbox\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>" . PHP_EOL;
         }
+        
         echo '    </ul>' . PHP_EOL;
         echo '    <div id="galleryFooter" class="clearfix">' . PHP_EOL;
+        
+        if ($gallery['stats']['total_pages'] > 1) {
+            echo '        <ul id="galleryPagination">' . PHP_EOL;
+            echo "            <li class=\"title\">Page {$gallery['stats']['current_page']} of {$gallery['stats']['total_pages']}</li>" . PHP_EOL;
+                
+            if ($gallery['stats']['current_page'] > 1) {
+                $previousPage = $gallery['stats']['current_page'] - 1;
+                echo "                <li><a title=\"Previous Page\" href=\"index.php?page={$previousPage}\">&lt;</a></li>" . PHP_EOL;
+            } else {
+                echo '                <li class="inactive">&lt;</li>' . PHP_EOL;
+            }
+                
+            for($x = 1; $x <= $gallery['stats']['total_pages']; $x++) {
+                if($x == $gallery['stats']['current_page']) {
+                    echo "                    <li class=\"current\">{$x}</li>" . PHP_EOL;
+                } else {
+                    echo "                    <li><a title=\"Page {$x}\" href=\"index.php?page={$x}\">{$x}</a></li>" . PHP_EOL;
+                }
+            }
+                
+            if ($gallery['stats']['current_page'] < $gallery['stats']['total_pages']) {
+                $nextPage = $gallery['stats']['current_page'] + 1;
+                echo "                <li><a title=\"Next Page\" href=\"index.php?page={&nextPage}\">&gt;</a></li>" . PHP_EOL;
+            } else {
+                echo '                <li class="inactive">&gt;</li>' . PHP_EOL;
+            }
+            
+            echo '        </ul>' . PHP_EOL;
+        }
+        
         echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>' . PHP_EOL;
         echo '    </div>' . PHP_EOL;
         echo '</div>' . PHP_EOL;
