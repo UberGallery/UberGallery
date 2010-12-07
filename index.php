@@ -21,8 +21,6 @@
 </head>
 <body>
 
-<?php // include_once('resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('gallery-images'); ?>
-
 <?php include_once('resources/UberGallery.php'); $gallery = UberGallery::init()->readImageDirectory('gallery-images'); ?>
 
 <!-- Start UberGallery v<?php echo UberGallery::VERSION; ?> - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
