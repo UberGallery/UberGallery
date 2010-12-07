@@ -213,7 +213,7 @@ class UberGallery {
                         
                         // If file is an image, add info to array
                         if ($this->_isImage($realPath)) {
-                            $galleryArray['images'][pathinfo($realPath, PATHINFO_BASENAME)] = array(
+                            $galleryArray['images'][htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
                                 'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
                                 'file_path'    => htmlentities($relativePath),
                                 'thumb_path'   => $this->_createThumbnail($realPath)
