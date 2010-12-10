@@ -60,6 +60,6 @@ Open your web browser and navigate to the directory where you installed UberGall
 
 License
 -------
-Copyright (C) 2010 [Chris Kankiewicz](Chris@ChrisKankiewicz.com)
+Copyright (C) 2010 [Chris Kankiewicz](http://www.chriskankiewicz.com)
 
 UberGallery is dual licensed under the terms of the [MIT License](http://www.opensource.org/licenses/mit-license.php) and [GNU General Public License (GPL) Version 3](http://www.gnu.org/licenses/gpl.txt). See `COPYING-MIT` and `COPYING-GPL` for details.
