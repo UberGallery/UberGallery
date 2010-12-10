@@ -22,6 +22,8 @@ UberGallery requires PHP 5.0+ and the PHP-GD image library to work properly.
 
 Simple Installation
 -------------------
+Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to your liking.
+
 Upload `index.php`, `resources/` and `images/` to your web server where you would like the gallery to be displayed.
 
 Upload your images to the `images/` directory.
@@ -35,6 +37,8 @@ Open your web browser and navigate to the directory where you installed UberGall
 
 Install to Pre-Existing Web Page
 --------------------------------
+Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to your liking.
+
 Upload the `resources` folder to your web server.
 
 Insert the following code into the PHP page where you would like the gallery to be displayed (be sure to change the include and image folder path match your configuration):
