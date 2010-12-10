@@ -43,7 +43,7 @@ Upload the `resources` folder to your web server.
 
 Insert the following code into the PHP page where you would like the gallery to be displayed (be sure to change the include and image folder path match your configuration):
     
-    <?php include_once(`path/to/resources/UberGallery.php`); $gallery = UberGallery::init()->createGallery(`path/to/images-folder`); ?>
+    <?php include_once('path/to/resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('path/to/images-folder'); ?>
     
 Copy `resources/css/ubergallery.css` to your CSS directory and include it in your page:
     
