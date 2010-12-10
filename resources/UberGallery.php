@@ -76,9 +76,15 @@ class UberGallery {
             
             // Apply configuration
             $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
-            $this->_imgPerPage  = $config['basic_settings']['images_per_page'];
             $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
             $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
+            
+            if ($config['basic_settings']['enable_pagination']) {
+                $this->_imgPerPage = $config['advanced_settings']['images_per_page'];
+            } else {
+                $this->_imgPerPage = 0; 
+            }
+            
         } else {
             die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
         }
@@ -194,7 +200,7 @@ class UberGallery {
         // Return the cached array if it exists and hasn't expired
         if (file_exists($this->_index) && (time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
             
-            $imgArray = $this->_readIndex($this->_index);
+            $galleryArray = $this->_readIndex($this->_index);
             
         } else {
         

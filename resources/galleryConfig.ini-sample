@@ -1,0 +1,11 @@
+; This is the default UberGallery config file. Copy this file to galleryConfig.php 
+; and change the following values to customize your gallery.
+
+[basic_settings]
+cache_expiration    = 0
+enable_pagination   = false
+thumbnail_size      = 100
+
+[advanced_settings]
+cache_directory     = cache
+images_per_page     = 30
