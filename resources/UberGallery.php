@@ -100,10 +100,12 @@ class UberGallery {
         $this->_rThumbsDir = implode('/', $diffArray);
 
         // Prepend '../' for every level up that must be traversed
+        $samePath = true;
         $pathCounter = 0;
         foreach ($workingDirArray as $key => $value) {
-            if ($value !== $cacheDirArray[$key]) {
+            if ($value !== $cacheDirArray[$key] || $samePath == false) {
                 $this->_rThumbsDir = '../' . $this->_rThumbsDir;
+                $samePath = false;
             }
         }
 
