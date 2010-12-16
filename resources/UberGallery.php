@@ -88,11 +88,25 @@ class UberGallery {
         } else {
             die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
         }
-                
-        // Set working directory and relative path
-        $this->_workingDir  = getcwd();
-        $this->_rThumbsDir  = substr($this->_cacheDir, strlen($this->_workingDir) + 1);
-        
+
+        // Explode working dir and cache dir into arrays
+        $workingDirArray = explode('/', getcwd());
+        $cacheDirArray   = explode('/', $this->_cacheDir);
+
+        // Get array of the difference
+        $diffArray = array_diff_assoc($cacheDirArray, $workingDirArray);
+
+        // Set the relative thumbnail directory
+        $this->_rThumbsDir = implode('/', $diffArray);
+
+        // Prepend '../' for every level up that must be traversed
+        $pathCounter = 0;
+        foreach ($workingDirArray as $key => $value) {
+            if ($value !== $cacheDirArray[$key]) {
+                $this->_rThumbsDir = '../' . $this->_rThumbsDir;
+            }
+        }
+
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             if (!@mkdir($this->_cacheDir)) {
@@ -402,7 +416,7 @@ class UberGallery {
         $relativePath = $this->_rThumbsDir . '/' . $fileName;
         return $relativePath;
     }
-
+	
     
     /**
      * Return array from the index
