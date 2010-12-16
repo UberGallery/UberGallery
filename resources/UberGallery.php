@@ -231,6 +231,12 @@ class UberGallery {
                 // Close open file handle
                 closedir($handle);
             }
+            
+            // Die with error if there are no images
+            if (!isset($galleryArray)) {
+                $imageDirectory = realpath($directory);
+                die("<div id=\"errorMessage\">No images found.  Please upload images to: <pre>{$imageDirectory}</pre></div>");
+            }
 
             // Sort the array
             $galleryArray['images'] = $this->_arraySort($galleryArray['images'], 'natcasesort');
