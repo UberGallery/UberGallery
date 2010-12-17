@@ -93,8 +93,15 @@ class UberGallery {
         $workingDirArray = explode('/', getcwd());
         $cacheDirArray   = explode('/', $this->_cacheDir);
 
-        // Get array of the difference
-        $diffArray = array_diff_assoc($cacheDirArray, $workingDirArray);
+        // Get array of the path differences
+        $diffArray = array();
+        $samePath = true;
+        foreach ($cacheDirArray as $key => $value) {
+            if ($value !== @$workingDirArray[$key] || $samePath !== true) {
+                $diffArray[] = $value; 
+                $samePath = false;
+            }
+        }
 
         // Set the relative thumbnail directory
         $this->_rThumbsDir = implode('/', $diffArray);
@@ -103,7 +110,7 @@ class UberGallery {
         $samePath = true;
         $pathCounter = 0;
         foreach ($workingDirArray as $key => $value) {
-            if ($value !== $cacheDirArray[$key] || $samePath == false) {
+            if ($value !== $cacheDirArray[$key] || $samePath !== true) {
                 $this->_rThumbsDir = '../' . $this->_rThumbsDir;
                 $samePath = false;
             }
@@ -418,7 +425,7 @@ class UberGallery {
         $relativePath = $this->_rThumbsDir . '/' . $fileName;
         return $relativePath;
     }
-	
+    
     
     /**
      * Return array from the index
