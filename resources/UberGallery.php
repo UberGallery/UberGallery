@@ -92,29 +92,39 @@ class UberGallery {
         // Explode working dir and cache dir into arrays
         $workingDirArray = explode('/', getcwd());
         $cacheDirArray   = explode('/', $this->_cacheDir);
-
-        // Get array of the path differences
-        $diffArray = array();
-        $samePath = true;
-        foreach ($cacheDirArray as $key => $value) {
-            if ($value !== @$workingDirArray[$key] || $samePath !== true) {
-                $diffArray[] = $value; 
+        
+        // Get largest array count
+        $arrayMax = max(count($workingDirArray), count($cacheDirArray));
+        
+        // Set some default variables
+        $diffArray  = array();
+        $samePath   = true;
+        $key        = 1;
+        
+        // Generate array of the path differences
+        while ($key <= $arrayMax) {
+            if (@$cacheDirArray[$key] !== @$workingDirArray[$key] || $samePath !== true) {
+                
+                // Prepend '..' for every level up that must be traversed
+                if (isset($workingDirArray[$key])) {
+                    array_unshift($diffArray, '..');
+                }
+                
+                // Append directory name for every directory that must be traversed  
+                if (isset($cacheDirArray[$key])) {
+                    $diffArray[] = $cacheDirArray[$key];
+                } 
+                
+                // Directory paths have diverged
                 $samePath = false;
             }
+            
+            // Increment key
+            $key++;
         }
 
-        // Set the relative thumbnail directory
+        // Set the relative thumbnail directory path
         $this->_rThumbsDir = implode('/', $diffArray);
-
-        // Prepend '../' for every level up that must be traversed
-        $samePath = true;
-        $pathCounter = 0;
-        foreach ($workingDirArray as $key => $value) {
-            if ($value !== $cacheDirArray[$key] || $samePath !== true) {
-                $this->_rThumbsDir = '../' . $this->_rThumbsDir;
-                $samePath = false;
-            }
-        }
 
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
