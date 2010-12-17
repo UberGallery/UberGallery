@@ -5,14 +5,16 @@ Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
 
 Introduction
 ------------
-UberGallery is an easy to use, simple to manage, web photo gallery written in PHP.
+UberGallery is an easy to use, simple to manage, web photo gallery written in PHP.  
 
 
 Features
 --------
 * Simple first time installation
 * Databaseless configuration
+* Include galleries within pre-existing sites
 * Create multiple galleries with a single installation
+* Install and update the gallery easily wth Git (optional)
 
 
 Requirements
@@ -26,7 +28,7 @@ Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and mo
 
 Upload `index.php`, `resources/` and `images/` to your web server where you would like the gallery to be displayed.
 
-Upload your images to the `images/` directory.
+Upload your images to the `gallery-images/` directory.
 
 Make the `resources/cache/` directory writable by the web server:
     
@@ -49,13 +51,30 @@ Copy `resources/css/ubergallery.css` to your CSS directory and include it in you
     
     <link rel="stylesheet" type="text/css" href="path/to/styles/ubergallery.css" />
     
-Upload your images to your images directory:
+Upload your images to your images directory.
 
 Make the `resources/cache/` directory writable by the web server.
     
     chmod 777 -R /path/to/resources/cache
         
 Open your web browser and navigate to the directory where you installed UberGallery to have the script generate thumbnails and display your images.
+
+
+Instal with Git
+---------------
+ssh into the your server and run the following commands:
+
+    git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
+    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini`
+
+Edit `galleryConfig.ini` to configure your gallery.
+
+Upload your images to the `gallery-images/` directory within yout gallery directory.
+
+When using this method to install UberGallery, you may update your installation by running the following commands:
+
+    cd /path/to/gallery-directory
+    git pull origin master
 
 
 License
