@@ -5,7 +5,12 @@ Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
 
 Introduction
 ------------
-UberGallery is an easy to use, simple to manage, web photo gallery written in PHP.  
+UberGallery is an easy to use, simple to manage, web photo gallery written in PHP and dual licensed
+under the [MIT License](http://www.opensource.org/licenses/mit-license.php) and 
+[GNU General Public License (GPL) Version 3](http://www.gnu.org/licenses/gpl.txt). UberGallery 
+**does not** require a database and supports JPG, GIF and PNG file types. Simply upload your images
+to your image directory and UberGallery will automatically creates thumbnails and generate standards
+complient XHTML markup on the fly.
 
 
 Features
