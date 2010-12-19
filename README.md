@@ -8,19 +8,19 @@ Introduction
 UberGallery is an easy to use, simple to manage, web photo gallery written in PHP and dual licensed
 under the [MIT License](http://www.opensource.org/licenses/mit-license.php) and 
 [GNU General Public License (GPL) Version 3](http://www.gnu.org/licenses/gpl.txt). UberGallery 
-**does not** require a database and supports JPG, GIF and PNG file types. Simply upload your images
-and UberGallery will automatically generate thumbnails and output standards complient XHTML markup
+**does not** require a database and supports JPEG, GIF and PNG file types. Simply upload your images
+and UberGallery will automatically generate thumbnails and output standards complaint XHTML markup
 on the fly.
 
 
 Features
 --------
 * Simple first time installation
-* Databaseless configuration
+* Database-less configuration
 * Include galleries within pre-existing sites
 * Create multiple galleries with a single installation
 * Install and update the gallery easily wth Git (optional)
-* Custimizable styles via CSS
+* Easily customize your gallery styles via CSS
 
 
 Requirements
@@ -32,9 +32,9 @@ Simple Installation
 -------------------
 Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to your liking.
 
-Upload `index.php`, `resources/` and `images/` to your web server where you would like the gallery to be displayed.
+Upload `index.php`, `resources/` and `gallery-images/` to your web server where you would like the gallery to be displayed.
 
-Upload your images to the `gallery-images/` directory.
+Upload images to the `gallery-images/` directory.
 
 Make the `resources/cache/` directory writable by the web server:
     
@@ -49,15 +49,15 @@ Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and mo
 
 Upload the `resources/` folder to your web server.
 
-Insert the following code into the PHP page where you would like the gallery to be displayed (be sure to change the include and image folder path match your configuration):
+Insert the following code into the PHP page where you would like the gallery to be displayed (be sure to change the include and image folder path to match your configuration):
     
     <?php include_once('path/to/resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('path/to/images-folder'); ?>
     
-Copy `resources/css/ubergallery.css` to your CSS directory and include it in your page:
+Include the UberGallery style sheet on your page:
     
-    <link rel="stylesheet" type="text/css" href="path/to/styles/ubergallery.css" />
+    <link rel="stylesheet" type="text/css" href="path/to/resources/styles/ubergallery.css" />
     
-Upload your images to your images directory.
+Upload images to your images directory.
 
 Make the `resources/cache/` directory writable by the web server.
     
@@ -66,8 +66,8 @@ Make the `resources/cache/` directory writable by the web server.
 Open your web browser and navigate to the directory where you installed UberGallery to have the script generate thumbnails and display your images.
 
 
-Instal with Git
----------------
+Install with Git
+----------------
 ssh into the your server and run the following commands:
 
     git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
@@ -75,7 +75,13 @@ ssh into the your server and run the following commands:
 
 Edit `galleryConfig.ini` to configure your gallery.
 
-Upload your images to the `gallery-images/` directory within yout gallery directory.
+Upload images to the `gallery-images/` folder within your gallery directory.
+
+Make the `resources/cache/` directory writable by the web server.
+    
+    chmod 777 -R /path/to/resources/cache
+        
+Open your web browser and navigate to the directory where you installed UberGallery to have the script generate thumbnails and display your images.
 
 When using this method to install UberGallery, you may update your installation by running the following commands:
 
