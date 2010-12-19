@@ -9,8 +9,8 @@ UberGallery is an easy to use, simple to manage, web photo gallery written in PH
 under the [MIT License](http://www.opensource.org/licenses/mit-license.php) and 
 [GNU General Public License (GPL) Version 3](http://www.gnu.org/licenses/gpl.txt). UberGallery 
 **does not** require a database and supports JPG, GIF and PNG file types. Simply upload your images
-to your image directory and UberGallery will automatically creates thumbnails and generate standards
-complient XHTML markup on the fly.
+and UberGallery will automatically generate thumbnails and output standards complient XHTML markup
+on the fly.
 
 
 Features
@@ -20,6 +20,7 @@ Features
 * Include galleries within pre-existing sites
 * Create multiple galleries with a single installation
 * Install and update the gallery easily wth Git (optional)
+* Custimizable styles via CSS
 
 
 Requirements
