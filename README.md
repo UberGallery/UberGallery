@@ -19,8 +19,8 @@ Features
 * Database-less configuration
 * Include galleries within pre-existing sites
 * Create multiple galleries with a single installation
-* Install and update the gallery easily wth Git (optional)
 * Easily customize your gallery styles via CSS
+* Install and update the gallery easily wth Git (optional)
 
 
 Requirements
