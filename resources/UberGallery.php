@@ -15,7 +15,6 @@
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
  * @copyright 2010 Chris Kankiewicz
  * @version 2.0.0-RC1
-
  */
 class UberGallery {
     
