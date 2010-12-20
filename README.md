@@ -80,8 +80,8 @@ ssh into the your server and clone the UberGallery repository:
 
 Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
 
-    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini`
-    nano `/path/to/gallery-directory/resources/galleryConfig.ini`
+    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini
+    nano /path/to/gallery-directory/resources/galleryConfig.ini
 
 Upload images to the `gallery-images/` folder within your gallery directory.
 
