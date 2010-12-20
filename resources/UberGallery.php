@@ -1,30 +1,21 @@
 <?php
 
 /**
- * UberGallery is a simple PHP image gallery. (http://www.ubergallery.net)
+ * UberGallery is an easy to use, simple to manage, web photo gallery written in
+ * PHP. UberGallery does not require a database and supports JPEG, GIF and PNG 
+ * file types. Simply upload your images and UberGallery will automatically 
+ * generate thumbnails and output standards complaint XHTML markup on the fly.
+ * 
+ * This software is dual liscensed under the following licenses:
+ *     MIT License      http://ubergallery.github.com/COPYING-MIT.txt
+ *     GPL Version 3    http://ubergallery.github.com/COPYING-GPL.txt
+ * 
+ * More info available at http://ubergallery.github.com
+ * 
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
  * @copyright 2010 Chris Kankiewicz
- * @version 2.0.0-dev
- * 
- * Copyright (c) 2010 Chris Kankiewicz
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * @version 2.0.0-RC1
+
  */
 class UberGallery {
     
@@ -44,7 +35,7 @@ class UberGallery {
     protected $_rImgDir     = NULL;
     
     // Define application version
-    const VERSION = '2.0.0-dev';
+    const VERSION = '2.0.0-RC1';
     
     
     /**
