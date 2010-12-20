@@ -30,7 +30,7 @@ UberGallery requires PHP 5.0+ and the PHP-GD image library to work properly.
 
 Simple Installation
 -------------------
-Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
+Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
 to your liking.
 
 Upload `index.php`, `resources/` and `gallery-images/` to your web server where you would like the
@@ -48,7 +48,7 @@ script generate thumbnails and display your images.
 
 Install to Pre-Existing Web Page
 --------------------------------
-Copy `resource/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to
+Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to
 your liking.
 
 Upload the `resources/` folder to your web server.
@@ -74,12 +74,14 @@ script generate thumbnails and display your images.
 
 Install with Git
 ----------------
-ssh into the your server and run the following commands:
+ssh into the your server and clone the UberGallery repository:
 
     git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
-    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini`
 
-Edit `galleryConfig.ini` to configure your gallery.
+Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
+
+    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini`
+    nano `/path/to/gallery-directory/resources/galleryConfig.ini`
 
 Upload images to the `gallery-images/` folder within your gallery directory.
 
@@ -90,7 +92,7 @@ Make the `resources/cache/` directory writable by the web server.
 Open your web browser and navigate to the directory where you installed UberGallery to have the
 script generate thumbnails and display your images.
 
-When using this method to install UberGallery, you may update your installation by running the
+**NOTE:** When using this method to install UberGallery, you may update your installation by running the
 following commands:
 
     cd /path/to/gallery-directory
