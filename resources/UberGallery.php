@@ -149,7 +149,7 @@ class UberGallery {
     
     
     /**
-     * Returns formatted HTML of a gallery.
+     * Returns pre-formatted XHTML of a gallery.
      * @param string $directory Relative path to images directory
      * @access public
      */
@@ -208,7 +208,7 @@ class UberGallery {
     
     
     /**
-     * Returns an array of files in the specified directory.
+     * Returns an array of files and stats of the specified directory.
      * @param string $directory Relative path to images directory
      * @access public
      */
@@ -280,16 +280,6 @@ class UberGallery {
         // Return the array
         return $galleryArray;
     }
-    
-    
-    /**
-     * Returns current script version.
-     * @return string Current script version
-     * @access public
-     */
-    public function readVersion() {
-        return UberGallery::VERSION;
-    }
 
 
     /**
@@ -305,7 +295,7 @@ class UberGallery {
     
     
     /**
-     * Set the number of images to be displayed per page.
+     * Set the number of images to be displayed per page
      * @param int $imgPerPage Number of images to display per page
      * @access public
      */
@@ -317,8 +307,8 @@ class UberGallery {
     
     
     /**
-     * Set thumbnail size.
-     * @param int $size Thumbnail size
+     * Set thumbnail size in pixels.
+     * @param int $size Thumbnail size in pixels.
      * @access public
      */
     public function setThumbSize($size) {
@@ -330,7 +320,7 @@ class UberGallery {
     
     /**
      * Set the cache directory name.
-     * @param string $directory
+     * @param string $directory Cache directory name
      * @access public
      */
     public function setCacheDirectory($directory) {
@@ -357,9 +347,9 @@ class UberGallery {
     /**
      * Creates a cropped, square thumbnail of given dimensions from a source image,
      * modified from function found on http://www.findmotive.com/tag/php/
-     * @param string $source
-     * @param int $thumb_size
-     * @param int $quality Thumbnail quality (Value from 1 to 100)
+     * @param string $source Path to source image
+     * @param int $thumb_size Desired thumnail size in pixels 
+     * @param int $quality Thumbnail quality, applies to JPEGs only (Value from 1 to 100)
      * @access protected
      */
     protected function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
@@ -428,8 +418,8 @@ class UberGallery {
     
     
     /**
-     * Return array from the index
-     * @param string $filePath
+     * Return array from the cached index.
+     * @param string $filePath Path to stored index
      * @return array
      * @access protected
      */
@@ -450,30 +440,34 @@ class UberGallery {
     
 
     /**
-     * Create index from file array
-     * @param string $array
-     * @param string $filePath
+     * Create serialized index from file array.
+     * @param string $array Array to be indexed
+     * @param string $filePath Path to where index will be stored
      * @return boolean
      * @access protected
      */
     protected function _createIndex($array, $filePath) {
-        // Serialize array and write it to the index
+        // Serialize array
         $index = fopen($filePath, 'w');
         $serializedArray = serialize($array);
-        fwrite($index, $serializedArray);
         
-        return true;
+        // Write serialized array to index
+        if (fwrite($index, $serializedArray)) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
     
     
     /**
-     * Returns an array of gallery statistics
-     * @param $array Array to gather stats from
+     * Returns an array of gallery statistics.
+     * @param array $array Array to gather stats from
      * @return array
      * @access protected
      */
     protected function _readGalleryStats($array) {
-        
         // Caclulate total array elements
         $totalElements = count($array);
         
@@ -506,14 +500,13 @@ class UberGallery {
     
     
     /**
-     * Sorts an array
-     * @param string $array Array to be sorted
+     * Sorts an array by the provided source method.
+     * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
      * @access protected
      */
     protected function _arraySort($array, $sortMethod) {
-        
         // Create empty array
         $sortedArray = array();
         
@@ -536,13 +529,12 @@ class UberGallery {
 
     
     /**
-     * Paginates array and returns partial array of current page
+     * Paginates array and returns partial array of the current page.
      * @param string $array Array to be paginated
      * @return array
      * @access protected
      */
     protected function _arrayPaginate($array, $resultsPerPage, $currentPage) {
-        
         // Page varriables
         $totalElements = count($array);
         
@@ -595,13 +587,12 @@ class UberGallery {
 
     
     /**
-     * Verifies wether or not a file is an image
+     * Verifies whether or not a file is an image.
      * @param string $fileName
      * @return boolean
      * @access protected
      */
     protected function _isImage($filePath) {
-        
         // Get file type
         $imgType = @exif_imagetype($filePath);
 
@@ -615,27 +606,7 @@ class UberGallery {
             return false;
         }
     }
-    
-    
-    /**
-     * Opens and writes to log file
-     * @param string $logText
-     * @access protected
-     */
-    protected function _writeToLog($logText) {
-        // Open log for appending
-        $logPath = $this->_cacheDir . '/log.txt';
-        $log = fopen($logPath, 'a');
-          
-        // Get current time
-        $currentTime = date("Y-m-d H:i:s");
-        
-        // Write text to log
-        fwrite($log, '[' . $currentTime . '] ' . $logText . PHP_EOL);
-        
-        // Close open file pointer
-        fclose($log);
-    }
+
 }
 
 ?>
