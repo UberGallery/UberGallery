@@ -14,9 +14,11 @@
  * 
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
  * @copyright 2010 Chris Kankiewicz
- * @version 2.0.0-RC1
  */
 class UberGallery {
+    
+    // Define application version
+    const VERSION = '2.0.0-RC1';
     
     // Set default config variables
     protected $_cacheExpire = 0;
@@ -32,9 +34,6 @@ class UberGallery {
     protected $_index       = NULL;
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
-    
-    // Define application version
-    const VERSION = '2.0.0-RC1';
     
     
     /**
