@@ -194,3 +194,11 @@ h1 {
     border-bottom-color: #204656;
     margin: 10px 0;
 }
+
+#cboxWrapper {
+    text-shadow: none !important;
+}
+
+#cboxTitle {
+    font-size: 1em !important;
+}
