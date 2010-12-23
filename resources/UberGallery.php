@@ -7,10 +7,10 @@
  * generate thumbnails and output standards complaint XHTML markup on the fly.
  * 
  * This software is dual liscensed under the following licenses:
- *     MIT License      http://ubergallery.github.com/COPYING-MIT.txt
- *     GPL Version 3    http://ubergallery.github.com/COPYING-GPL.txt
+ *     MIT License      www.ubergallery.net/COPYING-MIT.txt
+ *     GPL Version 3    www.ubergallery.net/COPYING-GPL.txt
  * 
- * More info available at http://ubergallery.github.com
+ * More info available at www.ubergallery.net
  * 
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
  * @copyright 2010 Chris Kankiewicz

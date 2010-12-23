@@ -24,7 +24,7 @@
 
 <!-- Start UberGallery v<?php echo UberGallery::VERSION; ?> - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
 <div id="galleryWrapper">
-    <h1>Uber Gallery</h1>
+    <h1>UberGallery</h1>
     <div class="line"></div>
     
     <div id="galleryListWrapper">
