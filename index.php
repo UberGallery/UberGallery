@@ -7,7 +7,6 @@
     
     <link rel="stylesheet" type="text/css" href="resources/css/rebase.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/ubergallery.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/colorbox.css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
@@ -25,9 +24,8 @@
 
 <!-- Start UberGallery v<?php echo UberGallery::VERSION; ?> - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->
 <div id="galleryWrapper">
-    <div id="galleryHeader" class="clearfix">
-        <h1>Uber Gallery</h1>
-    </div>
+    <h1>Uber Gallery</h1>
+    <div class="line"></div>
     
     <div id="galleryListWrapper">
         <ul id="galleryList" class="clearfix">
@@ -37,6 +35,7 @@
         </ul>
     </div>
     
+    <div class="line"></div>
     <div id="galleryFooter" class="clearfix">
     
         <?php if ($gallery['stats']['total_pages'] > 1): ?>
