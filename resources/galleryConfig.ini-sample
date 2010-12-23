@@ -2,10 +2,11 @@
 ; and change the following values to customize your gallery.
 
 [basic_settings]
-cache_expiration    = 0
-enable_pagination   = false
-thumbnail_size      = 100
+cache_expiration    = 0         ; Cache expiration time (in minutes)
+enable_pagination   = false     ; Set to 'true' to enable pagination
+thumbnail_size      = 100       ; Thumbnail size (in pixels)
 
 [advanced_settings]
-cache_directory     = cache
-images_per_page     = 24
+cache_directory     = cache     ; Cache directory name
+images_per_page     = 24        ; Images displayed per page, requires
+                                ; enable_pagination be set to 'true'
