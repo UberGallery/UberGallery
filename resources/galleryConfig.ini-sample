@@ -8,4 +8,4 @@ thumbnail_size      = 100
 
 [advanced_settings]
 cache_directory     = cache
-images_per_page     = 30
+images_per_page     = 24
