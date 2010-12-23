@@ -98,6 +98,7 @@ h1 {
 
 #credit {
     float: right;
+    font-size: .95em;
     margin: 4px 0;
 }
 
@@ -113,7 +114,7 @@ h1 {
 #galleryPagination {
     color: #FFF;
     float: left;
-    font-size: .9em;
+    font-size: .95em;
     margin: 0 !important;
     padding: 0 !important;
     text-align: center;
