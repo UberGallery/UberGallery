@@ -75,7 +75,7 @@ class UberGallery {
             }
             
         } else {
-            die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, plase make sure the file exists at: <pre>{$configPath}</pre></div>");            
+            die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre></div>");            
         }
 
         // Explode working dir and cache dir into arrays
@@ -118,7 +118,7 @@ class UberGallery {
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             if (!@mkdir($this->_cacheDir)) {
-                die("<div id=\"errorMessage\">Unable to create cahe dir, plase manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
+                die("<div id=\"errorMessage\">Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
             }
         }
         
@@ -347,7 +347,7 @@ class UberGallery {
      * Creates a cropped, square thumbnail of given dimensions from a source image,
      * modified from function found on http://www.findmotive.com/tag/php/
      * @param string $source Path to source image
-     * @param int $thumb_size Desired thumnail size in pixels 
+     * @param int $thumb_size Desired thumbnail size in pixels 
      * @param int $quality Thumbnail quality, applies to JPEGs only (Value from 1 to 100)
      * @access protected
      */
