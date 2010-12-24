@@ -127,14 +127,6 @@ class UberGallery {
             die("<div id=\"errorMessage\">Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre></div>");
         }
     }
-    
-    
-    /**
-     * UberGallery destruct function. Runs on object destruction.
-     */
-    function __destruct() {
-        // NULL
-    }
 
 
     /**
