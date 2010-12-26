@@ -209,6 +209,7 @@ class UberGallery {
         $this->setRelativeImageDirectory($directory);
         
         // Instantiate image array
+        $dirArray = array();
         $imgArray = array();
         
         // Return the cached array if it exists and hasn't expired
@@ -228,15 +229,10 @@ class UberGallery {
                         // Get files real path
                         $realPath = realpath($directory . '/' . $file);
                         
-                        // Get files relative path
-                        $relativePath = $this->_rImgDir . '/' . $file;
-                        
                         // If file is an image, add info to array
                         if ($this->_isImage($realPath)) {
-                            $galleryArray['images'][htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
-                                'file_title'   => str_replace('_', ' ', pathinfo($realPath, PATHINFO_FILENAME)),
-                                'file_path'    => htmlentities($relativePath),
-                                'thumb_path'   => $this->_createThumbnail($realPath)
+                            $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
+                                'real_path' => $realPath
                             );
                         }
                     }
@@ -245,28 +241,39 @@ class UberGallery {
                 // Close open file handle
                 closedir($handle);
             }
-            
+
             // Die with error if there are no images
-            if (!isset($galleryArray)) {
+            if (!isset($dirArray)) {
                 $imageDirectory = realpath($directory);
                 die("<div id=\"errorMessage\">No images found.  Please upload images to: <pre>{$imageDirectory}</pre></div>");
             }
 
             // Sort the array
-            $galleryArray['images'] = $this->_arraySort($galleryArray['images'], 'natcasesort');
+            $dirArray = $this->_arraySort($dirArray, 'natcasesort');
         
             // Save the sorted array
             $this->_createIndex($galleryArray, $this->_index);
         
         }
-
-        // Add statistics to gallery array
-        $galleryArray['stats'] = $this->_readGalleryStats($galleryArray['images']);
         
         // Paginate the array and return current page if enabled
         if ($paginate == true && $this->_imgPerPage > 0) {
-            $galleryArray['images'] = $this->_arrayPaginate($galleryArray['images'], $this->_imgPerPage, $this->_page);
+            $galleryArray['images'] = $this->_arrayPaginate($dirArray, $this->_imgPerPage, $this->_page);
         }
+        
+        foreach ($galleryArray['images'] as $key => $image) {                        
+            // Get files relative path
+            $relativePath = $this->_rImgDir . '/' . $key;
+            
+            $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
+                'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
+                'file_path'    => htmlentities($relativePath),
+                'thumb_path'   => $this->_createThumbnail($image['real_path'])
+            );
+        } 
+        
+        // Add statistics to gallery array
+        $galleryArray['stats'] = $this->_readGalleryStats($dirArray);
         
         // Return the array
         return $galleryArray;
@@ -329,7 +336,7 @@ class UberGallery {
     public function setRelativeImageDirectory($directory) {
         $this->_imgDir  = realpath($directory);
         $this->_rImgDir = $directory;
-        $this->_index   = $this->_cacheDir . '/' . md5($directory) . '.index';
+        $this->_index   = $this->_cacheDir . '/' . md5($directory) . '-' . $this->_page . '.index';
         
         return $this;
     }
