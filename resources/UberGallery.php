@@ -310,7 +310,11 @@ class UberGallery {
     
     
     /**
-     * 
+     * Reads files in a directory and returns only images.
+     * @param string $directory Path to directory
+     * @param boolean $paginate Whether or not paginate the array (default = true)
+     * @return array
+     * @access protected 
      */
     protected function _readDirectory($directory, $paginate = true) {
         
