@@ -203,77 +203,40 @@ class UberGallery {
      * @param string $directory Relative path to images directory
      * @access public
      */
-    public function readImageDirectory($directory, $paginate = true) {
+    public function readImageDirectory($directory) {
         
         // Set relative image directory
         $this->setRelativeImageDirectory($directory);
         
-        // Instantiate image array
-        $dirArray = array();
-        $imgArray = array();
+        // Instantiate gallery array
+        $galleryArray = array();
         
         // Return the cached array if it exists and hasn't expired
         if (file_exists($this->_index) && (time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
-            
             $galleryArray = $this->_readIndex($this->_index);
-            
         } else {
-        
-            if ($handle = opendir($directory)) {
                 
-                // Loop through directory and add information to array
-                // TODO: Move this into a readDirectory function with ability to sort and paginate
-                while (false !== ($file = readdir($handle))) {
-                    if ($file != "." && $file != "..") {
-                        
-                        // Get files real path
-                        $realPath = realpath($directory . '/' . $file);
-                        
-                        // If file is an image, add info to array
-                        if ($this->_isImage($realPath)) {
-                            $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
-                                'real_path' => $realPath
-                            );
-                        }
-                    }
-                }
+            // Get array of directory
+            $dirArray = $this->_readDirectory($directory);
+            
+            // Loop through array and add additional info
+            foreach ($dirArray as $key => $image) {                        
+                // Get files relative path
+                $relativePath = $this->_rImgDir . '/' . $key;
                 
-                // Close open file handle
-                closedir($handle);
+                $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
+                    'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
+                    'file_path'    => htmlentities($relativePath),
+                    'thumb_path'   => $this->_createThumbnail($image['real_path'])
+                );
             }
-
-            // Die with error if there are no images
-            if (!isset($dirArray)) {
-                $imageDirectory = realpath($directory);
-                die("<div id=\"errorMessage\">No images found.  Please upload images to: <pre>{$imageDirectory}</pre></div>");
-            }
-
-            // Sort the array
-            $dirArray = $this->_arraySort($dirArray, 'natcasesort');
         
+            // Add statistics to gallery array
+            $galleryArray['stats'] = $this->_readGalleryStats($this->_readDirectory($directory, false));
+            
             // Save the sorted array
             $this->_createIndex($galleryArray, $this->_index);
-        
         }
-        
-        // Paginate the array and return current page if enabled
-        if ($paginate == true && $this->_imgPerPage > 0) {
-            $galleryArray['images'] = $this->_arrayPaginate($dirArray, $this->_imgPerPage, $this->_page);
-        }
-        
-        foreach ($galleryArray['images'] as $key => $image) {                        
-            // Get files relative path
-            $relativePath = $this->_rImgDir . '/' . $key;
-            
-            $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
-                'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
-                'file_path'    => htmlentities($relativePath),
-                'thumb_path'   => $this->_createThumbnail($image['real_path'])
-            );
-        } 
-        
-        // Add statistics to gallery array
-        $galleryArray['stats'] = $this->_readGalleryStats($dirArray);
         
         // Return the array
         return $galleryArray;
@@ -336,9 +299,73 @@ class UberGallery {
     public function setRelativeImageDirectory($directory) {
         $this->_imgDir  = realpath($directory);
         $this->_rImgDir = $directory;
-        $this->_index   = $this->_cacheDir . '/' . md5($directory) . '-' . $this->_page . '.index';
+        if ($this->_imgPerPage < 1) {
+            $this->_index = $this->_cacheDir . '/' . md5($directory) . '-' . 'all.index';
+        } else {
+            $this->_index = $this->_cacheDir . '/' . md5($directory) . '-' . $this->_page . '.index';            
+        }
         
         return $this;
+    }
+    
+    
+    /**
+     * 
+     */
+    protected function _readDirectory($directory, $paginate = true) {
+        
+        // Set index path
+        $index = $this->_cacheDir . '/' . md5($directory) . '-' . 'files' . '.index';
+        
+        // Serve from cache if file exists and caching is enabled e
+        if (file_exists($index) && (time() - filemtime($index)) / 60 < $this->_cacheExpire) {
+            
+            // Read directory array
+            $dirArray = $this->_readIndex($index);
+            
+        } else {
+            
+            // Loop through directory and add information to array
+            if ($handle = opendir($directory)) {
+                while (false !== ($file = readdir($handle))) {
+                    if ($file != "." && $file != "..") {
+                        
+                        // Get files real path
+                        $realPath = realpath($directory . '/' . $file);
+                        
+                        // If file is an image, add info to array
+                        if ($this->_isImage($realPath)) {
+                            $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
+                                'real_path' => $realPath
+                            );
+                        }
+                    }
+                }
+                
+                // Close open file handle
+                closedir($handle);
+            }
+            
+            // Create directory array
+            $this->_createIndex($dirArray, $index);
+        }
+        
+        // Die with error if there are no images
+        if (!isset($dirArray)) {
+            $imageDirectory = realpath($directory);
+            die("<div id=\"errorMessage\">No images found.  Please upload images to: <pre>{$imageDirectory}</pre></div>");
+        }
+
+        // Sort the array
+        $dirArray = $this->_arraySort($dirArray, 'natcasesort');
+        
+        // Paginate the array and return current page if enabled
+        if ($paginate == true && $this->_imgPerPage > 0) {
+            $dirArray = $this->_arrayPaginate($dirArray, $this->_imgPerPage, $this->_page);
+        }
+        
+        // Return the array
+        return $dirArray;
     }
     
     
