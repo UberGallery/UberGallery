@@ -13,10 +13,10 @@
     <script type="text/javascript" src="resources/js/jquery.colorbox.js"></script>
     
     <script type="text/javascript">
-    $(document).ready(function(){
-        $("a[rel='colorbox']").colorbox({maxWidth: "90%", maxHeight: "90%", opacity: ".5"});
-    });
-    </script>  
+        $(document).ready(function(){
+            $("a[rel='colorbox']").colorbox({maxWidth: "90%", maxHeight: "90%", opacity: ".5"});
+        });
+    </script>
 </head>
 <body>
 
