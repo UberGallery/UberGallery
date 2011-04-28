@@ -26,6 +26,7 @@ class UberGallery {
     protected $_thumbSize   = 100;
     protected $_page        = 1;
     protected $_cacheDir    = 'cache';
+    protected $_imgSortBy   = 'natcasesort';
     
     // Reserve some other variables
     protected $_imgDir      = NULL;
@@ -66,6 +67,7 @@ class UberGallery {
             // Apply configuration
             $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
             $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
+            $this->_imgSortBy   = $config['advanced_settings']['images_sort_by'];
             $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
             
             if ($config['basic_settings']['enable_pagination']) {
@@ -361,7 +363,7 @@ class UberGallery {
         }
 
         // Sort the array
-        $dirArray = $this->_arraySort($dirArray, 'natcasesort');
+        $dirArray = $this->_arraySort($dirArray, $this->_imgSortBy);
         
         // Paginate the array and return current page if enabled
         if ($paginate == true && $this->_imgPerPage > 0) {
@@ -542,8 +544,28 @@ class UberGallery {
         // Create new array of just the keys and sort it
         $keys = array_keys($array); 
         
-        if ($sortMethod == 'natcasesort') {
-            natcasesort($keys);
+        switch ($sortMethod) {
+            case 'asort':
+                asort($keys);
+                break;
+            case 'arsort':
+                arsort($keys);
+                break;
+            case 'ksort':
+                ksort($keys);
+                break;
+            case 'krsort':
+                krsort($keys);
+                break;
+            case 'natcasesort':
+                natcasesort($keys);
+                break;
+            case 'natsort':
+                natsort($keys);
+                break;
+            case 'shuffle':
+                shuffle($keys);
+                break;
         }
         
         // Loop through the sorted values and move over the data

@@ -1,12 +1,23 @@
-; This is the default UberGallery config file. Copy this file to galleryConfig.php 
+; This is the default UberGallery config file. Copy this file to galleryConfig.php
 ; and change the following values to customize your gallery.
 
 [basic_settings]
-cache_expiration    = 0         ; Cache expiration time (in minutes)
-enable_pagination   = false     ; Set to 'true' to enable pagination
-thumbnail_size      = 100       ; Thumbnail size (in pixels)
+
+    cache_expiration    = 0             ; Cache expiration time (in minutes)
+
+    enable_pagination   = false         ; Set to 'true' to enable pagination
+
+    thumbnail_size      = 100           ; Thumbnail size (in pixels)
+
 
 [advanced_settings]
-cache_directory     = cache     ; Cache directory name
-images_per_page     = 24        ; Images displayed per page, requires
-                                ; enable_pagination be set to 'true'
+
+    cache_directory     = cache         ; Cache directory name
+
+    images_per_page     = 24            ; Images displayed per page, requires
+                                        ; enable_pagination be set to 'true'
+
+    images_sort_by      = natcasesort   ; Method used to sort image array
+                                        ; Available sorting options include:
+                                        ; asort, arsort, ksort, krsort,
+                                        ; natcasesort, natsort, shuffle
