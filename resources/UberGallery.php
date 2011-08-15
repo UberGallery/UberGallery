@@ -13,7 +13,7 @@
  * More info available at http://www.ubergallery.net
  * 
  * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
- * @copyright 2010 Chris Kankiewicz
+ * @copyright 2011 Chris Kankiewicz
  */
 class UberGallery {
     
