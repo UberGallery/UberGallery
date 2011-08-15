@@ -31,7 +31,7 @@ on PHP and the PHP-GD image library, please visit [http://php.net](http://php.ne
 
 Simple Installation
 -------------------
-Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
+Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 to your liking.
 
 Upload `index.php`, `resources/` and `gallery-images/` to your web server.
@@ -47,7 +47,7 @@ Open your web browser and load the page where you installed UberGallery.
 
 Custom Installation
 -------------------
-Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings to
+Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings to
 your liking.
 
 Upload the `resources/` folder to your web server.
@@ -76,9 +76,9 @@ SSH into the your server and clone the UberGallery repository:
 
     git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
 
-Copy `resources/galleryConfig.ini-sample` to `resources/galleryConfig.ini` and modify the settings
+Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
-    cp /path/to/gallery-directory/resource/galleryConfig.ini-sample /path/to/gallery-directory/resources/galleryConfig.ini
+    cp /path/to/gallery-directory/resource/sample.galleryConfig.ini /path/to/gallery-directory/resources/galleryConfig.ini
     nano /path/to/gallery-directory/resources/galleryConfig.ini
 
 Upload images to the `gallery-images/` folder within your gallery directory.
