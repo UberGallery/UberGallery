@@ -108,7 +108,7 @@ To report a bug, visit the issue tracker on Github at: http://github.com/UberGal
 
 License
 -------
-Copyright (C) 2010 [Chris Kankiewicz](http://www.chriskankiewicz.com)
+Copyright (C) 2011 [Chris Kankiewicz](http://www.chriskankiewicz.com)
 
 UberGallery is dual licensed under the terms of the
 [MIT License](http://www.ubergallery.net/COPYING-MIT.txt) and
