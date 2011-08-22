@@ -531,7 +531,7 @@ class UberGallery {
     
     
     /**
-     * Sorts an array by the provided source method.
+     * Sorts an array by the provided sort method.
      * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
