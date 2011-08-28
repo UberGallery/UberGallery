@@ -5,7 +5,7 @@
     <title>UberGallery</title>
     <link rel="shortcut icon" href="resources/images/favicon.png" />
     
-    <link rel="stylesheet" type="text/css" href="resources/css/rebase.css" />
+    <link rel="stylesheet" type="text/css" href="resources/css/rebase-min.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/colorbox.css" />
     
