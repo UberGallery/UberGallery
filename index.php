@@ -12,6 +12,9 @@
     // Set path to theme index    
     $themeIndex = $gallery->getThemePath(false) . '/index.php';
     
+    // Define absolute theme path
+    define('THEMEPATH', $gallery->getThemePath());
+    
     // Initialize the theme
     if (file_exists($themeIndex)) {
         include($gallery->getThemePath(false) . '/index.php');

@@ -5,9 +5,9 @@
     <title>UberGallery</title>
     <link rel="shortcut icon" href="<?php echo $gallery->getThemePath(); ?>/images/favicon.png" />
     
-    <link rel="stylesheet" type="text/css" href="<?php echo $gallery->getThemePath(); ?>/rebase-min.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $gallery->getThemePath(); ?>/style.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $gallery->getThemePath(); ?>/colorbox.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo THEMEPATH; ?>/rebase-min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo THEMEPATH; ?>/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo THEMEPATH; ?>/colorbox.css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="resources/jquery.colorbox.js"></script>
