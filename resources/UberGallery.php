@@ -18,7 +18,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.1.3';
+    const VERSION = '2.2.0';
     
     // Set default config variables
     protected $_cacheExpire = 0;
