@@ -87,7 +87,7 @@ h1 {
 }
 
 #galleryFooter #credit a:hover {
-    color: #FFF;
+    color: #DA8600;
 }
 
 
@@ -117,7 +117,7 @@ h1 {
 }
 
 #galleryPagination li.title {
-    background: transparent url(../images/page_white_stack.png) no-repeat left center;
+    background: transparent url(images/page_white_stack.png) no-repeat left center;
     border: 1px solid transparent;
     font-weight: normal;
     padding: 3px 6px 3px 22px;
@@ -155,26 +155,12 @@ h1 {
 /* ---------------------------------------- */
 
 #errorMessage {
-    background-color: #DDF;
+    background-color: #FFF;
     display: block;
     line-height: 1.4em;
     margin: 20px;
     padding: 20px;
     text-align: center;
-}
-
-.line {
-    background-color: #24404C;
-    border-bottom: 1px solid #416371;
-    height: 1px;
-    margin: 2em 0;
-    overflow: hidden;
-}
-
-#galleryWrapper .line {
-    background-color: #15242A;
-    border-bottom-color: #204656;
-    margin: 10px 0;
 }
 
 #cboxWrapper {
