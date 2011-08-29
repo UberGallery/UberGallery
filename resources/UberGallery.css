@@ -4,13 +4,14 @@
 
 #galleryList {
     margin: 0;
-    padding: 0;
+    padding: 0 4px;
 }
 
 #galleryList li {
     display: inline-block;
+    float: left;
     list-style: none;
-    margin: 4px;
+    margin: 5px 6px;
     padding: 0;
 }
 
