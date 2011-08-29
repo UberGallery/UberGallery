@@ -1,59 +1,4 @@
 /* -------------------------------------------------------------------------- */
-/* -----| GENERAL |---------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-
-html {
-    background-color: #355664;
-    font-size: 100%;
-}
-
-body {
-    background-color: #355664;
-    color: #333;
-    font-family: Arial, Helvetica, sans-serif, Verdana;
-    font-size: .8em;
-    text-shadow: 1px 1px 1px #333;
-}
-
-#galleryWrapper {
-    background-color: #213E4A;
-    border-radius: 5px;
-    margin: 20px auto;
-    padding: 20px;
-    width: 740px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-h1 {
-    color: #FFF;
-    font-size: 1.6em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin: 0;
-}
-
-#galleryListWrapper {
-    /* NULL */
-}
-
-#galleryFooter {
-    border-top: none !important;
-    margin-top: 0 !important;
-    padding: 0 !important;
-    color: #FFF;
-}
-
-#galleryFooter .credit a {
-    color: #369;
-}
-
-#galleryFooter .credit a:hover {
-    color: #333;
-}
-
-
-/* -------------------------------------------------------------------------- */
 /* -----| GALLERY LIST |----------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 
@@ -65,22 +10,19 @@ h1 {
 #galleryList li {
     display: inline-block;
     list-style: none;
-    margin: 5px;
+    margin: 4px;
     padding: 0;
 }
 
 #galleryList li a {
-    background-color: #15242A !important;
-    border-top: 1px solid #132228;
-    border-left: 1px solid #132228;
-    border-right: 1px solid #204656;
-    border-bottom: 1px solid #204656;
+    background-color: #FFF;
+    border: 1px solid #CCC;
     display: block;
     padding: 4px;
 }
 
 #galleryList li a:hover {
-    background-color: #1E2D34 !important;
+    border-color: #999;
 }
 
 #galleryList li a img {
@@ -92,19 +34,19 @@ h1 {
 /* -------------------------------------------------------------------------- */
 
 #galleryFooter {
-    border-top: 1px solid #FFF;
+    border-top: 1px solid #CCC;
     margin-top: 10px;
     padding: 3px;
 }
 
 #credit {
     float: right;
-    font-size: .95em;
+    font-size: 0.9em;
     margin: 4px 0;
 }
 
 #galleryFooter #credit a {
-    color: #FFF;
+    color: #369;
 }
 
 
@@ -113,9 +55,9 @@ h1 {
 /* ---------------------------------------- */
 
 #galleryPagination {
-    color: #FFF;
+    color: #369;
     float: left;
-    font-size: .95em;
+    font-size: .9em;
     margin: 0 !important;
     padding: 0 !important;
     text-align: center;
@@ -123,18 +65,17 @@ h1 {
 
 #galleryPagination li {
     border: 1px solid transparent;
+    border-radius: 3px;
     display: block;
     float: left;
     list-style: none;
-    margin-right: 1px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 #galleryPagination li:hover {
-    background-color: #1E2D34;
-    border-top: 1px solid #132228;
-    border-left: 1px solid #132228;
-    border-right: 1px solid #204656;
-    border-bottom: 1px solid #204656;
+    background-color: #EFEFEF;
+    border: 1px solid #CCC;
 }
 
 #galleryPagination li.title {
@@ -145,30 +86,27 @@ h1 {
 }
 
 #galleryPagination li a, #galleryPagination li a:visited {
-    color: #FFF;
+    color: #369;
     display: block;
     padding: 3px 6px;
     text-decoration: none;
 }
 
 #galleryPagination li.current {
-    background-color: #15242A;
-    border-top: 1px solid #132228;
-    border-left: 1px solid #132228;
-    border-right: 1px solid #204656;
-    border-bottom: 1px solid #204656;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #333;
     font-weight: bold;
     padding: 3px 6px;
 }
 
 #galleryPagination li.inactive {
     background-color: transparent;
-    color: #15242A;
+    color: #ACACAC;
     border: 1px solid transparent;
     display: block;
     padding: 3px 6px;
 }
-
 
 /* ---------------------------------------- */
 /* ----|  MISCELLANEOUS  |----------------- */
@@ -183,24 +121,7 @@ h1 {
     text-align: center;
 }
 
-.line {
-    background-color: #24404C;
-    border-bottom: 1px solid #416371;
-    height: 1px;
-    margin: 2em 0;
-    overflow: hidden;
-}
-
-#galleryWrapper .line {
-    background-color: #15242A;
-    border-bottom-color: #204656;
-    margin: 10px 0;
-}
-
-#cboxWrapper {
-    text-shadow: none !important;
-}
-
-#cboxTitle {
-    font-size: 1em !important;
-}
+/**
+ * UberGallery.css created and implimented by,
+ * Chris Kankiewicz -- http://www.ChrisKankiewicz.com
+ */

@@ -24,6 +24,7 @@ class UberGallery {
     protected $_cacheExpire = 0;
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
+    protected $_themeName   = 'uber-blue';
     protected $_page        = 1;
     protected $_cacheDir    = 'cache';
     protected $_imgSortBy   = 'natcasesort';
@@ -67,6 +68,7 @@ class UberGallery {
             // Apply configuration
             $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
             $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
+            $this->_themeName   = $config['basic_settings']['theme_name'];
             $this->_imgSortBy   = $config['advanced_settings']['images_sort_by'];
             $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
             
@@ -244,6 +246,29 @@ class UberGallery {
         return $galleryArray;
     }
 
+    /**
+     * Get the theme name
+     * @access public
+     */
+    public function getThemeName() {
+        // Return the theme Name
+        return $this->_themeName;
+    }
+    
+    /**
+     * Get the theme path
+     * @param bool $absolute Wether or now path returned is absolute (default = true)
+     * @access public
+     */
+    public function getThemePath($absolute = true) {
+        if (!$absolute) {
+            $path = 'resources/themes/' . $this->_themeName;
+        } else {
+            $path = '/resources/themes/' . $this->_themeName;
+        }
+        
+        return $path;
+    }
 
     /**
      * Set cache expiration time in minutes.
