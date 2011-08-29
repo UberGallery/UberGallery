@@ -8,11 +8,15 @@
     
     // Initialize the gallery array
     $galleryArray = $gallery->readImageDirectory('gallery-images');
+
+    // Set path to theme index    
+    $themeIndex = $gallery->getThemePath(false) . '/index.php';
     
     // Initialize the theme
-    include($gallery->getThemePath(false) . '/index.php');
-    
-    // Set the THEMEPATH constant
-    // const THEMEPATH = $gallery->getThemePath();
-    
+    if (file_exists($themeIndex)) {
+        include($gallery->getThemePath(false) . '/index.php');
+    } else {
+        die('ERROR: Failed to initialize theme');
+    }
+
 ?>
