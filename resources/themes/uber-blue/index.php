@@ -25,6 +25,16 @@
     <h1>UberGallery</h1>
     <div class="line"></div>
     
+    <?php if($gallery->getSystemMessages()): ?>
+        <ul id="systemMessages">
+            <?php foreach($gallery->getSystemMessages() as $message): ?>
+                <li class="<?php echo $message['type']; ?>">
+                    <?php echo $message['text']; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    
     <div id="galleryListWrapper">
         <ul id="galleryList" class="clearfix">
             <?php foreach ($galleryArray['images'] as $image): ?>

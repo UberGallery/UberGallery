@@ -79,7 +79,7 @@ class UberGallery {
             }
             
         } else {
-            die("<div id=\"errorMessage\">Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre></div>");            
+            $this->setSystemMessage('error', "Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
         }
 
         // Explode working dir and cache dir into arrays
@@ -122,13 +122,13 @@ class UberGallery {
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
             if (!@mkdir($this->_cacheDir)) {
-                die("<div id=\"errorMessage\">Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre></div>");
+                $this->setSystemMessage('error', "Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre>");
             }
         }
         
         // Check if cache directory is writeable and warn if it isn't
         if(!is_writable($this->_cacheDir)) {
-            die("<div id=\"errorMessage\">Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre></div>");
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
         }
     }
 
@@ -145,6 +145,7 @@ class UberGallery {
     
     /**
      * Returns pre-formatted XHTML of a gallery.
+     * 
      * @param string $directory Relative path to images directory
      * @access public
      */
@@ -204,6 +205,7 @@ class UberGallery {
     
     /**
      * Returns an array of files and stats of the specified directory.
+     * 
      * @param string $directory Relative path to images directory
      * @access public
      */
@@ -248,6 +250,7 @@ class UberGallery {
 
     /**
      * Get the theme name
+     * 
      * @access public
      */
     public function getThemeName() {
@@ -257,6 +260,7 @@ class UberGallery {
     
     /**
      * Get the theme path
+     * 
      * @param bool $absolute Wether or now path returned is absolute (default = true)
      * @access public
      */
@@ -269,9 +273,24 @@ class UberGallery {
         
         return $path;
     }
+    
+    /**
+     * Get an array of error messages.
+     * 
+     * @return array Array of error messages
+     * @access public
+     */
+    public function getSystemMessages() {
+        if (isset($this->_systemMessage) && is_array($this->_systemMessage)) {
+            return $this->_systemMessage;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Set cache expiration time in minutes.
+     * 
      * @param int $time Cache expiration time in minutes
      * @access public
      */
@@ -284,6 +303,7 @@ class UberGallery {
     
     /**
      * Set the number of images to be displayed per page
+     * 
      * @param int $imgPerPage Number of images to display per page
      * @access public
      */
@@ -293,9 +313,32 @@ class UberGallery {
         return $this;
     }
     
+    /**
+     * Add a message to the system message array
+     * 
+     * @param string $type The type of message (ie - error, success, notice, etc.)
+     * @param string $message The message to be displayed to the user
+     * @access public
+     */
+    public function setSystemMessage($type, $text) {
+
+        // Create empty message array if it doesn't already exist
+        if (isset($this->_systemMessage) && !is_array($this->_systemMessage)) {
+            $this->_systemMessage = array();
+        } 
+
+        // Set the error message
+        $this->_systemMessage[] = array(
+            'type'  => $type,
+            'text'  => $text
+        );
+        
+        return true;
+    }
     
     /**
      * Set thumbnail size in pixels.
+     * 
      * @param int $size Thumbnail size in pixels.
      * @access public
      */
@@ -308,6 +351,7 @@ class UberGallery {
     
     /**
      * Set the cache directory name.
+     * 
      * @param string $directory Cache directory name
      * @access public
      */
@@ -320,6 +364,7 @@ class UberGallery {
     
     /**
      * Sets the relative path to the image directory.
+     * 
      * @param string $directory Relative path to image directory
      * @access public
      */
@@ -381,10 +426,10 @@ class UberGallery {
             $this->_createIndex($dirArray, $index);
         }
         
-        // Die with error if there are no images
+        // Set error message if there are no images
         if (!isset($dirArray)) {
             $imageDirectory = realpath($directory);
-            die("<div id=\"errorMessage\">No images found.  Please upload images to: <pre>{$imageDirectory}</pre></div>");
+            $this->setSystemMessage('error', "No images found.  Please upload images to: <pre>{$imageDirectory}</pre>");
         }
 
         // Sort the array
@@ -403,9 +448,10 @@ class UberGallery {
     /**
      * Creates a cropped, square thumbnail of given dimensions from a source image,
      * modified from function found on http://www.findmotive.com/tag/php/
+     * 
      * @param string $source Path to source image
-     * @param int $thumb_size Desired thumbnail size in pixels 
-     * @param int $quality Thumbnail quality, applies to JPEGs only (Value from 1 to 100)
+     * @param int $thumbSize Desired thumbnail size in pixels 
+     * @param int $quality Thumbnail quality, applies to JPG and JPEGs only (Value from 1 to 100)
      * @access protected
      */
     protected function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
@@ -475,6 +521,7 @@ class UberGallery {
     
     /**
      * Return array from the cached index.
+     * 
      * @param string $filePath Path to stored index
      * @return array
      * @access protected
@@ -497,6 +544,7 @@ class UberGallery {
 
     /**
      * Create serialized index from file array.
+     * 
      * @param string $array Array to be indexed
      * @param string $filePath Path to where index will be stored
      * @return boolean
@@ -519,6 +567,7 @@ class UberGallery {
     
     /**
      * Returns an array of gallery statistics.
+     * 
      * @param array $array Array to gather stats from
      * @return array
      * @access protected
@@ -557,6 +606,7 @@ class UberGallery {
     
     /**
      * Sorts an array by the provided sort method.
+     * 
      * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
@@ -606,8 +656,9 @@ class UberGallery {
     
     /**
      * Paginates array and returns partial array of the current page.
+     * 
      * @param string $array Array to be paginated
-     * @return array
+     * @return array A parial array representing the current page
      * @access protected
      */
     protected function _arrayPaginate($array, $resultsPerPage, $currentPage) {
@@ -664,6 +715,7 @@ class UberGallery {
     
     /**
      * Verifies whether or not a file is an image.
+     * 
      * @param string $fileName
      * @return boolean
      * @access protected
