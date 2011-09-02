@@ -25,7 +25,7 @@ h1 {
     color: #FFF;
     font-size: 1.6em;
     font-weight: bold;
-    margin: 0 0 6px;
+    margin: 0 0 3px;
     padding: 8px;
 }
 
@@ -73,7 +73,7 @@ h1 {
 #galleryFooter {
     background-color: #000;
     color: #999;
-    margin-top: 6px;
+    margin-top: 3px;
     padding: 8px;
 }
 
@@ -148,6 +148,40 @@ h1 {
     border: 1px solid transparent;
     display: block;
     padding: 3px 6px;
+}
+
+
+/* ---------------------------------------- */
+/* ----|  SYSTEM MESSAGES  |--------------- */
+/* ---------------------------------------- */
+
+#systemMessages {
+    margin: 0;
+}
+
+#systemMessages li {
+    background-color: #DDD;
+    color: #000;
+    line-height: 1.4em;
+    list-style: none;
+    margin-bottom: 6px;
+    padding: 5px;
+    text-align: center;
+    text-shadow: none;
+}
+
+#systemMessages li.notice {
+    background-color: #DDD;
+    color: #FFF;
+}
+
+#systemMessages li.success {
+    background-color: #070;
+    color: #FFF;
+}
+
+#systemMessages li.error {
+    background-color: #DA8600;
 }
 
 

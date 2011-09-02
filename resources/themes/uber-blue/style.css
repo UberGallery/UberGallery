@@ -172,17 +172,39 @@ h1 {
 
 
 /* ---------------------------------------- */
-/* ----|  MISCELLANEOUS  |----------------- */
+/* ----|  SYSTEM MESSAGES  |--------------- */
 /* ---------------------------------------- */
 
-#errorMessage {
-    background-color: #DDF;
-    display: block;
-    line-height: 1.4em;
-    margin: 20px;
-    padding: 20px;
-    text-align: center;
+#systemMessages {
+    margin: 0;
 }
+
+#systemMessages li {
+    background-color: #FFF;
+    line-height: 1.4em;
+    list-style: none;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+    text-shadow: none;
+}
+
+#systemMessages li.notice {
+    background-color: #CCF;
+}
+
+#systemMessages li.success {
+    background-color: #CFC;
+}
+
+#systemMessages li.error {
+    background-color: #FCC;
+}
+
+
+/* ---------------------------------------- */
+/* ----|  MISCELLANEOUS  |----------------- */
+/* ---------------------------------------- */
 
 .line {
     background-color: #24404C;
