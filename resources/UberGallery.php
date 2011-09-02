@@ -264,11 +264,11 @@ class UberGallery {
      * @param bool $absolute Wether or now path returned is absolute (default = true)
      * @access public
      */
-    public function getThemePath($absolute = true) {
-        if (!$absolute) {
-            $path = 'resources/themes/' . $this->_themeName;
-        } else {
+    public function getThemePath($absolute = false) {
+        if ($absolute) {
             $path = '/resources/themes/' . $this->_themeName;
+        } else {
+            $path = 'resources/themes/' . $this->_themeName;
         }
         
         return $path;

@@ -10,14 +10,14 @@
     $galleryArray = $gallery->readImageDirectory('gallery-images');
 
     // Set path to theme index    
-    $themeIndex = $gallery->getThemePath(false) . '/index.php';
+    $themeIndex = $gallery->getThemePath() . '/index.php';
     
     // Define absolute theme path
     define('THEMEPATH', $gallery->getThemePath());
     
     // Initialize the theme
     if (file_exists($themeIndex)) {
-        include($gallery->getThemePath(false) . '/index.php');
+        include($gallery->getThemePath() . '/index.php');
     } else {
         die('ERROR: Failed to initialize theme');
     }
