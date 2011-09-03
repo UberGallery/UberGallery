@@ -287,6 +287,15 @@ class UberGallery {
             return false;
         }
     }
+     
+    /**
+     * 
+     */
+    public function getColorboxStyles($themeNum) {
+        $path = 'resources/colorbox/' . $themeNum . '/colorbox.css';
+        
+        return '<link rel="stylesheet" type="text/css" href="' . $path . '" />';
+    }
 
     /**
      * Set cache expiration time in minutes.

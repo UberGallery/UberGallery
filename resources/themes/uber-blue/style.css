@@ -224,6 +224,10 @@ h1 {
     text-shadow: none !important;
 }
 
+#cboxCurrent {
+    display: none !important;
+}
+
 #cboxTitle {
     font-size: 1em !important;
 }
