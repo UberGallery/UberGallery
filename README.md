@@ -57,9 +57,15 @@ Insert the following code into the PHP page where you would like the gallery to 
     
     <?php include_once('path/to/resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('path/to/images-folder'); ?>
     
-Include the UberGallery style sheet in your page header:
+Include the UberGallery and desired Colorbox style sheet in your page header:
     
-    <link rel="stylesheet" type="text/css" href="path/to/resources/styles/ubergallery.css" />
+    <link rel="stylesheet" type="text/css" href="path/to/resources/UberGallery.css" />
+    <link rel="stylesheet" type="text/css" href="path/to/resources/colorbox/{1-5}/colorbox.css" />
+    
+Include the jQuery and Colorbox javascript files in your page header:
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     
 Upload images to your images directory.
 
