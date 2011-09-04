@@ -67,6 +67,14 @@ Include the jQuery and Colorbox javascript files in your page header:
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     
+Include the Colorbox jquery call in your header:
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("a[rel='colorbox']").colorbox({maxWidth: "90%", maxHeight: "90%", opacity: ".5"});
+    });
+    </script>
+    
 Upload images to your images directory.
 
 Make the `resources/cache/` directory writable by the web server.
