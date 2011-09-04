@@ -289,7 +289,8 @@ class UberGallery {
     }
      
     /**
-     * 
+     * Returns markup for Colorbox stylesheet
+     * @return string
      */
     public function getColorboxStyles($themeNum) {
         $path = 'resources/colorbox/' . $themeNum . '/colorbox.css';
