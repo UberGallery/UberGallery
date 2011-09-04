@@ -135,6 +135,7 @@ class UberGallery {
 
     /**
      * Special init method for simple one-line interface.
+     * 
      * @access public
      */
     public static function init() {
@@ -249,7 +250,7 @@ class UberGallery {
     }
 
     /**
-     * Get the theme name
+     * Returns the theme name.
      * 
      * @access public
      */
@@ -259,9 +260,9 @@ class UberGallery {
     }
     
     /**
-     * Get the theme path
+     * Returns the path to the chosen theme directory.
      * 
-     * @param bool $absolute Wether or now path returned is absolute (default = true)
+     * @param bool $absolute Wether or not the path returned is absolute (default = false).
      * @access public
      */
     public function getThemePath($absolute = false) {
@@ -275,7 +276,7 @@ class UberGallery {
     }
     
     /**
-     * Get an array of error messages.
+     * Get an array of error messages or false when empty.
      * 
      * @return array Array of error messages
      * @access public
@@ -289,7 +290,9 @@ class UberGallery {
     }
      
     /**
-     * Returns markup for Colorbox stylesheet
+     * Returns XHTML link tag for chosen Colorbox stylesheet.
+     * 
+     * @param int $themeNum Integer (1-5) representing the Colorbox theme number
      * @return string
      */
     public function getColorboxStyles($themeNum) {
@@ -312,7 +315,7 @@ class UberGallery {
     
     
     /**
-     * Set the number of images to be displayed per page
+     * Set the number of images to be displayed per page.
      * 
      * @param int $imgPerPage Number of images to display per page
      * @access public
@@ -393,6 +396,7 @@ class UberGallery {
     
     /**
      * Reads files in a directory and returns only images.
+     * 
      * @param string $directory Path to directory
      * @param boolean $paginate Whether or not paginate the array (default = true)
      * @return array
