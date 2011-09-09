@@ -14,10 +14,10 @@
 
     // Set path to theme index    
     $themeIndex = THEMEPATH . '/index.php';
-
+    
     // Initialize the theme
     if (file_exists($themeIndex)) {
-        include($gallery->getThemePath() . '/index.php');
+        include($themeIndex);
     } else {
         die('ERROR: Failed to initialize theme');
     }
