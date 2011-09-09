@@ -17,6 +17,9 @@
             $("a[rel='colorbox']").colorbox({maxWidth: "90%", maxHeight: "90%", opacity: ".5"});
         });
     </script>
+    
+    <?php file_exists('googleAnalytis.inc') ? include('googleAnalytis.inc') : false; ?>
+    
 </head>
 <body>
 
