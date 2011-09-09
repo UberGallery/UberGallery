@@ -113,13 +113,23 @@
 /* ----|  MISCELLANEOUS  |----------------- */
 /* ---------------------------------------- */
 
-#errorMessage {
-    background-color: #DDF;
+/* --- CLEAR FIX --- */
+
+.clearfix:after {
+    visibility: hidden;
     display: block;
-    line-height: 1.4em;
-    margin: 20px;
-    padding: 20px;
-    text-align: center;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+* html .clearfix {
+    zoom: 1; /* IE6 */
+}
+
+*:first-child+html .clearfix {
+    zoom: 1; /* IE7 */
 }
 
 /**
