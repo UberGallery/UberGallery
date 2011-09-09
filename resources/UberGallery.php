@@ -148,9 +148,10 @@ class UberGallery {
      * Returns pre-formatted XHTML of a gallery.
      * 
      * @param string $directory Relative path to images directory
+     * @param string $relText Text to use as the rel value
      * @access public
      */
-    public function createGallery($directory) {
+    public function createGallery($directory, $relText = 'colorbox') {
         
         $gallery = $this->readImageDirectory($directory);
         
@@ -160,7 +161,7 @@ class UberGallery {
         echo '    <ul id="galleryList" class="clearfix">' . PHP_EOL;
         
         foreach ($gallery['images'] as $image) {
-            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"colorbox\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>" . PHP_EOL;
+            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"{$relText}\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>" . PHP_EOL;
         }
         
         echo '    </ul>' . PHP_EOL;
