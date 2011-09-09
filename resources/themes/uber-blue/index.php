@@ -18,7 +18,7 @@
         });
     </script>
     
-    <?php file_exists('googleAnalytis.inc') ? include('googleAnalytis.inc') : false; ?>
+    <?php file_exists('googleAnalytics.inc') ? include('googleAnalytics.inc') : false; ?>
     
 </head>
 <body>
