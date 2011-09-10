@@ -32,7 +32,6 @@ class UberGallery {
     // Reserve some other variables
     protected $_imgDir      = NULL;
     protected $_appDir      = NULL;
-    protected $_workingDir  = NULL;
     protected $_index       = NULL;
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
@@ -56,9 +55,11 @@ class UberGallery {
             define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
         }
         
+        // Set application directory
+        $this->_appDir = __DIR__;
+        
         // Set configuration file path
         $configPath = __DIR__ . '/galleryConfig.ini';
-        
         
         // Read and apply gallery config or throw error on fail
         if (file_exists($configPath)) {
@@ -256,7 +257,7 @@ class UberGallery {
      * @access public
      */
     public function getThemeName() {
-        // Return the theme Name
+        // Return the theme name
         return $this->_themeName;
     }
     
@@ -268,12 +269,13 @@ class UberGallery {
      */
     public function getThemePath($absolute = false) {
         if ($absolute) {
-            $path = '/resources/themes/' . $this->_themeName;
+            // Set the theme path
+            $themePath = $this->_appDir . '/themes/' . $this->_themeName;
         } else {
-            $path = 'resources/themes/' . $this->_themeName;
+            $themePath = 'resources/themes/' . $this->_themeName;
         }
         
-        return $path;
+        return $themePath;
     }
     
     /**
