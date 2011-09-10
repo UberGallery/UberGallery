@@ -59,7 +59,7 @@ class UberGallery {
         $this->_appDir = __DIR__;
         
         // Set configuration file path
-        $configPath = __DIR__ . '/galleryConfig.ini';
+        $configPath = $this->_appDir . '/galleryConfig.ini';
         
         // Read and apply gallery config or throw error on fail
         if (file_exists($configPath)) {
@@ -71,7 +71,7 @@ class UberGallery {
             $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
             $this->_themeName   = $config['basic_settings']['theme_name'];
             $this->_imgSortBy   = $config['advanced_settings']['images_sort_by'];
-            $this->_cacheDir    = __DIR__ . '/' . $config['advanced_settings']['cache_directory'];
+            $this->_cacheDir    = $this->_appDir . '/' . $config['advanced_settings']['cache_directory'];
             
             if ($config['basic_settings']['enable_pagination']) {
                 $this->_imgPerPage = $config['advanced_settings']['images_per_page'];
