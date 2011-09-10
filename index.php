@@ -1,7 +1,7 @@
 <?php
     
     // Include the UberGallery class
-    include_once('resources/UberGallery.php');
+    include('resources/UberGallery.php');
     
     // Initialize the UberGallery object
     $gallery = new UberGallery();
@@ -10,10 +10,12 @@
     $galleryArray = $gallery->readImageDirectory('gallery-images');
 
     // Define theme path
-    define('THEMEPATH', $gallery->getThemePath());
+    if (!defined('THEMEPATH')) {
+        define('THEMEPATH', $gallery->getThemePath());
+    }
 
-    // Set path to theme index    
-    $themeIndex = THEMEPATH . '/index.php';
+    // Set path to theme index
+    $themeIndex = $gallery->getThemePath(true) . '/index.php';
     
     // Initialize the theme
     if (file_exists($themeIndex)) {
