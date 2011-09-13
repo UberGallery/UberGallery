@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo THEMEPATH; ?>/style.css" />
     <?php echo $gallery->getColorboxStyles(5); ?>
     
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="resources/colorbox/jquery.colorbox.js"></script>
     
     <script type="text/javascript">
