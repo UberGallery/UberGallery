@@ -189,7 +189,7 @@ class UberGallery {
                 
             if ($gallery['stats']['current_page'] < $gallery['stats']['total_pages']) {
                 $nextPage = $gallery['stats']['current_page'] + 1;
-                echo "                <li><a title=\"Next Page\" href=\"index.php?page={&nextPage}\">&gt;</a></li>" . PHP_EOL;
+                echo "                <li><a title=\"Next Page\" href=\"index.php?page={$nextPage}\">&gt;</a></li>" . PHP_EOL;
             } else {
                 echo '                <li class="inactive">&gt;</li>' . PHP_EOL;
             }
