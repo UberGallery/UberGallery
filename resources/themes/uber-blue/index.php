@@ -54,7 +54,7 @@
             <li class="title">Page <?php echo $galleryArray['stats']['current_page']; ?> of <?php echo $galleryArray['stats']['total_pages']; ?></li>
             
             <?php if ($galleryArray['stats']['current_page'] > 1): ?>
-                <li><a title="Previous Page" href="index.php?page=<?php echo $galleryArray['stats']['current_page'] - 1; ?>">&lt;</a></li>
+                <li><a title="Previous Page" href="?page=<?php echo $galleryArray['stats']['current_page'] - 1; ?>">&lt;</a></li>
             <?php else: ?>
                 <li class="inactive">&lt;</li>
             <?php endif; ?>
@@ -63,12 +63,12 @@
                 <?php if($x == $galleryArray['stats']['current_page']): ?>
                     <li class="current"><?php echo $x; ?></li>
                 <?php else: ?>
-                    <li><a title="Page <?php echo $x; ?>" href="index.php?page=<?php echo $x; ?>"><?php echo $x; ?></a></li>
+                    <li><a title="Page <?php echo $x; ?>" href="?page=<?php echo $x; ?>"><?php echo $x; ?></a></li>
                 <?php endif; ?>
             <?php endfor; ?>
             
             <?php if ($galleryArray['stats']['current_page'] < $galleryArray['stats']['total_pages']): ?>
-                <li><a title="Next Page" href="index.php?page=<?php echo $galleryArray['stats']['current_page'] + 1; ?>">&gt;</a></li>
+                <li><a title="Next Page" href="?page=<?php echo $galleryArray['stats']['current_page'] + 1; ?>">&gt;</a></li>
             <?php else: ?>
                 <li class="inactive">&gt;</li>
             <?php endif; ?>
