@@ -272,7 +272,11 @@ class UberGallery {
             // Set the theme path
             $themePath = $this->_appDir . '/themes/' . $this->_themeName;
         } else {
-            $themePath = 'resources/themes/' . $this->_themeName;
+            // Get relative path to application dir
+            $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
+            
+            // Set the theme path
+            $themePath = $realtivePath . '/themes/' . $this->_themeName;
         }
         
         return $themePath;
@@ -299,9 +303,14 @@ class UberGallery {
      * @return string
      */
     public function getColorboxStyles($themeNum) {
-        $path = 'resources/colorbox/' . $themeNum . '/colorbox.css';
         
-        return '<link rel="stylesheet" type="text/css" href="' . $path . '" />';
+        // Get relative path to application dir
+        $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
+        
+        // Set Colorbox Path
+        $colorboxPath = $realtivePath . '/colorbox/' . $themeNum . '/colorbox.css';
+        
+        return '<link rel="stylesheet" type="text/css" href="' . $colorboxPath . '" />';
     }
 
     /**
