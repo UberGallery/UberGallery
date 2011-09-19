@@ -730,9 +730,27 @@ class UberGallery {
      */
     protected function _getRelativePath($fromPath, $toPath) {
         
+        // Remove double slashes from path strings
+        $fromPath   = str_replace('//', '/', $fromPath);
+        $toPath     = str_replace('//', '/', $toPath);
+        
         // Explode working dir and cache dir into arrays
-        $fromPathArray = explode('/', $fromPath);
-        $toPathArray   = explode('/', $toPath);
+        $fromPathArray  = explode('/', $fromPath);
+        $toPathArray    = explode('/', $toPath);
+        
+        // Remove last fromPath array element if it's empty
+        $x = count($fromPathArray) - 1;
+        
+        if(!trim($fromPathArray[$x])) {
+            array_pop($fromPathArray);
+        }
+        
+        // Remove last toPath array element if it's empty
+        $x = count($toPathArray) - 1;
+        
+        if(!trim($toPathArray[$x])) {
+            array_pop($toPathArray);
+        }
         
         // Get largest array count
         $arrayMax = max(count($fromPathArray), count($toPathArray));
