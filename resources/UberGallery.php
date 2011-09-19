@@ -83,42 +83,9 @@ class UberGallery {
             $this->setSystemMessage('error', "Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
         }
 
-        // Explode working dir and cache dir into arrays
-        $workingDirArray = explode('/', getcwd());
-        $cacheDirArray   = explode('/', $this->_cacheDir);
-        
-        // Get largest array count
-        $arrayMax = max(count($workingDirArray), count($cacheDirArray));
-        
-        // Set some default variables
-        $diffArray  = array();
-        $samePath   = true;
-        $key        = 1;
-        
-        // Generate array of the path differences
-        while ($key <= $arrayMax) {
-            if (@$cacheDirArray[$key] !== @$workingDirArray[$key] || $samePath !== true) {
-                
-                // Prepend '..' for every level up that must be traversed
-                if (isset($workingDirArray[$key])) {
-                    array_unshift($diffArray, '..');
-                }
-                
-                // Append directory name for every directory that must be traversed  
-                if (isset($cacheDirArray[$key])) {
-                    $diffArray[] = $cacheDirArray[$key];
-                } 
-                
-                // Directory paths have diverged
-                $samePath = false;
-            }
-            
-            // Increment key
-            $key++;
-        }
+        // Get the relative thumbs directory path
+        $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_cacheDir);
 
-        // Set the relative thumbnail directory path
-        $this->_rThumbsDir = implode('/', $diffArray);
 
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_cacheDir)) {
@@ -750,6 +717,59 @@ class UberGallery {
         } else {
             return false;
         }
+    }
+    
+    
+    /**
+     * Compares two paths and returns the relative path from one to the other
+     * 
+     * @param string $fromPath Starting path
+     * @param string $toPath Ending path
+     * @return string $relativePath
+     * @access protected
+     */
+    protected function _getRelativePath($fromPath, $toPath) {
+        
+        // Explode working dir and cache dir into arrays
+        $fromPathArray = explode('/', $fromPath);
+        $toPathArray   = explode('/', $toPath);
+        
+        // Get largest array count
+        $arrayMax = max(count($fromPathArray), count($toPathArray));
+        
+        // Set some default variables
+        $diffArray  = array();
+        $samePath   = true;
+        $key        = 1;
+        
+        // Generate array of the path differences
+        while ($key <= $arrayMax) {
+            if (@$toPathArray[$key] !== @$fromPathArray[$key] || $samePath !== true) {
+                
+                // Prepend '..' for every level up that must be traversed
+                if (isset($fromPathArray[$key])) {
+                    array_unshift($diffArray, '..');
+                }
+                
+                // Append directory name for every directory that must be traversed  
+                if (isset($toPathArray[$key])) {
+                    $diffArray[] = $toPathArray[$key];
+                } 
+                
+                // Directory paths have diverged
+                $samePath = false;
+            }
+            
+            // Increment key
+            $key++;
+        }
+
+        // Set the relative thumbnail directory path
+        $relativePath = implode('/', $diffArray);
+        
+        // Return the relative path
+        return $relativePath;
+        
     }
 
 }
