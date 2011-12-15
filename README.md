@@ -64,7 +64,7 @@ Include the UberGallery and desired Colorbox style sheet in your page header:
     
 Include the jQuery and Colorbox javascript files in your page header:
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     
 Include the Colorbox jquery call in your header:
