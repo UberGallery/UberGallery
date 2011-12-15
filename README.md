@@ -25,7 +25,7 @@ Features
 
 Requirements
 ------------
-UberGallery requires PHP 5.0+ and the PHP-GD image library to work properly. For more information
+UberGallery requires PHP 5.2+ and the PHP-GD image library to work properly. For more information
 on PHP and the PHP-GD image library, please visit [http://php.net](http://php.net).
 
 
