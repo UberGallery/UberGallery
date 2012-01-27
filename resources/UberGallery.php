@@ -669,10 +669,12 @@ class UberGallery {
                 'href' => '?page=1'
             );
             
-            $paginatorArray[] = array(
-                'text'  => '...',
-                'class' => 'ellipsis'
-            );
+            if ($firstPage > 2) {
+                $paginatorArray[] = array(
+                    'text'  => '...',
+                    'class' => 'ellipsis'
+                );
+            }
             
         }
         
@@ -710,10 +712,12 @@ class UberGallery {
         // Set next overflow 
         if ($overflowNext) {
             
-            $paginatorArray[] = array(
-                'text'  => '...',
-                'class' => 'ellipsis'
-            );
+            if ($currentPage + $range < $totalPages - 1) {
+                $paginatorArray[] = array(
+                    'text'  => '...',
+                    'class' => 'ellipsis'
+                );
+            }
             
             $paginatorArray[] = array(
                 'text' => $totalPages,
