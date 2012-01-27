@@ -608,29 +608,6 @@ class UberGallery {
         $overflowPrev = FALSE;
         $overflowNext = FALSE;
         
-        // Create title element
-        $paginatorArray[] = array(
-            'text'  => 'Page ' . $currentPage . ' of ' . $totalPages,
-            'class' => 'title'
-        );
-        
-        // Create previous page element
-        if ($currentPage == 1) {
-            
-            $paginatorArray[] = array(
-                'text'  => '&lt;',
-                'class' => 'inactive'
-            );
-            
-        } else {
-            
-            $paginatorArray[] = array(
-                'text' => '&lt;',
-                'href' => '?page=' . ($currentPage - 1)
-            );
-            
-        }
-        
         if ($totalPages > 10) {
             
             $range = 4;
@@ -660,6 +637,29 @@ class UberGallery {
             
             // Set last page varriable
             $lastPage  = $totalPages;
+            
+        }
+        
+        // Create title element
+        $paginatorArray[] = array(
+            'text'  => 'Page ' . $currentPage . ' of ' . $totalPages,
+            'class' => 'title'
+        );
+        
+        // Create previous page element
+        if ($currentPage == 1) {
+            
+            $paginatorArray[] = array(
+                'text'  => '&lt;',
+                'class' => 'inactive'
+            );
+            
+        } else {
+            
+            $paginatorArray[] = array(
+                'text' => '&lt;',
+                'href' => '?page=' . ($currentPage - 1)
+            );
             
         }
         
@@ -731,6 +731,7 @@ class UberGallery {
             
         }
         
+        // Return the paginator array
         return $paginatorArray;
         
     }
