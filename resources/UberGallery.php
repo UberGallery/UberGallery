@@ -602,10 +602,10 @@ class UberGallery {
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some default values
-        $paginatorArray = array();
+        $range          = 4;
         $overflowPrev   = FALSE;
         $overflowNext   = FALSE;
-        $range          = 4;
+        $paginatorArray = array();
         
         if ($totalPages > 10) {
             
