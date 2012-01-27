@@ -602,7 +602,7 @@ class UberGallery {
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some default values
-        $range          = 3;    // TODO: Add this value to the gallery config
+        $range          = 4;    // TODO: Add this value to the gallery config
         $overflowPrev   = FALSE;
         $overflowNext   = FALSE;
         $paginatorArray = array();
@@ -663,19 +663,10 @@ class UberGallery {
         
         // Set previous overflow
         if ($overflowPrev) {
-            
             $paginatorArray[] = array(
-                'text' => 1,
-                'href' => '?page=1'
+                'text' => '...',
+                'href' => '?page=' . ($currentPage - $range - 1)
             );
-            
-            if ($firstPage > 2) {
-                $paginatorArray[] = array(
-                    'text'  => '...',
-                    'class' => 'ellipsis'
-                );
-            }
-            
         }
         
         // Generate the page elelments
@@ -711,19 +702,10 @@ class UberGallery {
         
         // Set next overflow 
         if ($overflowNext) {
-            
-            if ($currentPage + $range < $totalPages - 1) {
-                $paginatorArray[] = array(
-                    'text'  => '...',
-                    'class' => 'ellipsis'
-                );
-            }
-            
             $paginatorArray[] = array(
-                'text' => $totalPages,
-                'href' => '?page=' . $totalPages
+                'text' => '...',
+                'href' => '?page=' . ($currentPage + $range + 1)
             );
-            
         }
         
         // Create next page element
