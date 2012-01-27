@@ -209,6 +209,9 @@ class UberGallery {
             // Add statistics to gallery array
             $galleryArray['stats'] = $this->_readGalleryStats($this->_readDirectory($directory, false));
             
+            // Add gallery paginator to the gallery array
+            $galleryArray['paginator'] = $this->_getPaginatorArray($galleryArray['stats']['current_page'], $galleryArray['stats']['total_pages']);
+            
             // Save the sorted array
             $this->_createIndex($galleryArray, $this->_index);
         }
@@ -593,6 +596,137 @@ class UberGallery {
         
         // Return array
         return $statsArray;
+    }
+    
+    /**
+     * Returns an array for gallery paginator
+     */
+    protected function _getPaginatorArray($currentPage, $totalPages) {
+        
+        // Set some default values
+        $paginatorArray = array();
+        $overflowPrev = FALSE;
+        $overflowNext = FALSE;
+        
+        // Create title element
+        $paginatorArray[] = array(
+            'text'  => 'Page ' . $currentPage . ' of ' . $totalPages,
+            'class' => 'title'
+        );
+        
+        // Create previous page element
+        if ($currentPage == 1) {
+            
+            $paginatorArray[] = array(
+                'text'  => '&lt;',
+                'class' => 'inactive'
+            );
+            
+        } else {
+            
+            $paginatorArray[] = array(
+                'text' => '&lt;',
+                'href' => '?page=' . ($currentPage - 1)
+            );
+            
+        }
+        
+        if ($totalPages > 10) {
+            
+            $range = 4;
+            
+            // Set first page variable
+            $firstPage = $currentPage - $range;
+            
+            if ($firstPage < 1) {
+                $firstPage = 1;
+            } else {
+                $overflowPrev = TRUE;
+            }
+            
+            // Set last page varriable
+            $lastPage  = $currentPage + $range;
+            
+            if ($lastPage > $totalPages) {
+                $lastPage = $totalPages;
+            } else {
+                $overflowNext = TRUE;
+            }
+            
+        }
+        
+        // Set previous overflow
+        if ($overflowPrev) {
+            
+            $paginatorArray[] = array(
+                'text' => 1,
+                'href' => '?page=1'
+            );
+            
+            $paginatorArray[] = array(
+                'text'  => '...',
+                'class' => 'inactive'
+            );
+            
+        }
+        
+        // Generate the page elelments
+        for ($x = $firstPage; $x <= $lastPage; $x++) {
+            
+            if ($x == $currentPage) {
+                
+                $paginatorArray[] = array(
+                    'text'  => $x,
+                    'class' => 'current'
+                );
+                
+            } else {
+                
+                $paginatorArray[] = array(
+                    'text' => $x,
+                    'href' => '?page=' . $x
+                );
+                
+            }
+            
+        }
+        
+        // Set next overflow 
+        if ($overflowNext) {
+            
+            $paginatorArray[] = array(
+                'text'  => '...',
+                'class' => 'inactive'
+            );
+            
+            $paginatorArray[] = array(
+                'text' => $totalPages,
+                'href' => '?page=' . $totalPages
+            );
+            
+        }
+        
+        // Create next page element
+        if ($currentPage == $totalPages) {
+            
+            $paginatorArray[] = array(
+                'text'  => '&gt;',
+                'class' => 'inactive'
+            );
+            
+        } else {
+            
+            $paginatorArray[] = array(
+                'text' => '&gt;',
+                'href' => '?page=' . ($currentPage + 1)
+            );
+            
+        }
+        
+        print_r($paginatorArray); die();
+        
+        return $paginatorArray;
+        
     }
     
     
