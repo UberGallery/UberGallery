@@ -602,7 +602,7 @@ class UberGallery {
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some default values
-        $range          = 4;
+        $range          = 4;    // TODO: Add this value to the gallery config
         $overflowPrev   = FALSE;
         $overflowNext   = FALSE;
         $paginatorArray = array();
@@ -670,7 +670,7 @@ class UberGallery {
             
             $paginatorArray[] = array(
                 'text'  => '...',
-                'class' => 'inactive'
+                'class' => 'ellipsis'
             );
             
         }
@@ -704,7 +704,7 @@ class UberGallery {
             
             $paginatorArray[] = array(
                 'text'  => '...',
-                'class' => 'inactive'
+                'class' => 'ellipsis'
             );
             
             $paginatorArray[] = array(
