@@ -599,7 +599,12 @@ class UberGallery {
     }
     
     /**
-     * Returns an array for gallery paginator
+     * Returns an formatted array for the gallery paginator.
+     * 
+     * @param int $currentPage The current page being viewed
+     * @param int $totalPages Total number of pages in the gallery
+     * @return array
+     * @access protected
      */
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
