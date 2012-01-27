@@ -603,12 +603,11 @@ class UberGallery {
         
         // Set some default values
         $paginatorArray = array();
-        $overflowPrev = FALSE;
-        $overflowNext = FALSE;
+        $overflowPrev   = FALSE;
+        $overflowNext   = FALSE;
+        $range          = 4;
         
         if ($totalPages > 10) {
-            
-            $range = 4;
             
             // Set first page variable
             $firstPage = $currentPage - $range;
@@ -677,23 +676,26 @@ class UberGallery {
         }
         
         // Generate the page elelments
-        for ($x = $firstPage; $x <= $lastPage; $x++) {
+        $page = $firstPage;
+        for ($i = 1; $i <= ($range * 2 + 1); $i++) {
             
-            if ($x == $currentPage) {
+            if ($page == $currentPage) {
                 
                 $paginatorArray[] = array(
-                    'text'  => $x,
+                    'text'  => $page,
                     'class' => 'current'
                 );
                 
             } else {
                 
                 $paginatorArray[] = array(
-                    'text' => $x,
-                    'href' => '?page=' . $x
+                    'text' => $page,
+                    'href' => '?page=' . $page
                 );
                 
             }
+            
+            $page++;
             
         }
         
