@@ -612,7 +612,7 @@ class UberGallery {
             // Set first page variable
             $firstPage = $currentPage - $range;
             
-            if ($firstPage < 1) {
+            if ($firstPage <= 1) {
                 $firstPage = 1;
             } else {
                 $overflowPrev = TRUE;
@@ -621,7 +621,8 @@ class UberGallery {
             // Set last page varriable
             $lastPage  = $currentPage + $range;
             
-            if ($lastPage > $totalPages) {
+            if ($lastPage >= $totalPages) {
+                $diff = $lastPage - $totalPages;
                 $lastPage = $totalPages;
             } else {
                 $overflowNext = TRUE;
@@ -676,7 +677,7 @@ class UberGallery {
         }
         
         // Generate the page elelments
-        $page = $firstPage;
+        $page = $firstPage - $diff;
         for ($i = 1; $i <= ($range * 2 + 1); $i++) {
             
             if ($page == $currentPage) {
