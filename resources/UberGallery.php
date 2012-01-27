@@ -136,28 +136,21 @@ class UberGallery {
         
         if ($gallery['stats']['total_pages'] > 1) {
             echo '        <ul id="galleryPagination">' . PHP_EOL;
-            echo "            <li class=\"title\">Page {$gallery['stats']['current_page']} of {$gallery['stats']['total_pages']}</li>" . PHP_EOL;
+            
+            foreach ($gallery['paginator'] as $item) {
                 
-            if ($gallery['stats']['current_page'] > 1) {
-                $previousPage = $gallery['stats']['current_page'] - 1;
-                echo "                <li><a title=\"Previous Page\" href=\"?page={$previousPage}\">&lt;</a></li>" . PHP_EOL;
-            } else {
-                echo '                <li class="inactive">&lt;</li>' . PHP_EOL;
-            }
-                
-            for($x = 1; $x <= $gallery['stats']['total_pages']; $x++) {
-                if($x == $gallery['stats']['current_page']) {
-                    echo "                    <li class=\"current\">{$x}</li>" . PHP_EOL;
+                if (!empty($item['href'])) {
+                    $itemText = "<a href=\"{$item['href']}\">{$item['text']}</a>";
                 } else {
-                    echo "                    <li><a title=\"Page {$x}\" href=\"?page={$x}\">{$x}</a></li>" . PHP_EOL;
+                    $itemText = $item['text'];
                 }
-            }
                 
-            if ($gallery['stats']['current_page'] < $gallery['stats']['total_pages']) {
-                $nextPage = $gallery['stats']['current_page'] + 1;
-                echo "                <li><a title=\"Next Page\" href=\"?page={$nextPage}\">&gt;</a></li>" . PHP_EOL;
-            } else {
-                echo '                <li class="inactive">&gt;</li>' . PHP_EOL;
+                if (!empty($item['class'])) {
+                    echo "            <li class=\"{$item['class']}\">{$itemText}</li>" . PHP_EOL;
+                } else {
+                    echo "            <li>{$itemText}</li>" . PHP_EOL;
+                }
+                
             }
             
             echo '        </ul>' . PHP_EOL;
