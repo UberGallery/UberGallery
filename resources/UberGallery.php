@@ -653,6 +653,14 @@ class UberGallery {
                 $overflowNext = TRUE;
             }
             
+        } else {
+            
+            // Set first page variable
+            $firstPage = 1;
+            
+            // Set last page varriable
+            $lastPage  = $totalPages;
+            
         }
         
         // Set previous overflow
@@ -722,8 +730,6 @@ class UberGallery {
             );
             
         }
-        
-        print_r($paginatorArray); die();
         
         return $paginatorArray;
         
