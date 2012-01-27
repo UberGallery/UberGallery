@@ -24,6 +24,8 @@ class UberGallery {
     protected $_cacheExpire = 0;
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
+    protected $_threshold   = 10;
+    protected $_range       = 4;
     protected $_themeName   = 'uber-blue';
     protected $_page        = 1;
     protected $_cacheDir    = 'cache';
@@ -73,6 +75,8 @@ class UberGallery {
             $this->_cacheDir    = $this->_appDir . '/' . $config['advanced_settings']['cache_directory'];
             
             if ($config['basic_settings']['enable_pagination']) {
+                $this->_threshold  = $config['basic_settings']['paginator_threshold'];
+                $this->_range      = $config['basic_settings']['paginator_range'];
                 $this->_imgPerPage = $config['advanced_settings']['images_per_page'];
             } else {
                 $this->_imgPerPage = 0; 
