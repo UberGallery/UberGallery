@@ -592,7 +592,7 @@ class UberGallery {
     }
     
     /**
-     * Returns an formatted array for the gallery paginator.
+     * Returns a formatted array for the gallery paginator.
      * 
      * @param int $currentPage The current page being viewed
      * @param int $totalPages Total number of pages in the gallery
@@ -607,7 +607,7 @@ class UberGallery {
         $overflowNext   = FALSE;
         $paginatorArray = array();
         
-        if ($totalPages > 10) {
+        if ($totalPages >= 10) {
             
             // Set first page variable
             $firstPage = $currentPage - $range;
@@ -678,7 +678,14 @@ class UberGallery {
         
         // Generate the page elelments
         $page = $firstPage - $diff;
-        for ($i = 1; $i <= ($range * 2 + 1); $i++) {
+        
+        $finalRange = $range * 2 + 1;
+        
+        if ($finalRange > $totalPages) {
+            $finalRange = $totalPages;
+        }
+        
+        for ($i = 1; $i <= $finalRange; $i++) {
             
             if ($page == $currentPage) {
                 
