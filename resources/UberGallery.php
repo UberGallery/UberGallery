@@ -24,8 +24,8 @@ class UberGallery {
     protected $_cacheExpire = 0;
     protected $_imgPerPage  = 0;
     protected $_thumbSize   = 100;
-    protected $_threshold   = 10;
-    protected $_range       = 4;
+    protected $_pagerThresh = 10;
+    protected $_pagerRange  = 4;
     protected $_themeName   = 'uber-blue';
     protected $_page        = 1;
     protected $_cacheDir    = 'cache';
@@ -75,9 +75,9 @@ class UberGallery {
             $this->_cacheDir    = $this->_appDir . '/' . $config['advanced_settings']['cache_directory'];
             
             if ($config['basic_settings']['enable_pagination']) {
-                $this->_threshold  = $config['basic_settings']['paginator_threshold'];
-                $this->_range      = $config['basic_settings']['paginator_range'];
-                $this->_imgPerPage = $config['advanced_settings']['images_per_page'];
+                $this->_pagerThresh = $config['basic_settings']['paginator_threshold'];
+                $this->_pagerRange  = $config['basic_settings']['paginator_range'];
+                $this->_imgPerPage  = $config['advanced_settings']['images_per_page'];
             } else {
                 $this->_imgPerPage = 0; 
             }
@@ -606,12 +606,17 @@ class UberGallery {
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some default values
-        $range          = 4;    // TODO: Add this value to the gallery config
         $overflowPrev   = FALSE;
         $overflowNext   = FALSE;
         $paginatorArray = array();
+
+        if ($this->_pagerThresh > $totalPages) {
+            $range = $totalPages;
+        } else {
+            $range = $this->_pagerRange;
+        }
         
-        if ($totalPages >= 10) {
+        if ($totalPages >= $this->_pagerThresh) {
             
             // Set first page variable
             $firstPage = $currentPage - $range;
