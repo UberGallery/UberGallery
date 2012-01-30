@@ -159,7 +159,7 @@ class UberGallery {
         echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>' . PHP_EOL;
         echo '    </div>' . PHP_EOL;
         echo '</div>' . PHP_EOL;
-        echo '<!-- End UberGallery - Dual licensed under the MIT & GPL license -->' . PHP_EOL;
+        echo '<!-- End UberGallery - Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php -->' . PHP_EOL;
         
         return $this;
     }
