@@ -605,47 +605,35 @@ class UberGallery {
      */
     protected function _getPaginatorArray($currentPage, $totalPages) {
         
-        // Set some default values
-        $overflowPrev   = FALSE;
-        $overflowNext   = FALSE;
-        $paginatorArray = array();
+        // Set some variables
+        $range     = ceil($this->_pagerThresh / 2) - 1;
+        $firstPage = $currentPage - $range;
+        $lastPage  = $currentPage + $range;
 
-        if ($this->_pagerThresh > $totalPages) {
-            $range = $totalPages;
-        } else {
-            $range = $this->_pagerRange;
+        if ($firstPage <= 1) {
+            $firstDiff = 1 - $firstPage;
+            $firstPage = 1;
         }
         
-        if ($totalPages >= $this->_pagerThresh) {
-            
-            // Set first page variable
-            $firstPage = $currentPage - $range;
-            
-            if ($firstPage <= 1) {
-                $firstPage = 1;
-            } else {
-                $overflowPrev = TRUE;
-            }
-            
-            // Set last page varriable
-            $lastPage  = $currentPage + $range;
-            
-            if ($lastPage >= $totalPages) {
-                $diff = $lastPage - $totalPages;
-                $lastPage = $totalPages;
-            } else {
-                $overflowNext = TRUE;
-            }
-            
-        } else {
-            
-            // Set first page variable
-            $firstPage = 1;
-            
-            // Set last page varriable
-            $lastPage  = $totalPages;
-            
+        if ($lastPage >= $totalPages) {
+            $lastDiff = $lastPage - $totalPages;
+            $lastPage = $totalPages;
         }
+        
+        $lastPage  = $lastPage + $firstDiff;
+        $firstPage = $firstPage - $lastDiff;
+        
+        if ($firstPage <= 1 && $lastPage >= $totalPages) {
+            $firstPage = 1;
+            $lastPage  = $totalPages;
+        }
+        
+        // echo 'Total: ' . $totalPages . '<br/>';
+        // echo 'Current: ' . $currentPage . '<br/>';
+        // echo 'Range: ' . $range . '<br/>';
+        // echo 'First: ' . $firstPage . '<br/>';
+        // echo 'Last:' . $lastPage . '<br/>';
+        // die();
         
         // Create title element
         $paginatorArray[] = array(
@@ -671,7 +659,7 @@ class UberGallery {
         }
         
         // Set previous overflow
-        if ($overflowPrev) {
+        if ($firstPage > 1) {
             $paginatorArray[] = array(
                 'text' => '...',
                 'href' => '?page=' . ($currentPage - $range - 1)
@@ -679,38 +667,28 @@ class UberGallery {
         }
         
         // Generate the page elelments
-        $page = $firstPage - $diff;
-        
-        $finalRange = $range * 2 + 1;
-        
-        if ($finalRange > $totalPages) {
-            $finalRange = $totalPages;
-        }
-        
-        for ($i = 1; $i <= $finalRange; $i++) {
+        for ($i = $firstPage; $i <= $lastPage; $i++) {
             
-            if ($page == $currentPage) {
+            if ($i == $currentPage) {
                 
                 $paginatorArray[] = array(
-                    'text'  => $page,
+                    'text'  => $i,
                     'class' => 'current'
                 );
                 
             } else {
                 
                 $paginatorArray[] = array(
-                    'text' => $page,
-                    'href' => '?page=' . $page
+                    'text' => $i,
+                    'href' => '?page=' . $i
                 );
                 
             }
             
-            $page++;
-            
         }
         
         // Set next overflow 
-        if ($overflowNext) {
+        if ($lastPage < $totalPages) {
             $paginatorArray[] = array(
                 'text' => '...',
                 'href' => '?page=' . ($currentPage + $range + 1)
