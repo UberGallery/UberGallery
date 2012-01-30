@@ -114,7 +114,7 @@ Support
 If you have any questions or comments, please email me at:
 [Chris@ChrisKankiewicz.com](mailto:Chris@ChrisKankiewicz.com)
 
-UberGallery updates and news can be found on our [Tumblr blog](http://news.ubergallery.net/) or by
+UberGallery updates and news can be found on our [blog](http://news.ubergallery.net/) or by
 [following us on Twitter](http://twitter.com/ubergallery).
 
 To report a bug, visit the issue tracker on Github at:
