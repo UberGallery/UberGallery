@@ -6,9 +6,7 @@
  * file types. Simply upload your images and UberGallery will automatically 
  * generate thumbnails and output standards complaint XHTML markup on the fly.
  * 
- * This software is dual liscensed under the following licenses:
- *     MIT License      http://www.ubergallery.net/COPYING-MIT.txt
- *     GPL Version 3    http://www.ubergallery.net/COPYING-GPL.txt
+ * This software is liscensed under MIT License hhttp://www.opensource.org/licenses/mit-license.php
  * 
  * More info available at http://www.ubergallery.net
  * 

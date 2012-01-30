@@ -5,28 +5,27 @@ Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
 
 Introduction
 ------------
-UberGallery is an easy to use, simple to manage, web photo gallery written in PHP and dual licensed
-under the [MIT License](http://www.ubergallery.net/COPYING-MIT.txt) and 
-[GNU General Public License (GPL) Version 3](http://www.ubergallery.net/COPYING-GPL.txt). UberGallery 
-**does not** require a database and supports JPEG, GIF and PNG file types. Simply upload your images
-and UberGallery will automatically generate thumbnails and output standards compliant XHTML markup
-on the fly.
+UberGallery is an easy to use, simple to manage, web photo gallery written in PHP and licensed under
+the [MIT License](http://www.opensource.org/licenses/mit-license.php). UberGallery **does not**
+require a database and supports JPEG, GIF and PNG file types. Simply upload your images and
+UberGallery will automatically generate thumbnails and output standards compliant XHTML markup on
+the fly.
 
 
 Features
 --------
-* Simple first time installation
-* Database-less configuration
-* Include galleries within pre-existing sites
-* Create multiple galleries with a single installation
-* Easily customize your gallery styles via CSS
-* Install and update the gallery easily wth Git (optional)
+  * Simple first time installation
+  * Database-less configuration
+  * Include galleries within pre-existing sites
+  * Create multiple galleries with a single installation
+  * Easily customize your gallery styles via CSS
+  * Install and update the gallery easily wth Git (optional)
 
 
 Requirements
 ------------
-UberGallery requires PHP 5.2+ and the PHP-GD image library to work properly. For more information
-on PHP and the PHP-GD image library, please visit [http://php.net](http://php.net).
+UberGallery requires PHP 5.2+ and the PHP-GD image library to work properly. For more information on
+PHP and the PHP-GD image library, please visit [http://php.net](http://php.net).
 
 
 Simple Installation
@@ -47,8 +46,8 @@ Open your web browser and load the page where you installed UberGallery.
 
 Custom Installation
 -------------------
-Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings to
-your liking.
+Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
+to your liking.
 
 Upload the `resources/` folder to your web server.
 
@@ -112,19 +111,19 @@ the following commands:
 
 Support
 -------
-If you have any questions or comments, please email me at: [Chris@ChrisKankiewicz.com](mailto:Chris@ChrisKankiewicz.com)
+If you have any questions or comments, please email me at:
+[Chris@ChrisKankiewicz.com](mailto:Chris@ChrisKankiewicz.com)
 
 UberGallery updates and news can be found on our [Tumblr blog](http://news.ubergallery.net/) or by
 [following us on Twitter](http://twitter.com/ubergallery).
 
-To report a bug, visit the issue tracker on Github at: http://github.com/UberGallery/ubergallery/issues
+To report a bug, visit the issue tracker on Github at:
+http://github.com/UberGallery/ubergallery/issues
 
 
 License
 -------
 Copyright (C) 2012 [Chris Kankiewicz](http://www.chriskankiewicz.com)
 
-UberGallery is dual licensed under the terms of the
-[MIT License](http://www.ubergallery.net/COPYING-MIT.txt) and
-[GNU General Public License (GPL) Version 3](http://www.ubergallery.net/COPYING-GPL.txt).
-See `COPYING-MIT` and `COPYING-GPL` for details.
+UberGallery is licensed under the terms of the
+[MIT License](http://www.opensource.org/licenses/mit-license.php).
