@@ -610,30 +610,27 @@ class UberGallery {
         $firstPage = $currentPage - $range;
         $lastPage  = $currentPage + $range;
 
+        // Ensure first page is within the bounds of available pages
         if ($firstPage <= 1) {
             $firstDiff = 1 - $firstPage;
             $firstPage = 1;
         }
         
+        // Ensure last page is within the bounds of available pages
         if ($lastPage >= $totalPages) {
             $lastDiff = $lastPage - $totalPages;
             $lastPage = $totalPages;
         }
         
+        // Apply page differences
         $lastPage  = $lastPage + $firstDiff;
         $firstPage = $firstPage - $lastDiff;
         
+        // Recheck first and last page to ensure they're within proper bounds
         if ($firstPage <= 1 && $lastPage >= $totalPages) {
             $firstPage = 1;
             $lastPage  = $totalPages;
         }
-        
-        // echo 'Total: ' . $totalPages . '<br/>';
-        // echo 'Current: ' . $currentPage . '<br/>';
-        // echo 'Range: ' . $range . '<br/>';
-        // echo 'First: ' . $firstPage . '<br/>';
-        // echo 'Last:' . $lastPage . '<br/>';
-        // die();
         
         // Create title element
         $paginatorArray[] = array(
