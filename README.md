@@ -125,4 +125,4 @@ License
 -------
 UberGallery is distributed under the terms of the
 [MIT License](http://www.opensource.org/licenses/mit-license.php).
-Copyright (C) 2012 [Chris Kankiewicz](http://www.chriskankiewicz.com)
+Copyright © 2012 [Chris Kankiewicz](http://www.chriskankiewicz.com)
