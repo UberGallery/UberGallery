@@ -18,7 +18,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.2.6';
+    const VERSION = '2.2.7';
     
     // Set default config variables
     protected $_cacheExpire = 0;
@@ -36,7 +36,6 @@ class UberGallery {
     protected $_index       = NULL;
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
-    
     
     /**
      * UberGallery construct function. Runs on object creation.
@@ -855,13 +854,16 @@ class UberGallery {
      */
     protected function _getRelativePath($fromPath, $toPath) {
         
+        // Define the OS specific directory separator
+        define('DS', DIRECTORY_SEPARATOR);
+        
         // Remove double slashes from path strings
-        $fromPath   = str_replace('//', '/', $fromPath);
-        $toPath     = str_replace('//', '/', $toPath);
+        $fromPath   = str_replace(DS . DS, DS, $fromPath);
+        $toPath     = str_replace(DS . DS, DS, $toPath);
         
         // Explode working dir and cache dir into arrays
-        $fromPathArray  = explode('/', $fromPath);
-        $toPathArray    = explode('/', $toPath);
+        $fromPathArray  = explode(DS, $fromPath);
+        $toPathArray    = explode(DS, $toPath);
         
         // Remove last fromPath array element if it's empty
         $x = count($fromPathArray) - 1;
