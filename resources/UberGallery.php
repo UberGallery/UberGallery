@@ -646,8 +646,9 @@ class UberGallery {
         } else {
             
             $paginatorArray[] = array(
-                'text' => '&lt;',
-                'href' => '?page=' . ($currentPage - 1)
+                'text'  => '&lt;',
+                'class' => 'active',
+                'href'  => '?page=' . ($currentPage - 1)
             );
             
         }
@@ -655,8 +656,9 @@ class UberGallery {
         // Set previous overflow
         if ($firstPage > 1) {
             $paginatorArray[] = array(
-                'text' => '...',
-                'href' => '?page=' . ($currentPage - $range - 1)
+                'text'  => '...',
+                'class' => 'more',
+                'href'  => '?page=' . ($currentPage - $range - 1)
             );
         }
         
@@ -673,8 +675,9 @@ class UberGallery {
             } else {
                 
                 $paginatorArray[] = array(
-                    'text' => $i,
-                    'href' => '?page=' . $i
+                    'text'  => $i,
+                    'class' => 'active',
+                    'href'  => '?page=' . $i
                 );
                 
             }
@@ -684,8 +687,9 @@ class UberGallery {
         // Set next overflow 
         if ($lastPage < $totalPages) {
             $paginatorArray[] = array(
-                'text' => '...',
-                'href' => '?page=' . ($currentPage + $range + 1)
+                'text'  => '...',
+                'class' => 'more',
+                'href'  => '?page=' . ($currentPage + $range + 1)
             );
         }
         
@@ -700,8 +704,9 @@ class UberGallery {
         } else {
             
             $paginatorArray[] = array(
-                'text' => '&gt;',
-                'href' => '?page=' . ($currentPage + 1)
+                'text'  => '&gt;',
+                'class' => 'active',
+                'href'  => '?page=' . ($currentPage + 1)
             );
             
         }
