@@ -35,7 +35,6 @@ class UberGallery {
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
     
-    
     /**
      * UberGallery construct function. Runs on object creation.
      */
@@ -645,8 +644,9 @@ class UberGallery {
         } else {
             
             $paginatorArray[] = array(
-                'text' => '&lt;',
-                'href' => '?page=' . ($currentPage - 1)
+                'text'  => '&lt;',
+                'class' => 'active',
+                'href'  => '?page=' . ($currentPage - 1)
             );
             
         }
@@ -654,8 +654,9 @@ class UberGallery {
         // Set previous overflow
         if ($firstPage > 1) {
             $paginatorArray[] = array(
-                'text' => '...',
-                'href' => '?page=' . ($currentPage - $range - 1)
+                'text'  => '...',
+                'class' => 'more',
+                'href'  => '?page=' . ($currentPage - $range - 1)
             );
         }
         
@@ -672,8 +673,9 @@ class UberGallery {
             } else {
                 
                 $paginatorArray[] = array(
-                    'text' => $i,
-                    'href' => '?page=' . $i
+                    'text'  => $i,
+                    'class' => 'active',
+                    'href'  => '?page=' . $i
                 );
                 
             }
@@ -683,8 +685,9 @@ class UberGallery {
         // Set next overflow 
         if ($lastPage < $totalPages) {
             $paginatorArray[] = array(
-                'text' => '...',
-                'href' => '?page=' . ($currentPage + $range + 1)
+                'text'  => '...',
+                'class' => 'more',
+                'href'  => '?page=' . ($currentPage + $range + 1)
             );
         }
         
@@ -699,8 +702,9 @@ class UberGallery {
         } else {
             
             $paginatorArray[] = array(
-                'text' => '&gt;',
-                'href' => '?page=' . ($currentPage + 1)
+                'text'  => '&gt;',
+                'class' => 'active',
+                'href'  => '?page=' . ($currentPage + 1)
             );
             
         }
@@ -853,13 +857,16 @@ class UberGallery {
      */
     protected function _getRelativePath($fromPath, $toPath) {
         
+        // Define the OS specific directory separator
+        define('DS', DIRECTORY_SEPARATOR);
+        
         // Remove double slashes from path strings
-        $fromPath   = str_replace('//', '/', $fromPath);
-        $toPath     = str_replace('//', '/', $toPath);
+        $fromPath   = str_replace(DS . DS, DS, $fromPath);
+        $toPath     = str_replace(DS . DS, DS, $toPath);
         
         // Explode working dir and cache dir into arrays
-        $fromPathArray  = explode('/', $fromPath);
-        $toPathArray    = explode('/', $toPath);
+        $fromPathArray  = explode(DS, $fromPath);
+        $toPathArray    = explode(DS, $toPath);
         
         // Remove last fromPath array element if it's empty
         $x = count($fromPathArray) - 1;
