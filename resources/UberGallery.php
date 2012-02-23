@@ -38,7 +38,7 @@ class UberGallery {
     /**
      * UberGallery construct function. Runs on object creation.
      */
-    function __construct() {
+    public function __construct() {
         
         // Sanitize input and set current page
         if (isset($_GET['page'])) {
