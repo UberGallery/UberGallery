@@ -858,7 +858,7 @@ class UberGallery {
     protected function _getRelativePath($fromPath, $toPath) {
         
         // Define the OS specific directory separator
-        define('DS', DIRECTORY_SEPARATOR);
+        if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
         
         // Remove double slashes from path strings
         $fromPath   = str_replace(DS . DS, DS, $fromPath);
