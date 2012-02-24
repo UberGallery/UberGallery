@@ -373,9 +373,9 @@ class UberGallery {
      * @param string $directory Path to directory
      * @param boolean $paginate Whether or not paginate the array (default = true)
      * @return array
-     * @access protected 
+     * @access private 
      */
-    protected function _readDirectory($directory, $paginate = true) {
+    private function _readDirectory($directory, $paginate = true) {
         
         // Set index path
         $index = $this->_cacheDir . '/' . md5($directory) . '-' . 'files' . '.index';
@@ -439,9 +439,9 @@ class UberGallery {
      * @param string $source Path to source image
      * @param int $thumbSize Desired thumbnail size in pixels 
      * @param int $quality Thumbnail quality, applies to JPG and JPEGs only (Value from 1 to 100)
-     * @access protected
+     * @access private
      */
-    protected function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
+    private function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
         
         // Set defaults thumbnail size if not specified
         if ($thumbSize === NULL) {
@@ -511,9 +511,9 @@ class UberGallery {
      * 
      * @param string $filePath Path to stored index
      * @return array
-     * @access protected
+     * @access private
      */
-    protected function _readIndex($filePath) {        
+    private function _readIndex($filePath) {        
         // Return false if file doesn't exist
         if (!file_exists($filePath)) {
             return false;
@@ -535,9 +535,9 @@ class UberGallery {
      * @param string $array Array to be indexed
      * @param string $filePath Path to where index will be stored
      * @return boolean
-     * @access protected
+     * @access private
      */
-    protected function _createIndex($array, $filePath) {
+    private function _createIndex($array, $filePath) {
         // Serialize array
         $index = fopen($filePath, 'w');
         $serializedArray = serialize($array);
@@ -557,9 +557,9 @@ class UberGallery {
      * 
      * @param array $array Array to gather stats from
      * @return array
-     * @access protected
+     * @access private
      */
-    protected function _readGalleryStats($array) {
+    private function _readGalleryStats($array) {
         // Caclulate total array elements
         $totalElements = count($array);
         
@@ -596,9 +596,9 @@ class UberGallery {
      * @param int $currentPage The current page being viewed
      * @param int $totalPages Total number of pages in the gallery
      * @return array
-     * @access protected
+     * @access private
      */
-    protected function _getPaginatorArray($currentPage, $totalPages) {
+    private function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some variables
         $range     = ceil($this->_threshold / 2) - 1;
@@ -721,9 +721,9 @@ class UberGallery {
      * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @return array
-     * @access protected
+     * @access private
      */
-    protected function _arraySort($array, $sortMethod) {
+    private function _arraySort($array, $sortMethod) {
         // Create empty array
         $sortedArray = array();
         
@@ -770,9 +770,9 @@ class UberGallery {
      * 
      * @param string $array Array to be paginated
      * @return array A parial array representing the current page
-     * @access protected
+     * @access private
      */
-    protected function _arrayPaginate($array, $resultsPerPage, $currentPage) {
+    private function _arrayPaginate($array, $resultsPerPage, $currentPage) {
         // Page varriables
         $totalElements = count($array);
         
@@ -829,9 +829,9 @@ class UberGallery {
      * 
      * @param string $fileName
      * @return boolean
-     * @access protected
+     * @access private
      */
-    protected function _isImage($filePath) {
+    private function _isImage($filePath) {
         // Get file type
         if (function_exists('exif_imagetype')) {
             $imgType = @exif_imagetype($filePath);
@@ -858,9 +858,9 @@ class UberGallery {
      * @param string $fromPath Starting path
      * @param string $toPath Ending path
      * @return string $relativePath
-     * @access protected
+     * @access private
      */
-    protected function _getRelativePath($fromPath, $toPath) {
+    private function _getRelativePath($fromPath, $toPath) {
         
         // Define the OS specific directory separator
         if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
