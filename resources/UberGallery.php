@@ -835,7 +835,12 @@ class UberGallery {
      */
     protected function _isImage($filePath) {
         // Get file type
-        $imgType = @exif_imagetype($filePath);
+        if (function_exists('exif_imagetype')) {
+            $imgType = @exif_imagetype($filePath);
+        } else {
+            $imgArray = @getimagesize($filePath);
+            $imgType = $imgArray[2];
+        }
 
         // Array of accepted image types
         $allowedTypes = array(1, 2, 3);
