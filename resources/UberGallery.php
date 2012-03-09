@@ -608,6 +608,8 @@ class UberGallery {
         $range     = ceil($this->_threshold / 2) - 1;
         $firstPage = $currentPage - $range;
         $lastPage  = $currentPage + $range;
+        $firstDiff = NULL;
+        $lastDiff  = NULL;
 
         // Ensure first page is within the bounds of available pages
         if ($firstPage <= 1) {
