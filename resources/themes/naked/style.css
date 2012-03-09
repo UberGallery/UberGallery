@@ -1,0 +1,139 @@
+/* -------------------------------------------------------------------------- */
+/* -----| GALLERY LIST |----------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
+#galleryList {
+    margin: 0;
+    padding: 0 4px;
+}
+
+#galleryList li {
+    display: inline-block;
+    float: left;
+    list-style: none;
+    margin: 5px 6px;
+    padding: 0;
+}
+
+#galleryList li a {
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    display: block;
+    padding: 4px;
+}
+
+#galleryList li a:hover {
+    border-color: #999;
+}
+
+#galleryList li a img {
+    border: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* -----| GALLERY FOOTER |--------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
+#galleryFooter {
+    border-top: 1px solid #CCC;
+    margin-top: 10px;
+    padding: 3px;
+}
+
+#credit {
+    float: right;
+    font-size: 0.9em;
+    margin: 4px 0;
+}
+
+#galleryFooter #credit a {
+    color: #369;
+}
+
+
+/* ---------------------------------------- */
+/* ----|  PAGINATION  |-------------------- */
+/* ---------------------------------------- */
+
+#galleryPagination {
+    color: #369;
+    float: left;
+    font-size: .9em;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+}
+
+#galleryPagination li {
+    border: 1px solid transparent;
+    border-radius: 3px;
+    display: block;
+    float: left;
+    list-style: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#galleryPagination li:hover {
+    background-color: #EFEFEF;
+    border: 1px solid #CCC;
+}
+
+#galleryPagination li.title {
+    background: transparent url(../../page_white_stack.png) no-repeat left center;
+    border: 1px solid transparent;
+    font-weight: normal;
+    padding: 3px 6px 3px 22px;
+}
+
+#galleryPagination li a, #galleryPagination li a:visited {
+    color: #369;
+    display: block;
+    padding: 3px 6px;
+    text-decoration: none;
+}
+
+#galleryPagination li.current {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #333;
+    font-weight: bold;
+    padding: 3px 6px;
+}
+
+#galleryPagination li.inactive {
+    background-color: transparent;
+    color: #ACACAC;
+    border: 1px solid transparent;
+    display: block;
+    padding: 3px 6px;
+}
+
+
+/* ---------------------------------------- */
+/* ----|  MISCELLANEOUS  |----------------- */
+/* ---------------------------------------- */
+
+/* --- CLEAR FIX --- */
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+* html .clearfix {
+    zoom: 1; /* IE6 */
+}
+
+*:first-child+html .clearfix {
+    zoom: 1; /* IE7 */
+}
+
+/**
+ * UberGallery.css created and implimented by,
+ * Chris Kankiewicz -- http://www.ChrisKankiewicz.com
+ */
