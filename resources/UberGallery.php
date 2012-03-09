@@ -35,6 +35,7 @@ class UberGallery {
     protected $_rThumbsDir  = NULL;
     protected $_rImgDir     = NULL;
     
+    
     /**
      * UberGallery construct function. Runs on object creation.
      */
@@ -118,49 +119,16 @@ class UberGallery {
      * @access public
      */
     public function createGallery($directory, $relText = 'colorbox') {
+
+        // Get the gallery data array and set the template path         
+        $galleryArray = $this->readImageDirectory($directory);
+        $templatePath = $this->_appDir . '/templates/default.php';
         
-        $gallery = $this->readImageDirectory($directory);
-        
-        // Echo formatted gallery markup
-        echo '<!-- Start UberGallery ' . UberGallery::VERSION .' - Copyright (c) ' . date('Y') . ' Chris Kankiewicz (http://www.ChrisKankiewicz.com) -->' . PHP_EOL;
-        echo '<div id="galleryWrapper">' . PHP_EOL;
-        echo '    <ul id="galleryList" class="clearfix">' . PHP_EOL;
-        
-        foreach ($gallery['images'] as $image) {
-            echo "            <li><a href=\"{$image['file_path']}\" title=\"{$image['file_title']}\" rel=\"{$relText}\"><img src=\"{$image['thumb_path']}\" alt=\"{$image['file_title']}\"/></a></li>" . PHP_EOL;
-        }
-        
-        echo '    </ul>' . PHP_EOL;
-        echo '    <div id="galleryFooter" class="clearfix">' . PHP_EOL;
-        
-        if ($gallery['stats']['total_pages'] > 1) {
-            echo '        <ul id="galleryPagination">' . PHP_EOL;
-            
-            foreach ($gallery['paginator'] as $item) {
-                
-                if (!empty($item['href'])) {
-                    $itemText = "<a href=\"{$item['href']}\">{$item['text']}</a>";
-                } else {
-                    $itemText = $item['text'];
-                }
-                
-                if (!empty($item['class'])) {
-                    echo "            <li class=\"{$item['class']}\">{$itemText}</li>" . PHP_EOL;
-                } else {
-                    echo "            <li>{$itemText}</li>" . PHP_EOL;
-                }
-                
-            }
-            
-            echo '        </ul>' . PHP_EOL;
-        }
-        
-        echo '        <div id="credit">Powered by, <a href="http://www.ubergallery.net">UberGallery</a></div>' . PHP_EOL;
-        echo '    </div>' . PHP_EOL;
-        echo '</div>' . PHP_EOL;
-        echo '<!-- End UberGallery - Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php -->' . PHP_EOL;
+        // Echo the template contents
+        echo $this->_readTemplate($templatePath, $galleryArray);
         
         return $this;
+        
     }
     
     
@@ -212,6 +180,7 @@ class UberGallery {
         return $galleryArray;
     }
 
+
     /**
      * Returns the theme name.
      * 
@@ -221,6 +190,7 @@ class UberGallery {
         // Return the theme name
         return $this->_themeName;
     }
+    
     
     /**
      * Returns the path to the chosen theme directory.
@@ -243,6 +213,7 @@ class UberGallery {
         return $themePath;
     }
     
+    
     /**
      * Get an array of error messages or false when empty.
      * 
@@ -256,6 +227,7 @@ class UberGallery {
             return false;
         }
     }
+     
      
     /**
      * Returns XHTML link tag for chosen Colorbox stylesheet.
@@ -273,6 +245,7 @@ class UberGallery {
         
         return '<link rel="stylesheet" type="text/css" href="' . $colorboxPath . '" />';
     }
+
 
     /**
      * Set cache expiration time in minutes.
@@ -299,6 +272,7 @@ class UberGallery {
         return $this;
     }
     
+    
     /**
      * Add a message to the system message array
      * 
@@ -321,6 +295,7 @@ class UberGallery {
         
         return true;
     }
+    
     
     /**
      * Set thumbnail size in pixels.
@@ -429,6 +404,34 @@ class UberGallery {
         
         // Return the array
         return $dirArray;
+    }
+
+
+    /**
+     * Returns a template string with custom data injected into it. 
+     * 
+     * @param string $templatePath Path to template file
+     * @param array $data Array of data to be injected into the template
+     * @return string Processed template string
+     * @access private 
+     */
+    private function _readTemplate($templatePath, $data) {
+        
+        // Extract array to variables
+        extract($data);
+        
+        // Start the output buffer
+        ob_start();
+        
+        // Include the template
+        include $templatePath;
+        
+        // Set buffer output to a variable
+        $output = ob_get_clean();
+        
+        // Return the output
+        return $output;
+        
     }
     
     
@@ -589,6 +592,7 @@ class UberGallery {
         // Return array
         return $statsArray;
     }
+    
     
     /**
      * Returns a formatted array for the gallery paginator.
