@@ -452,7 +452,7 @@ class UberGallery {
         }
         
         // MD5 hash of source image
-        $fileHash = md5_file($source);
+        $fileHash = md5($source);
         
         // Get file extension from source image
         $fileExtension = pathinfo($source, PATHINFO_EXTENSION);
