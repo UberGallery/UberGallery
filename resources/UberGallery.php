@@ -146,10 +146,11 @@ class UberGallery {
         // Instantiate gallery array
         $galleryArray = array();
         
-        // Return the cached array if it exists and hasn't expired
-        if (file_exists($this->_index) && (time() - filemtime($this->_index)) / 60 < $this->_cacheExpire) {
-            $galleryArray = $this->_readIndex($this->_index);
-        } else {
+        // Get the cached array 
+        $galleryArray = $this->_readIndex($this->_index);
+        
+        // If cached array is false, read the directory
+        if (!$galleryArray) {
                 
             // Get array of directory
             $dirArray = $this->_readDirectory($directory);
@@ -355,13 +356,11 @@ class UberGallery {
         // Set index path
         $index = $this->_cacheDir . '/' . md5($directory) . '-' . 'files' . '.index';
         
+        // Read directory array
+        $dirArray = $this->_readIndex($index);
+        
         // Serve from cache if file exists and caching is enabled e
-        if (file_exists($index) && (time() - filemtime($index)) / 60 < $this->_cacheExpire) {
-            
-            // Read directory array
-            $dirArray = $this->_readIndex($index);
-            
-        } else {
+        if (!$dirArray) {
             
             // Loop through directory and add information to array
             if ($handle = opendir($directory)) {
@@ -516,9 +515,10 @@ class UberGallery {
      * @return array
      * @access private
      */
-    private function _readIndex($filePath) {        
-        // Return false if file doesn't exist
-        if (!file_exists($filePath)) {
+    private function _readIndex($filePath) {
+        
+        // Return false if file doesn't exist or the cache has expired
+        if (!file_exists($filePath) || (time() - filemtime($filePath)) / 60 >= $this->_cacheExpire) {
             return false;
         }
         
