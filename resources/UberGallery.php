@@ -124,6 +124,9 @@ class UberGallery {
         $galleryArray = $this->readImageDirectory($directory);
         $templatePath = $this->_appDir . '/templates/default.php';
         
+        // Set the relative text attribute
+        $galleryArray['relText'] = $relText;
+        
         // Echo the template contents
         echo $this->_readTemplate($templatePath, $galleryArray);
         
