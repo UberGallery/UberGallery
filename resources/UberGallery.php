@@ -523,8 +523,7 @@ class UberGallery {
         }
         
         // Read index and unsearialize the array
-        $index = fopen($filePath, 'r');
-        $indexString = fread($index,filesize($filePath));
+        $indexString = file_get_contents($filePath);
         $indexArray = unserialize($indexString);
         
         // Return the array
@@ -542,11 +541,10 @@ class UberGallery {
      */
     private function _createIndex($array, $filePath) {
         // Serialize array
-        $index = fopen($filePath, 'w');
         $serializedArray = serialize($array);
         
         // Write serialized array to index
-        if (fwrite($index, $serializedArray)) {
+        if (file_put_contents($filePath, $serializedArray)) {
             return true;
         } else {
             return false;
