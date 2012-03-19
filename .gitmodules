@@ -1,0 +1,3 @@
+[submodule "resources/themes/uber-responsive"]
+	path = resources/themes/uber-responsive
+	url = git://github.com/UberGallery/uber-responsive.git
