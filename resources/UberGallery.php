@@ -16,7 +16,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.3.0';
+    const VERSION = '2.3.1-dev';
     
     // Set default config variables
     protected $_cacheExpire = 0;
@@ -550,6 +550,7 @@ class UberGallery {
         if (file_put_contents($filePath, $serializedArray)) {
             return true;
         } else {
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
             return false;
         }
         
