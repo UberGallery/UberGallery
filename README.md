@@ -88,6 +88,7 @@ Install with Git
 SSH into the your server and clone the UberGallery repository:
 
     git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
+    git submodule update --init
 
 Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
