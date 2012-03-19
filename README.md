@@ -112,6 +112,7 @@ the following commands:
 
     cd /path/to/gallery-directory
     git pull origin master
+    git submodule update
 
 
 Support
