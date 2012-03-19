@@ -88,18 +88,22 @@ Install with Git
 SSH into the your server and clone the UberGallery repository:
 
     git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
+    
+CD to your UberGallery installation and initialize the submodules:
+
+    cd /path/to/gallery-directory
     git submodule update --init
 
 Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
-    cp /path/to/gallery-directory/resource/sample.galleryConfig.ini /path/to/gallery-directory/resources/galleryConfig.ini
-    nano /path/to/gallery-directory/resources/galleryConfig.ini
-
-Upload images to the `gallery-images/` folder within your gallery directory.
+    cp resource/sample.galleryConfig.ini resources/galleryConfig.ini
+    nano resources/galleryConfig.ini
 
 Make the `resources/cache/` directory writable by the web server.
     
-    chmod 777 -R /path/to/resources/cache
+    chmod 777 -R resources/cache
+
+Upload images to the `gallery-images/` folder within your gallery directory.
         
 Open your web browser and load the page where you installed UberGallery.
 
