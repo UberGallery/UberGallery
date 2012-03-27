@@ -85,14 +85,13 @@ Open your web browser and load the page where you installed UberGallery.
 
 Install with Git
 ----------------
-SSH into the your server and clone the UberGallery repository:
+SSH into the your server and clone the UberGallery repository and submodules:
 
-    git clone git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
+    git clone --recursive git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
     
-CD to your UberGallery installation and initialize the submodules:
+CD to your UberGallery installation:
 
     cd /path/to/gallery-directory
-    git submodule update --init
 
 Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
