@@ -530,8 +530,11 @@ class UberGallery {
         $indexString = file_get_contents($filePath);
         $indexArray = unserialize($indexString);
         
+        // Decode the array
+        $decodedArray = $this->_arrayDecode($indexArray);
+        
         // Return the array
-        return $indexArray;
+        return $decodedArray;
     }
     
 
@@ -544,8 +547,12 @@ class UberGallery {
      * @access private
      */
     private function _createIndex($array, $filePath) {
+        
+        // Encode the array
+        $encodedArray = $this->_arrayEncode($array);
+        
         // Serialize array
-        $serializedArray = serialize($array);
+        $serializedArray = serialize($encodedArray);
         
         // Write serialized array to index
         if (file_put_contents($filePath, $serializedArray)) {
@@ -554,6 +561,88 @@ class UberGallery {
             $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
             return false;
         }
+        
+    }
+    
+    /**
+     * Runs all array strings through base64_encode.
+     * This prevents errors with non-English languages.
+     * 
+     * @param array $array Array to be encoded
+     * @return array
+     * @access private
+     */
+    private function _arrayEncode($array) {
+        
+        $encodedArray = array();
+        
+        foreach ($array as $key => $item) {
+            
+            // Base64 encode the array keys
+            $key = base64_encode($key);
+            
+            // Base64 encode the array values
+            if (is_array($item)) {
+                    
+                // Recursively call _arrayEncode()
+                $encodedArray[$key] = $this->_arrayEncode($item);
+                
+            } elseif (is_string($item)) {
+                
+                // Base64 encode the string
+                $encodedArray[$key] = base64_encode($item);
+                
+            } else {
+                
+                // Pass value unaltered to new array
+                $encodedArray[$key] = $item;
+                
+            }
+        }
+        
+        // Return the encoded array
+        return $encodedArray;
+        
+    }
+    
+    
+    /**
+     * Decodes an encoded array.
+     * 
+     * @param array $array Array to be decoded
+     * @return array
+     * @access private
+     */
+    private function _arrayDecode($array) {
+        
+        $decodedArray = array();
+        
+        foreach ($array as $key => $item) {
+            
+            // Base64 decode the array keys
+            $key = base64_decode($key);
+            
+            // Base64 decode the array values
+            if (is_array($item)) {
+                    
+                // Recursively call _arrayDecode()
+                $decodedArray[$key] = $this->_arrayDecode($item);
+                
+            } elseif (base64_decode($item)) {
+                
+                // Base64 decode the string
+                $decodedArray[$key] = base64_decode($item);
+                
+            } else {
+                
+                // Pass value unaltered to new array
+                $decodedArray[$key] = $item;
+                
+            }
+        }
+        
+        // Return the decoded array
+        return $decodedArray;
         
     }
     
