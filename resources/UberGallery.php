@@ -634,7 +634,7 @@ class UberGallery {
                 // Recursively call _arrayDecode()
                 $decodedArray[$key] = $this->_arrayDecode($item);
                 
-            } elseif (base64_decode($item)) {
+            } elseif (is_string($item)) {
                 
                 // Base64 decode the string
                 $decodedArray[$key] = base64_decode($item);
