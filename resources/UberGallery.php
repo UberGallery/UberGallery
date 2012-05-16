@@ -530,8 +530,10 @@ class UberGallery {
             return false;
         }
         
-        // Read index and unsearialize the array
+        // Read file index
         $indexString = file_get_contents($filePath);
+        
+        // Unsearialize the array
         $indexArray = unserialize($indexString);
         
         // Decode the array
