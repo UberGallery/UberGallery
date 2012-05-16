@@ -178,7 +178,9 @@ class UberGallery {
             $galleryArray['paginator'] = $this->_getPaginatorArray($galleryArray['stats']['current_page'], $galleryArray['stats']['total_pages']);
             
             // Save the sorted array
-            $this->_createIndex($galleryArray, $this->_index);
+            if ($this->_cacheExpire > 0) {
+                $this->_createIndex($galleryArray, $this->_index);
+            }
         }
         
         // Return the array
@@ -388,7 +390,9 @@ class UberGallery {
             }
             
             // Create directory array
-            $this->_createIndex($dirArray, $index);
+            if ($this->_cacheExpire > 0) {
+                $this->_createIndex($dirArray, $index);
+            }
         }
         
         // Set error message if there are no images
