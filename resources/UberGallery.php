@@ -26,12 +26,16 @@ class UberGallery {
     protected $_index      = NULL;
     protected $_rThumbsDir = NULL;
     protected $_rImgDir    = NULL;
+    protected $_now        = NULL;
     
     
     /**
      * UberGallery construct function. Runs on object creation.
      */
     public function __construct() {
+        
+        // Get timestamp for the current time
+        $this->_now = time();
         
         // Sanitize input and set current page
         if (isset($_GET['page'])) {
@@ -59,6 +63,7 @@ class UberGallery {
             // Apply configuration
             $this->setCacheExpiration($config['basic_settings']['cache_expiration']);
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
+            $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
             $this->setThemeName($config['basic_settings']['theme_name']);
             $this->setSortMethod($config['advanced_settings']['images_sort_by']);
             $this->setDebugging($config['advanced_settings']['enable_debugging']);
@@ -280,8 +285,21 @@ class UberGallery {
      * @access public
      */
     public function setThumbSize($width = 100, $height = 100) {
-        $this->_config['thumb_size']['width'] = $width;
-        $this->_config['thumb_size']['height'] = $height;
+        $this->_config['thumbnail']['width'] = $width;
+        $this->_config['thumbnail']['height'] = $height;
+        
+        return $this;
+    }
+
+    
+    /**
+     * Set thumbnail quality as a value from 1 - 100.
+     * 
+     * @param int $quality Thumbnail size in pixels.
+     * @access public
+     */
+    public function setThumbQuality($quality = 75) {
+        $this->_config['thumbnail']['quality'] = $quality;
         
         return $this;
     }
@@ -482,20 +500,26 @@ class UberGallery {
      * modified from function found on http://www.findmotive.com/tag/php/
      * 
      * @param string $source Path to source image
-     * @param int $thumbSize Desired thumbnail size in pixels 
+     * @param int $thumbWidth Desired thumbnail width size in pixels
+     * @param int $thumbHeight Desired thumbnail height size in pixels
      * @param int $quality Thumbnail quality, applies to JPG and JPEGs only (Value from 1 to 100)
      * @access private
      */
-    private function _createThumbnail($source, $thumbWidth = NULL, $thumbHeight = NULL, $quality = 75) {
+    private function _createThumbnail($source, $thumbWidth = NULL, $thumbHeight = NULL, $quality = NULL) {
         
         // Set defaults thumbnail width if not specified
         if ($thumbWidth === NULL) {
-            $thumbWidth = $this->_config['thumb_size']['width'];
+            $thumbWidth = $this->_config['thumbnail']['width'];
         }
         
         // Set defaults thumbnail height if not specified
         if ($thumbHeight === NULL) {
-            $thumbHeight = $this->_config['thumb_size']['height'];
+            $thumbHeight = $this->_config['thumbnail']['height'];
+        }
+        
+        // Set defaults thumbnail height if not specified
+        if ($quality === NULL) {
+            $quality = $this->_config['thumbnail']['quality'];
         }
         
         // MD5 hash of source image path
@@ -505,33 +529,50 @@ class UberGallery {
         $fileExtension = pathinfo($source, PATHINFO_EXTENSION);
         
         // Build file name
-        $fileName = $thumbWidth . 'x' . $thumbHeight . '-' . $fileHash . '.' . $fileExtension;
+        $fileName = $thumbWidth . 'x' . $thumbHeight . '-' . $quality . '-' . $fileHash . '.' . $fileExtension;
         
         // Build thumbnail destination path
         $destination = $this->_config['cache_dir'] . '/' . $fileName;
         
-        // If file already exists return relative path to thumbnail
-        if (file_exists($destination)) {
+        // If file is cached return relative path to thumbnail
+        if ($this->_isFileCached($destination)) {
             $relativePath = $this->_rThumbsDir . '/' . $fileName;
             return $relativePath;
         }
         
         // Get needed image information
         $imgInfo = getimagesize($source);
-        $width = $imgInfo[0];
-        $height = $imgInfo[1];
-        $x = 0;
-        $y = 0;
-
-        // Make the image a square (only if square thumbnail is desired)
-        if ($thumbWidth == $thumbHeight) {
-            if ($width > $height) {
-                $x = ceil(($width - $height) / 2 );
-                $width = $height;
-            } elseif($height > $width) {
-                $y = ceil(($height - $width) / 2);
-                $height = $width;
-            }
+        $width   = $imgInfo[0];
+        $height  = $imgInfo[1];
+        $x       = 0;
+        $y       = 0;
+        
+        // Calculate ratios
+        $srcRatio   = $width / $height;
+        $thumbRatio = $thumbWidth / $thumbHeight;
+        
+        if ($srcRatio > $thumbRatio) {
+            
+            // Preserver original width
+            $originalWidth = $width;
+            
+            // Crop image width to proper ratio
+            $width = $height * $thumbRatio;
+            
+            // Set thumbnail x offset
+            $x = ceil(($originalWidth - $width) / 2);
+            
+        } elseif ($srcRatio < $thumbRatio) {
+            
+            // Preserver original height
+            $originalHeight = $height;
+            
+            // Crop image height to proper ratio
+            $height = ($width / $thumbRatio);
+            
+            // Set thumbnail y offset
+            $y = ceil(($originalHeight - $height) / 2);
+            
         }
 
         // Create new empty image of proper dimensions
@@ -568,7 +609,7 @@ class UberGallery {
     private function _readIndex($filePath) {
         
         // Return false if file doesn't exist or the cache has expired
-        if (!file_exists($filePath) || (time() - filemtime($filePath)) / 60 >= $this->_config['cache_expire']) {
+        if (!$this->_isFileCached($filePath)) {
             return false;
         }
         
@@ -1068,6 +1109,24 @@ class UberGallery {
         
         // Return the relative path
         return $relativePath;
+        
+    }
+
+    /**
+     * Compares two paths and returns the relative path from one to the other
+     * 
+     * @param string $fromPath Starting path
+     * @param string $toPath Ending path
+     * @return string $relativePath
+     * @access private
+     */
+    private function _isFileCached($filePath) {
+        
+        if (file_exists($filePath) && ($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire']) {
+            return true;
+        }
+        
+        return false;
         
     }
 
