@@ -17,30 +17,25 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.3.2-dev';
+    const VERSION = '2.4.0-dev';
     
-    // Set default config variables
-    protected $_cacheExpire = 0;
-    protected $_imgPerPage  = 0;
-    protected $_thumbSize   = 100;
-    protected $_threshold   = 10;
-    protected $_themeName   = 'uber-blue';
-    protected $_page        = 1;
-    protected $_cacheDir    = 'cache';
-    protected $_imgSortBy   = 'natcasesort';
-    
-    // Reserve some other variables
-    protected $_imgDir      = NULL;
-    protected $_appDir      = NULL;
-    protected $_index       = NULL;
-    protected $_rThumbsDir  = NULL;
-    protected $_rImgDir     = NULL;
+    // Reserve some variables
+    protected $_config     = array();
+    protected $_imgDir     = NULL;
+    protected $_appDir     = NULL;
+    protected $_index      = NULL;
+    protected $_rThumbsDir = NULL;
+    protected $_rImgDir    = NULL;
+    protected $_now        = NULL;
     
     
     /**
      * UberGallery construct function. Runs on object creation.
      */
     public function __construct() {
+        
+        // Get timestamp for the current time
+        $this->_now = time();
         
         // Sanitize input and set current page
         if (isset($_GET['page'])) {
@@ -66,37 +61,40 @@ class UberGallery {
             $config = parse_ini_file($configPath, true);
             
             // Apply configuration
-            $this->_cacheExpire = $config['basic_settings']['cache_expiration'];
-            $this->_thumbSize   = $config['basic_settings']['thumbnail_size'];
-            $this->_themeName   = $config['basic_settings']['theme_name'];
-            $this->_imgSortBy   = $config['advanced_settings']['images_sort_by'];
-            $this->_cacheDir    = $this->_appDir . '/' . $config['advanced_settings']['cache_directory'];
+            $this->setCacheExpiration($config['basic_settings']['cache_expiration']);
+            $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
+            $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
+            $this->setThemeName($config['basic_settings']['theme_name']);
+            $this->setSortMethod($config['advanced_settings']['images_sort_by']);
+            $this->setDebugging($config['advanced_settings']['enable_debugging']);
+            $this->setCacheDirectory($this->_appDir . '/cache');
             
             if ($config['basic_settings']['enable_pagination']) {
-                $this->_threshold  = $config['basic_settings']['paginator_threshold'];
-                $this->_imgPerPage = $config['advanced_settings']['images_per_page'];
+                $this->_config['threshold']  = $config['basic_settings']['paginator_threshold'];
+                $this->_config['img_per_page'] = $config['advanced_settings']['images_per_page'];
             } else {
-                $this->_imgPerPage = 0; 
+                $this->_config['img_per_page'] = 0; 
             }
+            
             
         } else {
             $this->setSystemMessage('error', "Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
         }
 
         // Get the relative thumbs directory path
-        $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_cacheDir);
+        $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_config['cache_dir']);
 
 
         // Check if cache directory exists and create it if it doesn't
-        if (!file_exists($this->_cacheDir)) {
-            if (!@mkdir($this->_cacheDir)) {
-                $this->setSystemMessage('error', "Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_cacheDir}</pre>");
+        if (!file_exists($this->_config['cache_dir'])) {
+            if (!@mkdir($this->_config['cache_dir'])) {
+                $this->setSystemMessage('error', "Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_config['cache_dir']}</pre>");
             }
         }
         
         // Check if cache directory is writeable and warn if it isn't
-        if(!is_writable($this->_cacheDir)) {
-            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
+        if(!is_writable($this->_config['cache_dir'])) {
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_config['cache_dir']}</pre>");
         }
     }
 
@@ -178,7 +176,7 @@ class UberGallery {
             $galleryArray['paginator'] = $this->_getPaginatorArray($galleryArray['stats']['current_page'], $galleryArray['stats']['total_pages']);
             
             // Save the sorted array
-            if ($this->_cacheExpire > 0) {
+            if ($this->_config['cache_expire'] > 0) {
                 $this->_createIndex($galleryArray, $this->_index);
             }
         }
@@ -195,7 +193,7 @@ class UberGallery {
      */
     public function getThemeName() {
         // Return the theme name
-        return $this->_themeName;
+        return $this->_config['theme_name'];
     }
     
     
@@ -208,13 +206,13 @@ class UberGallery {
     public function getThemePath($absolute = false) {
         if ($absolute) {
             // Set the theme path
-            $themePath = $this->_appDir . '/themes/' . $this->_themeName;
+            $themePath = $this->_appDir . '/themes/' . $this->_config['theme_name'];
         } else {
             // Get relative path to application dir
             $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
             
             // Set the theme path
-            $themePath = $realtivePath . '/themes/' . $this->_themeName;
+            $themePath = $realtivePath . '/themes/' . $this->_config['theme_name'];
         }
         
         return $themePath;
@@ -260,8 +258,8 @@ class UberGallery {
      * @param int $time Cache expiration time in minutes
      * @access public
      */
-    public function setCacheExpiration($time) {
-        $this->_cacheExpire = $time;
+    public function setCacheExpiration($time = 0) {
+        $this->_config['cache_expire'] = $time;
         
         return $this;
     }
@@ -273,8 +271,106 @@ class UberGallery {
      * @param int $imgPerPage Number of images to display per page
      * @access public
      */
-    public function setImagesPerPage($imgPerPage) {
-        $this->_imgPerPage = $imgPerPage;
+    public function setImagesPerPage($imgPerPage = 0) {
+        $this->_config['img_per_page'] = $imgPerPage;
+        
+        return $this;
+    }
+
+    
+    /**
+     * Set thumbnail size in pixels.
+     * 
+     * @param int $size Thumbnail size in pixels.
+     * @access public
+     */
+    public function setThumbSize($width = 100, $height = 100) {
+        $this->_config['thumbnail']['width'] = $width;
+        $this->_config['thumbnail']['height'] = $height;
+        
+        return $this;
+    }
+
+    
+    /**
+     * Set thumbnail quality as a value from 1 - 100.
+     * 
+     * @param int $quality Thumbnail size in pixels.
+     * @access public
+     */
+    public function setThumbQuality($quality = 75) {
+        $this->_config['thumbnail']['quality'] = $quality;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Set theme name.
+     * 
+     * @param string $name Theme name.
+     * @access public
+     */
+    public function setThemeName($name = 'uber-blue') {
+        $this->_config['theme_name'] = $name;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Set the sortting method.
+     * 
+     * @param string $method Sorting methode.
+     * @access public
+     */
+    public function setSortMethod($method = 'natcasesort') {
+        $this->_config['sort_method'] = $method;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Enable or disable debugging.
+     * 
+     * @param boolean $bool true = on / false = off
+     * @access public
+     */
+    public function setDebugging($bool = false) {
+        $this->_config['debugging'] = $bool;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Set the cache directory name.
+     * 
+     * @param string $directory Cache directory name
+     * @access public
+     */
+    public function setCacheDirectory($directory) {
+        $this->_config['cache_dir'] = realpath($directory);
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Sets the relative path to the image directory.
+     * 
+     * @param string $directory Relative path to image directory
+     * @access public
+     */
+    public function setRelativeImageDirectory($directory) {
+        $this->_imgDir  = realpath($directory);
+        $this->_rImgDir = $directory;
+        if ($this->_config['img_per_page'] < 1) {
+            $this->_index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . 'all.index';
+        } else {
+            $this->_index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . $this->_page . '.index';            
+        }
         
         return $this;
     }
@@ -300,52 +396,9 @@ class UberGallery {
             'text'  => $text
         );
         
+        // TODO: Log to file
+        
         return true;
-    }
-    
-    
-    /**
-     * Set thumbnail size in pixels.
-     * 
-     * @param int $size Thumbnail size in pixels.
-     * @access public
-     */
-    public function setThumbSize($size) {
-        $this->_thumbSize = $size;
-        
-        return $this;
-    }
-    
-    
-    /**
-     * Set the cache directory name.
-     * 
-     * @param string $directory Cache directory name
-     * @access public
-     */
-    public function setCacheDirectory($directory) {
-        $this->_cacheDir = realpath($directory);
-        
-        return $this;
-    }
-    
-    
-    /**
-     * Sets the relative path to the image directory.
-     * 
-     * @param string $directory Relative path to image directory
-     * @access public
-     */
-    public function setRelativeImageDirectory($directory) {
-        $this->_imgDir  = realpath($directory);
-        $this->_rImgDir = $directory;
-        if ($this->_imgPerPage < 1) {
-            $this->_index = $this->_cacheDir . '/' . md5($directory) . '-' . 'all.index';
-        } else {
-            $this->_index = $this->_cacheDir . '/' . md5($directory) . '-' . $this->_page . '.index';            
-        }
-        
-        return $this;
     }
     
     
@@ -360,7 +413,7 @@ class UberGallery {
     private function _readDirectory($directory, $paginate = true) {
         
         // Set index path
-        $index = $this->_cacheDir . '/' . md5($directory) . '-' . 'files' . '.index';
+        $index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . 'files' . '.index';
         
         // Read directory array
         $dirArray = $this->_readIndex($index);
@@ -390,7 +443,7 @@ class UberGallery {
             }
             
             // Create directory array
-            if ($this->_cacheExpire > 0) {
+            if ($this->_config['cache_expire'] > 0) {
                 $this->_createIndex($dirArray, $index);
             }
         }
@@ -402,11 +455,11 @@ class UberGallery {
         }
 
         // Sort the array
-        $dirArray = $this->_arraySort($dirArray, $this->_imgSortBy);
+        $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method']);
         
         // Paginate the array and return current page if enabled
-        if ($paginate == true && $this->_imgPerPage > 0) {
-            $dirArray = $this->_arrayPaginate($dirArray, $this->_imgPerPage, $this->_page);
+        if ($paginate == true && $this->_config['img_per_page'] > 0) {
+            $dirArray = $this->_arrayPaginate($dirArray, $this->_config['img_per_page'], $this->_page);
         }
         
         // Return the array
@@ -447,66 +500,96 @@ class UberGallery {
      * modified from function found on http://www.findmotive.com/tag/php/
      * 
      * @param string $source Path to source image
-     * @param int $thumbSize Desired thumbnail size in pixels 
+     * @param int $thumbWidth Desired thumbnail width size in pixels
+     * @param int $thumbHeight Desired thumbnail height size in pixels
      * @param int $quality Thumbnail quality, applies to JPG and JPEGs only (Value from 1 to 100)
      * @access private
      */
-    private function _createThumbnail($source, $thumbSize = NULL, $quality = 75) {
+    private function _createThumbnail($source, $thumbWidth = NULL, $thumbHeight = NULL, $quality = NULL) {
         
-        // Set defaults thumbnail size if not specified
-        if ($thumbSize === NULL) {
-            $thumbSize = $this->_thumbSize;
+        // Set defaults thumbnail width if not specified
+        if ($thumbWidth === NULL) {
+            $thumbWidth = $this->_config['thumbnail']['width'];
         }
         
-        // MD5 hash of source image
+        // Set defaults thumbnail height if not specified
+        if ($thumbHeight === NULL) {
+            $thumbHeight = $this->_config['thumbnail']['height'];
+        }
+        
+        // Set defaults thumbnail height if not specified
+        if ($quality === NULL) {
+            $quality = $this->_config['thumbnail']['quality'];
+        }
+        
+        // MD5 hash of source image path
         $fileHash = md5($source);
         
         // Get file extension from source image
         $fileExtension = pathinfo($source, PATHINFO_EXTENSION);
         
         // Build file name
-        $fileName = $thumbSize . '-' . $fileHash . '.' . $fileExtension;
+        $fileName = $thumbWidth . 'x' . $thumbHeight . '-' . $quality . '-' . $fileHash . '.' . $fileExtension;
         
         // Build thumbnail destination path
-        $destination = $this->_cacheDir . '/' . $fileName;
+        $destination = $this->_config['cache_dir'] . '/' . $fileName;
         
-        // If file already exists return relative path to thumbnail
-        if (file_exists($destination)) {
+        // If file is cached return relative path to thumbnail
+        if ($this->_isFileCached($destination)) {
             $relativePath = $this->_rThumbsDir . '/' . $fileName;
             return $relativePath;
         }
         
         // Get needed image information
         $imgInfo = getimagesize($source);
-        $width = $imgInfo[0];
-        $height = $imgInfo[1];
-        $x = 0;
-        $y = 0;
-
-        // Make the image a square
-        if ($width > $height) {
-            $x = ceil(($width - $height) / 2 );
-            $width = $height;
-        } elseif($height > $width) {
-            $y = ceil(($height - $width) / 2);
-            $height = $width;
+        $width   = $imgInfo[0];
+        $height  = $imgInfo[1];
+        $x       = 0;
+        $y       = 0;
+        
+        // Calculate ratios
+        $srcRatio   = $width / $height;
+        $thumbRatio = $thumbWidth / $thumbHeight;
+        
+        if ($srcRatio > $thumbRatio) {
+            
+            // Preserver original width
+            $originalWidth = $width;
+            
+            // Crop image width to proper ratio
+            $width = $height * $thumbRatio;
+            
+            // Set thumbnail x offset
+            $x = ceil(($originalWidth - $width) / 2);
+            
+        } elseif ($srcRatio < $thumbRatio) {
+            
+            // Preserver original height
+            $originalHeight = $height;
+            
+            // Crop image height to proper ratio
+            $height = ($width / $thumbRatio);
+            
+            // Set thumbnail y offset
+            $y = ceil(($originalHeight - $height) / 2);
+            
         }
 
         // Create new empty image of proper dimensions
-        $newImage = imagecreatetruecolor($thumbSize,$thumbSize);
+        $newImage = imagecreatetruecolor($thumbWidth, $thumbHeight);
 
         // Create new thumbnail
         if ($imgInfo[2] == IMAGETYPE_JPEG) {
             $image = imagecreatefromjpeg($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagejpeg($newImage, $destination, $quality);
         } elseif ($imgInfo[2] == IMAGETYPE_GIF) {
             $image = imagecreatefromgif($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagegif($newImage, $destination);
         } elseif ($imgInfo[2] == IMAGETYPE_PNG) {
             $image = imagecreatefrompng($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbSize, $thumbSize, $width, $height);
+            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagepng($newImage, $destination);
         }
         
@@ -526,7 +609,7 @@ class UberGallery {
     private function _readIndex($filePath) {
         
         // Return false if file doesn't exist or the cache has expired
-        if (!file_exists($filePath) || (time() - filemtime($filePath)) / 60 >= $this->_cacheExpire) {
+        if (!$this->_isFileCached($filePath)) {
             return false;
         }
         
@@ -564,7 +647,7 @@ class UberGallery {
         if (file_put_contents($filePath, $serializedArray)) {
             return true;
         } else {
-            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_cacheDir}</pre>");
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_config['cache_dir']}</pre>");
             return false;
         }
         
@@ -665,8 +748,8 @@ class UberGallery {
         $totalElements = count($array);
         
         // Calculate total pages
-        if ($this->_imgPerPage > 0) {
-            $totalPages = ceil($totalElements / $this->_imgPerPage);
+        if ($this->_config['img_per_page'] > 0) {
+            $totalPages = ceil($totalElements / $this->_config['img_per_page']);
         } else {
             $totalPages = 1;
         }
@@ -703,7 +786,7 @@ class UberGallery {
     private function _getPaginatorArray($currentPage, $totalPages) {
         
         // Set some variables
-        $range     = ceil($this->_threshold / 2) - 1;
+        $range     = ceil($this->_config['threshold'] / 2) - 1;
         $firstPage = $currentPage - $range;
         $lastPage  = $currentPage + $range;
         $firstDiff = NULL;
@@ -1026,6 +1109,24 @@ class UberGallery {
         
         // Return the relative path
         return $relativePath;
+        
+    }
+
+    /**
+     * Compares two paths and returns the relative path from one to the other
+     * 
+     * @param string $fromPath Starting path
+     * @param string $toPath Ending path
+     * @return string $relativePath
+     * @access private
+     */
+    private function _isFileCached($filePath) {
+        
+        if (file_exists($filePath) && ($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire']) {
+            return true;
+        }
+        
+        return false;
         
     }
 
