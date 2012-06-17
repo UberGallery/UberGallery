@@ -70,10 +70,10 @@ class UberGallery {
             $this->setCacheDirectory($this->_appDir . '/cache');
             
             if ($config['basic_settings']['enable_pagination']) {
-                $this->_config['threshold']  = $config['basic_settings']['paginator_threshold'];
-                $this->_config['img_per_page'] = $config['advanced_settings']['images_per_page'];
+                $this->setPaginatorThreshold($config['basic_settings']['paginator_threshold']);
+                $this->setImagesPerPage($config['advanced_settings']['images_per_page']);
             } else {
-                $this->_config['img_per_page'] = 0; 
+                $this->setImagesPerPage(0); 
             }
             
             
@@ -355,6 +355,20 @@ class UberGallery {
         
         return $this;
     }
+    
+    
+    /**
+     * Set the paginator threshold.
+     * 
+     * @param int $threshold Paginator threshold value
+     * @access public
+     */
+    public function setPaginatorThreshold($threshold = 10) {
+        $this->_config['threshold'] = $threshold;
+        
+        return $this;
+    }
+    
     
     
     /**
