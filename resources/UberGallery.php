@@ -104,20 +104,22 @@ class UberGallery {
             // Initialize log if it doesn't exist
             if (!file_exists($this->_debugLog)) {
                 
-                // Initialization text
-                $initText   = 'UberGallery debug log initialized at ' . date('r') . PHP_EOL;
-                $phpVersion = 'PHP: ' . phpversion() . PHP_EOL;
-                $osVersion  = 'OS:  ' . $_SERVER['SERVER_SOFTWARE'] . PHP_EOL;
+                // Get libgd info
+                $gd = gd_info();
+                
+                // Get system and package info
+                $timestamp  = date('Y-m-d H:i:s');
+                $ugVersion  = 'UberGallery v' . UberGallery::VERSION;
+                $phpVersion = 'PHP: ' . phpversion();
+                $gdVersion  = 'GD: ' . $gd['GD Version'];
+                $osVersion  = 'OS: ' . PHP_OS;
                 
                 // Combine all the things!
-                $text = $initText . $phpVersion . $osVersion;
+                $initText = $timestamp . ' / ' . $ugVersion . ' / ' . $phpVersion . ' / ' . $gdVersion . ' / ' . $osVersion . PHP_EOL;
                 
                 // Create file with initilization text
-                file_put_contents($this->_debugLog, $text, FILE_APPEND);
+                file_put_contents($this->_debugLog, $initText, FILE_APPEND);
             }
-            
-            // Set the error reporting level
-            error_reporting(E_ALL ^ E_NOTICE);
             
             // Set new error handler
             set_error_handler("UberGallery::_errorHandler");
@@ -1185,7 +1187,7 @@ class UberGallery {
     private function _errorHandler($errorNum, $errorMsg, $fileName, $lineNum, $vars) {
         
         // Set current timestamp
-        $time = date('r');
+        $time = date('Y-m-d H:i:s');
         
         // Build error type array
         $errorType = array (
@@ -1209,11 +1211,13 @@ class UberGallery {
         $logMessage  = $time . ' : ' . $fileName . ' on line '. $lineNum . ' [' . $errorLevel . '] ' . $errorMsg . PHP_EOL;
         
         // Append the message to the log
-        error_log($logMessage, 3, $this->_debugLog, FILE_APPEND);
+        if ($errorNum != 8) {
+            error_log($logMessage, 3, $this->_debugLog, FILE_APPEND);
+        }
         
         // Terminate on fatal error
         if ($errorNum != 2 && $errorNum != 8) {
-            die("A fatal error has occurred. Script execution aborted.");
+            die("A fatal error has occurred, script execution aborted. See debug.log for more info.");
         }
         
     }
