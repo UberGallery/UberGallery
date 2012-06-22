@@ -62,6 +62,7 @@ class UberGallery {
             
             // Apply configuration
             $this->setCacheExpiration($config['basic_settings']['cache_expiration']);
+            $this->setPaginatorThreshold($config['basic_settings']['paginator_threshold']);
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
             $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
             $this->setThemeName($config['basic_settings']['theme_name']);
