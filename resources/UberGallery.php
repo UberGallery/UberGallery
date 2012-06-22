@@ -71,14 +71,13 @@ class UberGallery {
             $this->setCacheDirectory($this->_appDir . '/cache');
             
             if ($config['basic_settings']['enable_pagination']) {
-                $this->setPaginatorThreshold($config['basic_settings']['paginator_threshold']);
                 $this->setImagesPerPage($config['advanced_settings']['images_per_page']);
             } else {
                 $this->setImagesPerPage(0); 
             }
             
         } else {
-            $this->setSystemMessage('error', "Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
+            die("Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
         }
 
         // Get the relative thumbs directory path
@@ -93,7 +92,7 @@ class UberGallery {
         
         // Check if cache directory is writeable and warn if it isn't
         if (!is_writable($this->_config['cache_dir'])) {
-            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_config['cache_dir']}</pre>");
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 {$this->_config['cache_dir']}</pre>");
         }
         
         // Set debug log path
