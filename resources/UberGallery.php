@@ -116,11 +116,11 @@ class UberGallery {
                 file_put_contents($this->_debugLog, $text, FILE_APPEND);
             }
             
-            // Set new error handler
-            set_error_handler("UberGallery::_errorHandler");
-            
             // Set the error reporting level
             error_reporting(E_ALL ^ E_NOTICE);
+            
+            // Set new error handler
+            set_error_handler("UberGallery::_errorHandler");
             
         }
         
@@ -437,8 +437,6 @@ class UberGallery {
             'type'  => $type,
             'text'  => $text
         );
-        
-        // TODO: Log to file
         
         return true;
     }
