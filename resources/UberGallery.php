@@ -688,10 +688,9 @@ class UberGallery {
         // Write serialized array to index
         if (file_put_contents($filePath, $serializedArray)) {
             return true;
-        } else {
-            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_config['cache_dir']}</pre>");
-            return false;
         }
+        
+        return false;
         
     }
     
