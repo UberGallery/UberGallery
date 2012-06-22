@@ -1173,11 +1173,13 @@ class UberGallery {
     
     
     /**
-     * Compares two paths and returns the relative path from one to the other
+     * Custom error handler for logging errors to the debug log
      * 
-     * @param string $fromPath Starting path
-     * @param string $toPath Ending path
-     * @return string $relativePath
+     * @param int $errorNum Level of the error raised
+     * @param string $errorMsg The error message 
+     * @param string $fileName Filename that the error was raised in
+     * @param int $lineNum Line number the error was raised at
+     * @param array $vars Array pointing to the active symbol table at the point the error occurred
      * @access private
      */
     private function _errorHandler($errorNum, $errorMsg, $fileName, $lineNum, $vars) {
