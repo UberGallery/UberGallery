@@ -76,14 +76,12 @@ class UberGallery {
                 $this->setImagesPerPage(0); 
             }
             
-            
         } else {
             $this->setSystemMessage('error', "Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
         }
 
         // Get the relative thumbs directory path
         $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_config['cache_dir']);
-
 
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_config['cache_dir'])) {
@@ -93,9 +91,39 @@ class UberGallery {
         }
         
         // Check if cache directory is writeable and warn if it isn't
-        if(!is_writable($this->_config['cache_dir'])) {
+        if (!is_writable($this->_config['cache_dir'])) {
             $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 -R {$this->_config['cache_dir']}</pre>");
         }
+        
+        // Set debug log path
+        $this->_debugLog = $this->_config['cache_dir'] . '/debug.log';
+        
+        // Set up debugging if enabled
+        if ($this->_config['debugging']) {
+            
+            // Initialize log if it doesn't exist
+            if (!file_exists($this->_debugLog)) {
+                
+                // Initialization text
+                $initText   = 'UberGallery debug log initialized at ' . date('r') . PHP_EOL;
+                $phpVersion = 'PHP: ' . phpversion() . PHP_EOL;
+                $osVersion  = 'OS:  ' . $_SERVER['SERVER_SOFTWARE'] . PHP_EOL;
+                
+                // Combine all the things!
+                $text = $initText . $phpVersion . $osVersion;
+                
+                // Create file with initilization text
+                file_put_contents($this->_debugLog, $text, FILE_APPEND);
+            }
+            
+            // Set new error handler
+            set_error_handler("UberGallery::_errorHandler");
+            
+            // Set the error reporting level
+            error_reporting(E_ALL ^ E_NOTICE);
+            
+        }
+        
     }
 
 
@@ -1126,6 +1154,7 @@ class UberGallery {
         
     }
 
+
     /**
      * Compares two paths and returns the relative path from one to the other
      * 
@@ -1141,6 +1170,51 @@ class UberGallery {
         }
         
         return false;
+        
+    }
+    
+    
+    /**
+     * Compares two paths and returns the relative path from one to the other
+     * 
+     * @param string $fromPath Starting path
+     * @param string $toPath Ending path
+     * @return string $relativePath
+     * @access private
+     */
+    private function _errorHandler($errorNum, $errorMsg, $fileName, $lineNum, $vars) {
+        
+        // Set current timestamp
+        $time = date('r');
+        
+        // Build error type array
+        $errorType = array (
+            1    => "Error",
+            2    => "Warning",
+            4    => "Parsing Error",
+            8    => "Notice",
+            16   => "Core Error",
+            32   => "Core Warning",
+            64   => "Compile Error",
+            128  => "Compile Warning",
+            256  => "User Error",
+            512  => "User Warning",
+            1024 => "User Notice"
+        );
+        
+        // Set error type
+        $errorLevel = $errorType[$errorNum];
+        
+        // Build the log message text
+        $logMessage  = $time . ' : ' . $fileName . ' on line '. $lineNum . ' [' . $errorLevel . '] ' . $errorMsg . PHP_EOL;
+        
+        // Append the message to the log
+        error_log($logMessage, 3, $this->_debugLog, FILE_APPEND);
+        
+        // Terminate on fatal error
+        if ($errorNum != 2 && $errorNum != 8) {
+            die("A fatal error has occurred. Script execution aborted.");
+        }
         
     }
 
