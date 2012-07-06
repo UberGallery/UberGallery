@@ -173,7 +173,7 @@ News & Updates
 UberGallery updates and news can be found on our [blog](http://news.ubergallery.net/) or by
 [following us on Twitter](http://twitter.com/ubergallery).
 
-Bug may be reported at the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
+Please report bugs to the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
 
 
 License
