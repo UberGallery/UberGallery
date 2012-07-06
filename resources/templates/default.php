@@ -19,7 +19,9 @@
                     <li class="<?php echo $item['class']; ?>">
                         <?php if (!empty($item['href'])): ?>
                             <a href="<?php echo $item['href']; ?>"><?php echo $item['text']; ?></a>
-                        <?php else: ?><?php echo $item['text']; ?><?php endif; ?>
+                        <?php else: ?>
+                            <?php echo $item['text']; ?>
+                        <?php endif; ?>
                     </li>
                     
                 <?php endforeach; ?>

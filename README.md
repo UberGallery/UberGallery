@@ -138,7 +138,7 @@ Troubleshooting
 ---------------
 If you're having issues with UberGallery here are a few troubleshooting tips:
 
-  * Verify that you have PHP 5.2 or later installed.  You can varify your PHP version by running:
+  * Verify that you have PHP 5.2 or later installed.  You can verify your PHP version by running:
 
     ```
     php --version
@@ -147,7 +147,7 @@ If you're having issues with UberGallery here are a few troubleshooting tips:
   * Make sure you have the latest version of UberGallery installed.  You can always find the latest
     version at <http://www.ubergallery.net/#download>
 
-  * Replace your `galleryConfig.ini` with `sample.galleryConfig.ini` to insure proper configuration:
+  * Replace your `galleryConfig.ini` with `sample.galleryConfig.ini` to ensure proper configuration:
 
     ```
     rm resources/galleryConfig.ini
@@ -173,7 +173,7 @@ News & Updates
 UberGallery updates and news can be found on our [blog](http://news.ubergallery.net/) or by
 [following us on Twitter](http://twitter.com/ubergallery).
 
-Bug may be reported at the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
+Please report bugs to the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
 
 
 License
