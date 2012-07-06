@@ -17,7 +17,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.4.0-dev';
+    const VERSION = '2.4.0';
     
     // Reserve some variables
     protected $_config     = array();
