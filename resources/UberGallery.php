@@ -230,7 +230,7 @@ class UberGallery {
     /**
      * Returns the path to the chosen theme directory.
      * 
-     * @param bool $absolute Wether or not the path returned is absolute (default = false).
+     * @param bool $absolute true = return absolute path / false = return relative path (default)
      * @access public
      */
     public function getThemePath($absolute = false) {
@@ -311,7 +311,7 @@ class UberGallery {
     /**
      * Set thumbnail size in pixels.
      * 
-     * @param int $size Thumbnail size in pixels.
+     * @param int $size Thumbnail size in pixels
      * @access public
      */
     public function setThumbSize($width = 100, $height = 100) {
@@ -324,8 +324,9 @@ class UberGallery {
     
     /**
      * Set thumbnail quality as a value from 1 - 100.
+     * This only affects JPEGs and has no effect on GIF or PNGs.
      * 
-     * @param int $quality Thumbnail size in pixels.
+     * @param int $quality Thumbnail size in pixels
      * @access public
      */
     public function setThumbQuality($quality = 75) {
@@ -338,7 +339,7 @@ class UberGallery {
     /**
      * Set theme name.
      * 
-     * @param string $name Theme name.
+     * @param string $name Theme name
      * @access public
      */
     public function setThemeName($name = 'uber-blue') {
@@ -351,7 +352,7 @@ class UberGallery {
     /**
      * Set the sortting method.
      * 
-     * @param string $method Sorting methode.
+     * @param string $method Sorting method
      * @access public
      */
     public function setSortMethod($method = 'natcasesort') {
@@ -1155,11 +1156,10 @@ class UberGallery {
 
 
     /**
-     * Compares two paths and returns the relative path from one to the other
+     * Determines if a file is cached or not
      * 
-     * @param string $fromPath Starting path
-     * @param string $toPath Ending path
-     * @return string $relativePath
+     * @param string $filePath Path to file to check
+     * @return bool Returns true if file is cached and available, false if not
      * @access private
      */
     private function _isFileCached($filePath) {
