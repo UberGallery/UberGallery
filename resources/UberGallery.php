@@ -17,7 +17,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.4.0';
+    const VERSION = '2.4.1-dev';
     
     // Reserve some variables
     protected $_config     = array();
@@ -82,12 +82,10 @@ class UberGallery {
 
         // Get the relative thumbs directory path
         $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_config['cache_dir']);
-
+        
         // Check if cache directory exists and create it if it doesn't
         if (!file_exists($this->_config['cache_dir'])) {
-            if (!@mkdir($this->_config['cache_dir'])) {
-                $this->setSystemMessage('error', "Unable to create cache dir, please manually create it. Try running <pre>mkdir {$this->_config['cache_dir']}</pre>");
-            }
+            $this->setSystemMessage('error', "Cache directory does not exist, please manually create it.");
         }
         
         // Check if cache directory is writeable and warn if it isn't
@@ -1126,7 +1124,14 @@ class UberGallery {
         
         // Generate array of the path differences
         while ($key <= $arrayMax) {
-            if (@$toPathArray[$key] !== @$fromPathArray[$key] || $samePath !== true) {
+            
+            // Get to path variable
+            $toPath = isset($toPathArray[$key]) ? $toPathArray[$key] : NULL;
+            
+            // Get from path variable
+            $fromPath = isset($fromPathArray[$key]) ? $fromPathArray[$key] : NULL;
+            
+            if ($toPath !== $fromPath || $samePath !== true) {
                 
                 // Prepend '..' for every level up that must be traversed
                 if (isset($fromPathArray[$key])) {
