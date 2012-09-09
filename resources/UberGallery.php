@@ -66,7 +66,7 @@ class UberGallery {
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
             $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
             $this->setThemeName($config['basic_settings']['theme_name']);
-            $this->setSortMethod($config['advanced_settings']['images_sort_by']);
+            $this->setSortMethod($config['advanced_settings']['images_sort_by'], $config['advanced_settings']['reverse_sort']);
             $this->setDebugging($config['advanced_settings']['enable_debugging']);
             $this->setCacheDirectory($this->_appDir . '/cache');
             
@@ -353,8 +353,9 @@ class UberGallery {
      * @param string $method Sorting method
      * @access public
      */
-    public function setSortMethod($method = 'natcasesort') {
-        $this->_config['sort_method'] = $method;
+    public function setSortMethod($method = 'natcasesort', $reverse = false) {
+        $this->_config['sort_method']  = $method;
+        $this->_config['reverse_sort'] = $reverse;        
         
         return $this;
     }
@@ -496,7 +497,7 @@ class UberGallery {
         }
 
         // Sort the array
-        $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method']);
+        $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method'], $this->_config['reverse_sort']);
         
         // Paginate the array and return current page if enabled
         if ($paginate == true && $this->_config['img_per_page'] > 0) {
@@ -950,7 +951,7 @@ class UberGallery {
      * @return array
      * @access private
      */
-    private function _arraySort($array, $sortMethod) {
+    private function _arraySort($array, $sortMethod, $reverse = false) {
         // Create empty array
         $sortedArray = array();
         
@@ -984,6 +985,11 @@ class UberGallery {
         // Loop through the sorted values and move over the data
         foreach ($keys as $key) {
             $sortedArray[$key] = $array[$key];
+        }
+        
+        // Reverse array if set
+        if ($reverse) {
+            $sortedArray = array_reverse($sortedArray, true);
         }
         
         // Return sorted array
