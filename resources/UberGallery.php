@@ -1014,47 +1014,55 @@ class UberGallery {
         // Page varriables
         $totalElements = count($array);
         
-        if ($resultsPerPage <= 0 || $resultsPerPage >= $totalElements) {
-            $firstElement = 0;
-            $lastElement = $totalElements;
-            $totalPages = 1;
+        if ($totalElements == 0) {
+            
+            $paginatedArray = array();
+            
         } else {
-            // Calculate total pages
-            $totalPages = ceil($totalElements / $resultsPerPage);
             
-            // Set current page
-            if ($currentPage < 1) {
-                $currentPage = 1;
-            } elseif ($currentPage > $totalPages) {
-                $currentPage = $totalPages;
-            } else {
-                $currentPage = (integer) $currentPage;
-            }
-            
-            // Calculate starting image
-            $firstElement = ($currentPage - 1) * $resultsPerPage;
-            
-            // Calculate last image
-            if($currentPage * $resultsPerPage > $totalElements) {
+            if ($resultsPerPage <= 0 || $resultsPerPage >= $totalElements) {
+                $firstElement = 0;
                 $lastElement = $totalElements;
+                $totalPages = 1;
             } else {
-                $lastElement = $currentPage * $resultsPerPage;
+                // Calculate total pages
+                $totalPages = ceil($totalElements / $resultsPerPage);
+                
+                // Set current page
+                if ($currentPage < 1) {
+                    $currentPage = 1;
+                } elseif ($currentPage > $totalPages) {
+                    $currentPage = $totalPages;
+                } else {
+                    $currentPage = (integer) $currentPage;
+                }
+                
+                // Calculate starting image
+                $firstElement = ($currentPage - 1) * $resultsPerPage;
+                
+                // Calculate last image
+                if($currentPage * $resultsPerPage > $totalElements) {
+                    $lastElement = $totalElements;
+                } else {
+                    $lastElement = $currentPage * $resultsPerPage;
+                }
             }
-        }
-        
-        // Initiate counter
-        $x = 1;
-        
-        // Run loop to paginate images and add them to array
-        foreach ($array as $key => $element) {
             
-            // Add image to array if within current page
-            if ($x > $firstElement && $x <= $lastElement) {
-                $paginatedArray[$key] = $array[$key];
+            // Initiate counter
+            $x = 1;
+            
+            // Run loop to paginate images and add them to array
+            foreach ($array as $key => $element) {
+                
+                // Add image to array if within current page
+                if ($x > $firstElement && $x <= $lastElement) {
+                    $paginatedArray[$key] = $array[$key];
+                }
+                
+                // Increment counter
+                $x++;
             }
             
-            // Increment counter
-            $x++;
         }
         
         // Return paginated array
