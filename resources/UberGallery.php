@@ -463,8 +463,11 @@ class UberGallery {
         // Read directory array
         $dirArray = $this->_readIndex($index);
         
-        // Serve from cache if file exists and caching is enabled e
+        // Serve from cache if file exists and caching is enabled
         if (!$dirArray) {
+            
+            // Initialize the array
+            $dirArray = array();
             
             // Loop through directory and add information to array
             if ($handle = opendir($directory)) {
@@ -497,7 +500,7 @@ class UberGallery {
         if (empty($dirArray)) {
             $this->setSystemMessage('error', "No images found, please upload images to your gallery's image directory.");
         }
-
+        
         // Sort the array
         $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method'], $this->_config['reverse_sort']);
         
