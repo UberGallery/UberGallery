@@ -70,7 +70,7 @@ to your liking.
   5. Include the jQuery and Colorbox javascript files in your page header:
 
     ```html
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     ```
 
