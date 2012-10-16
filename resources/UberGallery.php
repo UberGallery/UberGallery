@@ -432,10 +432,13 @@ class UberGallery {
         // Create empty message array if it doesn't already exist
         if (isset($this->_systemMessage) && !is_array($this->_systemMessage)) {
             $this->_systemMessage = array();
-        } 
+        }
+        
+        // Generate unique message key
+        $key = md5(trim($type . $text));
 
         // Set the error message
-        $this->_systemMessage[] = array(
+        $this->_systemMessage[$key] = array(
             'type'  => $type,
             'text'  => $text
         );
@@ -489,11 +492,10 @@ class UberGallery {
                 $this->_createIndex($dirArray, $index);
             }
         }
-        
+
         // Set error message if there are no images
-        if (!isset($dirArray)) {
-            $imageDirectory = realpath($directory);
-            $this->setSystemMessage('error', "No images found.  Please upload images to: <pre>{$imageDirectory}</pre>");
+        if (empty($dirArray)) {
+            $this->setSystemMessage('error', "No images found, please upload images to your gallery's image directory.");
         }
 
         // Sort the array
