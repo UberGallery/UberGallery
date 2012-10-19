@@ -217,6 +217,7 @@ class UberGallery {
     /**
      * Returns the theme name.
      * 
+     * @return string Theme name as set in user config.
      * @access public
      */
     public function getThemeName() {
@@ -263,17 +264,18 @@ class UberGallery {
      
      
     /**
-     * Returns XHTML link tag for chosen Colorbox stylesheet.
+     * Returns XHTML link tag for chosen ColorBox stylesheet.
      * 
-     * @param int $themeNum Integer (1-5) representing the Colorbox theme number
+     * @param int $themeNum Integer (1-5) representing the ColorBox theme number
      * @return string
+     * @access public
      */
     public function getColorboxStyles($themeNum) {
         
         // Get relative path to application dir
         $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
         
-        // Set Colorbox Path
+        // Set ColorBox path
         $colorboxPath = $realtivePath . '/colorbox/' . $themeNum . '/colorbox.css';
         
         return '<link rel="stylesheet" type="text/css" href="' . $colorboxPath . '" />';
