@@ -291,14 +291,11 @@ class UberGallery {
     public function getColorboxScripts() {
         
         // Set some path variables
-        $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
         $templatePath = $this->_appDir . '/templates/colorboxScripts.php';
-        
-        // Set ColorBox path
-        $colorboxPath = $realtivePath . '/colorbox/jquery.colorbox.js';
+        $colorboxPath = $this->_getRelativePath(getcwd(), $this->_appDir) . '/colorbox/jquery.colorbox.js';
         
         // Get the template contents
-        $template     = $this->_readTemplate($templatePath, array('path' => $colorboxPath);
+        $template = $this->_readTemplate($templatePath, array('path' => $colorboxPath);
         
         // Return the include text
         return $template;
