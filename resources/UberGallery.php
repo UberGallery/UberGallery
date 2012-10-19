@@ -278,6 +278,30 @@ class UberGallery {
         
         return '<link rel="stylesheet" type="text/css" href="' . $colorboxPath . '" />';
     }
+    
+    
+    /**
+     * Returns XHTML script tags for jQuery and ColorBox includes.
+     * 
+     * @return string
+     * @access public
+     */
+    public function getColorboxScripts() {
+        
+        // Set some path variables
+        $realtivePath = $this->_getRelativePath(getcwd(), $this->_appDir);
+        $templatePath = $this->_appDir . '/templates/colorboxScripts.php';
+        
+        // Set ColorBox path
+        $data['path'] = $realtivePath . '/colorbox/jquery.colorbox.js';
+        
+        // Get the template contents
+        $template     = $this->_readTemplate($templatePath, $data);
+        
+        // Return the include text
+        return $template;
+        
+    }
 
 
     /**
