@@ -295,7 +295,7 @@ class UberGallery {
         $colorboxPath = $this->_getRelativePath(getcwd(), $this->_appDir) . '/colorbox/jquery.colorbox.js';
         
         // Get the template contents
-        $template = $this->_readTemplate($templatePath, array('path' => $colorboxPath);
+        $template = $this->_readTemplate($templatePath, array('path' => $colorboxPath));
         
         // Return the include text
         return $template;
