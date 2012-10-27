@@ -10,3 +10,6 @@
 [submodule "resources/themes/uber-responsive"]
     path = resources/themes/uber-responsive
     url = git://github.com/UberGallery/uber-responsive.git
+[submodule "scripts"]
+	path = scripts
+	url = git://github.com/UberGallery/scripts.git
