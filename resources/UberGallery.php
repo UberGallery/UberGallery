@@ -11,8 +11,10 @@
  * 
  * More info available at http://www.ubergallery.net
  * 
- * @author Chris Kankiewicz (http://www.chriskankiewicz.com)
- * @copyright 2012 Chris Kankiewicz
+ * @author Chris Kankiewicz <Chris@ChrisKankiewicz.com>
+ * @copyright Copyright (c) 2012 Chris Kankiewicz (http://www.chriskankiewicz.com)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @link https://github.com/UberGallery/UberGallery Cannonical source URL
  */
 class UberGallery {
     
@@ -128,8 +130,9 @@ class UberGallery {
 
 
     /**
-     * Special init method for simple one-line interface.
+     * Special init method for simple one-line interface
      * 
+     * @return reflection
      * @access public
      */
     public static function init() {
@@ -139,10 +142,11 @@ class UberGallery {
     
     
     /**
-     * Returns pre-formatted XHTML of a gallery.
+     * Returns pre-formatted XHTML of a gallery
      * 
      * @param string $directory Relative path to images directory
      * @param string $relText Text to use as the rel value
+     * @return object Self
      * @access public
      */
     public function createGallery($directory, $relText = 'colorbox') {
@@ -163,9 +167,10 @@ class UberGallery {
     
     
     /**
-     * Returns an array of files and stats of the specified directory.
+     * Returns an array of files and stats of the specified directory
      * 
      * @param string $directory Relative path to images directory
+     * @return array File listing and statistics for specified directory
      * @access public
      */
     public function readImageDirectory($directory) {
@@ -215,9 +220,9 @@ class UberGallery {
 
 
     /**
-     * Returns the theme name.
+     * Returns the theme name
      * 
-     * @return string Theme name as set in user config.
+     * @return string Theme name as set in user config
      * @access public
      */
     public function getThemeName() {
@@ -227,9 +232,10 @@ class UberGallery {
     
     
     /**
-     * Returns the path to the chosen theme directory.
+     * Returns the path to the chosen theme directory
      * 
      * @param bool $absolute true = return absolute path / false = return relative path (default)
+     * @return string Path to theme
      * @access public
      */
     public function getThemePath($absolute = false) {
@@ -249,9 +255,9 @@ class UberGallery {
     
     
     /**
-     * Get an array of error messages or false when empty.
+     * Get an array of error messages or false when empty
      * 
-     * @return array Array of error messages
+     * @return array|boolean Array of error messages or boolean false if none 
      * @access public
      */
     public function getSystemMessages() {
@@ -264,10 +270,10 @@ class UberGallery {
      
      
     /**
-     * Returns XHTML link tag for chosen ColorBox stylesheet.
+     * Returns valid XHTML link tag for chosen ColorBox stylesheet
      * 
      * @param int $themeNum Integer (1-5) representing the ColorBox theme number
-     * @return string
+     * @return string Valid XHTML link tag for chosen ColorBox stylesheet 
      * @access public
      */
     public function getColorboxStyles($themeNum) {
@@ -283,9 +289,9 @@ class UberGallery {
     
     
     /**
-     * Returns XHTML script tags for jQuery and ColorBox includes.
+     * Returns valid XHTML tags for ColorBox JavaScript include
      * 
-     * @return string
+     * @return string Valid XHTML tags for ColorBox JavaScript include
      * @access public
      */
     public function getColorboxScripts() {
@@ -304,9 +310,10 @@ class UberGallery {
 
 
     /**
-     * Set cache expiration time in minutes.
+     * Set cache expiration time in minutes
      * 
-     * @param int $time Cache expiration time in minutes
+     * @param int $time Cache expiration time in minutes (default = 0)
+     * @return object Self
      * @access public
      */
     public function setCacheExpiration($time = 0) {
@@ -317,9 +324,10 @@ class UberGallery {
     
     
     /**
-     * Set the number of images to be displayed per page.
+     * Set the number of images to be displayed per page
      * 
-     * @param int $imgPerPage Number of images to display per page
+     * @param int $imgPerPage Number of images to display per page (default = 0)
+     * @return object Self
      * @access public
      */
     public function setImagesPerPage($imgPerPage = 0) {
@@ -330,9 +338,11 @@ class UberGallery {
 
     
     /**
-     * Set thumbnail size in pixels.
+     * Set thumbnail width and height in pixels
      * 
-     * @param int $size Thumbnail size in pixels
+     * @param int $width Thumbnail width in pixels (default = 100)
+     * @param int $height Thumbnail height in pixels (default = 100)
+     * @return object Self
      * @access public
      */
     public function setThumbSize($width = 100, $height = 100) {
@@ -344,10 +354,11 @@ class UberGallery {
 
     
     /**
-     * Set thumbnail quality as a value from 1 - 100.
-     * This only affects JPEGs and has no effect on GIF or PNGs.
+     * Set thumbnail quality as a value from 1 - 100
+     * This only affects JPEGs and has no effect on GIF or PNGs
      * 
-     * @param int $quality Thumbnail size in pixels
+     * @param int $quality Thumbnail size in pixels (default = 75)
+     * @return object Self
      * @access public
      */
     public function setThumbQuality($quality = 75) {
@@ -358,9 +369,10 @@ class UberGallery {
     
     
     /**
-     * Set theme name.
+     * Set theme name
      * 
-     * @param string $name Theme name
+     * @param string $name Theme name (default = uber-blue)
+     * @return object Self
      * @access public
      */
     public function setThemeName($name = 'uber-blue') {
@@ -371,9 +383,11 @@ class UberGallery {
     
     
     /**
-     * Set the sortting method.
+     * Set the sortting method
      * 
-     * @param string $method Sorting method
+     * @param string $method Sorting method (default = natcasesort)
+     * @param boolean $reverse true = reverse sort order (default = false)
+     * @return object Self
      * @access public
      */
     public function setSortMethod($method = 'natcasesort', $reverse = false) {
@@ -385,9 +399,10 @@ class UberGallery {
     
     
     /**
-     * Enable or disable debugging.
+     * Enable or disable debugging
      * 
-     * @param boolean $bool true = on / false = off
+     * @param boolean $bool true = on / false = off (default = false)
+     * @return object Self
      * @access public
      */
     public function setDebugging($bool = false) {
@@ -398,9 +413,10 @@ class UberGallery {
     
     
     /**
-     * Set the cache directory name.
+     * Set the cache directory name
      * 
      * @param string $directory Cache directory name
+     * @return object Self
      * @access public
      */
     public function setCacheDirectory($directory) {
@@ -411,9 +427,10 @@ class UberGallery {
     
     
     /**
-     * Set the paginator threshold.
+     * Set the paginator threshold
      * 
-     * @param int $threshold Paginator threshold value
+     * @param int $threshold Paginator threshold value (default = 10)
+     * @return object Self
      * @access public
      */
     public function setPaginatorThreshold($threshold = 10) {
@@ -425,14 +442,21 @@ class UberGallery {
     
     
     /**
-     * Sets the relative path to the image directory.
+     * Sets the relative path to the image directory
      * 
      * @param string $directory Relative path to image directory
+     * @return object Self
      * @access public
      */
     public function setRelativeImageDirectory($directory) {
+        
+        // Set real path to $directory
         $this->_imgDir  = realpath($directory);
+        
+        // Set relative path to $directory
         $this->_rImgDir = $directory;
+        
+        // Set index name
         if ($this->_config['img_per_page'] < 1) {
             $this->_index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . 'all.index';
         } else {
@@ -448,6 +472,7 @@ class UberGallery {
      * 
      * @param string $type The type of message (ie - error, success, notice, etc.)
      * @param string $message The message to be displayed to the user
+     * @return boolean Returns true on success
      * @access public
      */
     public function setSystemMessage($type, $text) {
@@ -471,11 +496,11 @@ class UberGallery {
     
     
     /**
-     * Reads files in a directory and returns only images.
+     * Reads files in a directory and returns only images
      * 
      * @param string $directory Path to directory
      * @param boolean $paginate Whether or not paginate the array (default = true)
-     * @return array
+     * @return array Array of images in the specified directory
      * @access private 
      */
     private function _readDirectory($directory, $paginate = true) {
@@ -538,7 +563,7 @@ class UberGallery {
 
 
     /**
-     * Returns a template string with custom data injected into it. 
+     * Returns a template string with custom data injected into it
      * 
      * @param string $templatePath Path to template file
      * @param array $data Array of data to be injected into the template
@@ -566,13 +591,13 @@ class UberGallery {
     
     
     /**
-     * Creates a cropped, square thumbnail of given dimensions from a source image,
-     * modified from function found on http://www.findmotive.com/tag/php/
+     * Creates a cropped, square thumbnail of given dimensions from a source image
      * 
      * @param string $source Path to source image
-     * @param int $thumbWidth Desired thumbnail width size in pixels
-     * @param int $thumbHeight Desired thumbnail height size in pixels
-     * @param int $quality Thumbnail quality, applies to JPG and JPEGs only (Value from 1 to 100)
+     * @param int $thumbWidth Desired thumbnail width size in pixels (default = null)
+     * @param int $thumbHeight Desired thumbnail height size in pixels (default = null)
+     * @param int $quality Thumbnail quality, from 1 to 100, applies to JPG and JPEGs only (default = null)
+     * @return string Relative path to thumbnail
      * @access private
      */
     private function _createThumbnail($source, $thumbWidth = NULL, $thumbHeight = NULL, $quality = NULL) {
@@ -670,10 +695,10 @@ class UberGallery {
     
     
     /**
-     * Return array from the cached index.
+     * Return array from the cached index
      * 
      * @param string $filePath Path to stored index
-     * @return array
+     * @return array|boolean Decoded cached array or false when no valid index is found
      * @access private
      */
     private function _readIndex($filePath) {
@@ -698,11 +723,11 @@ class UberGallery {
     
 
     /**
-     * Create serialized index from file array.
+     * Create serialized index from file array
      * 
      * @param string $array Array to be indexed
-     * @param string $filePath Path to where index will be stored
-     * @return boolean
+     * @param string $filePath Path where index will be stored
+     * @return boolean Returns true on success, false on failure
      * @access private
      */
     private function _createIndex($array, $filePath) {
@@ -723,11 +748,11 @@ class UberGallery {
     }
     
     /**
-     * Runs all array strings through base64_encode.
-     * This prevents errors with non-English languages.
+     * Runs all array strings through base64_encode to help
+     * prevent errors with non-English languages
      * 
      * @param array $array Array to be encoded
-     * @return array
+     * @return array The encoded array
      * @access private
      */
     private function _arrayEncode($array) {
@@ -765,10 +790,10 @@ class UberGallery {
     
     
     /**
-     * Decodes an encoded array.
+     * Decodes an encoded array
      * 
      * @param array $array Array to be decoded
-     * @return array
+     * @return array The decoded array
      * @access private
      */
     private function _arrayDecode($array) {
@@ -806,10 +831,10 @@ class UberGallery {
     
     
     /**
-     * Returns an array of gallery statistics.
+     * Returns an array of gallery statistics
      * 
      * @param array $array Array to gather stats from
-     * @return array
+     * @return array Array of gallery statistics
      * @access private
      */
     private function _readGalleryStats($array) {
@@ -845,11 +870,11 @@ class UberGallery {
     
     
     /**
-     * Returns a formatted array for the gallery paginator.
+     * Returns a formatted array for the gallery paginator
      * 
      * @param int $currentPage The current page being viewed
      * @param int $totalPages Total number of pages in the gallery
-     * @return array
+     * @return array Array for building the paginator
      * @access private
      */
     private function _getPaginatorArray($currentPage, $totalPages) {
@@ -972,11 +997,12 @@ class UberGallery {
     
     
     /**
-     * Sorts an array by the provided sort method.
+     * Sorts an array by the provided sort method
      * 
      * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
-     * @return array
+     * @param reverse Reverses the sorted array on true (default = false)
+     * @return array Sorted array
      * @access private
      */
     private function _arraySort($array, $sortMethod, $reverse = false) {
@@ -1027,9 +1053,11 @@ class UberGallery {
 
     
     /**
-     * Paginates array and returns partial array of the current page.
+     * Paginates array and returns partial array of the current page
      * 
      * @param string $array Array to be paginated
+     * @param int $resultsPerPage Number of desired results per page
+     * @param int $currentPage Current page number
      * @return array A parial array representing the current page
      * @access private
      */
@@ -1094,10 +1122,10 @@ class UberGallery {
 
     
     /**
-     * Verifies whether or not a file is an image.
+     * Verifies whether or not a file is an image
      * 
-     * @param string $fileName
-     * @return boolean
+     * @param string $filePath Path to file for testing
+     * @return boolean Returns true if file is an image or false if file is not an image
      * @access private
      */
     private function _isImage($filePath) {
@@ -1126,7 +1154,7 @@ class UberGallery {
      * 
      * @param string $fromPath Starting path
      * @param string $toPath Ending path
-     * @return string $relativePath
+     * @return string $relativePath Relative path from $fromPath to $toPath
      * @access private
      */
     private function _getRelativePath($fromPath, $toPath) {
@@ -1206,7 +1234,7 @@ class UberGallery {
      * Determines if a file is cached or not
      * 
      * @param string $filePath Path to file to check
-     * @return bool Returns true if file is cached and available, false if not
+     * @return bool Returns true if file is cached and available or false if file is not cached
      * @access private
      */
     private function _isFileCached($filePath) {
@@ -1228,6 +1256,7 @@ class UberGallery {
      * @param string $fileName Filename that the error was raised in
      * @param int $lineNum Line number the error was raised at
      * @param array $vars Array pointing to the active symbol table at the point the error occurred
+     * @return void
      * @access private
      */
     private function _errorHandler($errorNum, $errorMsg, $fileName, $lineNum, $vars) {
