@@ -60,21 +60,23 @@ to your liking.
     <?php include_once('path/to/resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('path/to/images-folder'); ?>
     ```
 
-  4. Include the UberGallery and desired Colorbox style sheet in your page header:
+  4. Include the UberGallery and desired ColorBox style sheet in your page header:
 
     ```html
     <link rel="stylesheet" type="text/css" href="path/to/resources/UberGallery.css" />
-    <link rel="stylesheet" type="text/css" href="path/to/resources/colorbox/{1-5}/colorbox.css" />
+    <link rel="stylesheet" type="text/css" href="path/to/resources/colorbox/1/colorbox.css" />
     ```
     
-  5. Include the jQuery and Colorbox javascript files in your page header:
+    **NOTE:** You can replace the `1` with a value between 1 and 5 for different ColorBox themes.
+    
+  5. Include the jQuery and ColorBox javascript files in your page header:
 
     ```html
     <script type="text/javascript" src="://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     ```
 
-  6. Include the Colorbox jquery call in your header:
+  6. Include the ColorBox jquery call in your header:
 
     ```html
     <script type="text/javascript">
@@ -171,7 +173,7 @@ If you continue to have issues, please email me at: <Chris@ChrisKankiewicz.com>
 News & Updates
 --------------
 UberGallery updates and news can be found on our [blog](http://news.ubergallery.net/) or by
-[following us on Twitter](http://twitter.com/ubergallery).
+following [@UberGallery](http://twitter.com/ubergallery) on Twitter.
 
 Please report bugs to the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
 
