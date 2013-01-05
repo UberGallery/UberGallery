@@ -19,7 +19,7 @@
 class UberGallery {
     
     // Define application version
-    const VERSION = '2.4.2';
+    const VERSION = '2.4.3';
     
     // Reserve some variables
     protected $_config     = array();
@@ -159,7 +159,7 @@ class UberGallery {
         $galleryArray['relText'] = $relText;
         
         // Echo the template contents
-        echo $this->_readTemplate($templatePath, $galleryArray);
+        echo $this->readTemplate($templatePath, $galleryArray);
         
         return $this;
         
@@ -216,6 +216,34 @@ class UberGallery {
         
         // Return the array
         return $galleryArray;
+    }
+
+
+    /**
+     * Returns a template string with custom data injected into it
+     * 
+     * @param string $templatePath Path to template file
+     * @param array $data Array of data to be injected into the template
+     * @return string Processed template string
+     * @access private 
+     */
+    public function readTemplate($templatePath, $data) {
+        
+        // Extract array to variables
+        extract($data);
+        
+        // Start the output buffer
+        ob_start();
+        
+        // Include the template
+        include $templatePath;
+        
+        // Set buffer output to a variable
+        $output = ob_get_clean();
+        
+        // Return the output
+        return $output;
+        
     }
 
 
@@ -301,7 +329,7 @@ class UberGallery {
         $colorboxPath = $this->_getRelativePath(getcwd(), $this->_appDir) . '/colorbox/jquery.colorbox.js';
         
         // Get the template contents
-        $template = $this->_readTemplate($templatePath, array('path' => $colorboxPath));
+        $template = $this->readTemplate($templatePath, array('path' => $colorboxPath));
         
         // Return the include text
         return $template;
@@ -561,34 +589,6 @@ class UberGallery {
         return $dirArray;
     }
 
-
-    /**
-     * Returns a template string with custom data injected into it
-     * 
-     * @param string $templatePath Path to template file
-     * @param array $data Array of data to be injected into the template
-     * @return string Processed template string
-     * @access private 
-     */
-    private function _readTemplate($templatePath, $data) {
-        
-        // Extract array to variables
-        extract($data);
-        
-        // Start the output buffer
-        ob_start();
-        
-        // Include the template
-        include $templatePath;
-        
-        // Set buffer output to a variable
-        $output = ob_get_clean();
-        
-        // Return the output
-        return $output;
-        
-    }
-    
     
     /**
      * Creates a cropped, square thumbnail of given dimensions from a source image
