@@ -12,7 +12,7 @@
  * More info available at http://www.ubergallery.net
  * 
  * @author Chris Kankiewicz <Chris@ChrisKankiewicz.com>
- * @copyright Copyright (c) 2012 Chris Kankiewicz (http://www.chriskankiewicz.com)
+ * @copyright Copyright (c) 2013 Chris Kankiewicz (http://www.chriskankiewicz.com)
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @link https://github.com/UberGallery/UberGallery Cannonical source URL
  */
