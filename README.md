@@ -172,7 +172,7 @@ If you continue to have issues, please email me at: <Chris@ChrisKankiewicz.com>
 
 News & Updates
 --------------
-UberGallery updates and news can be found on our [blog](http://news.ubergallery.net/) or by
+UberGallery updates and news can be found on our [blog](http://news.ubergallery.net) or by
 following [@UberGallery](http://twitter.com/ubergallery) on Twitter.
 
 Please report bugs to the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
@@ -182,4 +182,4 @@ License
 -------
 UberGallery is distributed under the terms of the
 [MIT License](http://www.opensource.org/licenses/mit-license.php).
-Copyright © 2012 [Chris Kankiewicz](http://www.chriskankiewicz.com)
+Copyright © 2013 [Chris Kankiewicz](http://www.chriskankiewicz.com)
