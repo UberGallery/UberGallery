@@ -66,9 +66,9 @@ to your liking.
     <link rel="stylesheet" type="text/css" href="path/to/resources/UberGallery.css" />
     <link rel="stylesheet" type="text/css" href="path/to/resources/colorbox/1/colorbox.css" />
     ```
-    
+
     **NOTE:** You can replace the `1` with a value between 1 and 5 for different ColorBox themes.
-    
+
   5. Include the jQuery and ColorBox javascript files in your page header:
 
     ```html
