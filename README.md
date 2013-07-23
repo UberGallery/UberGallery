@@ -72,7 +72,7 @@ to your liking.
   5. Include the jQuery and ColorBox javascript files in your page header:
 
     ```html
-    <script type="text/javascript" src="://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
     ```
 
@@ -102,38 +102,38 @@ Install with Git
   1. SSH into the your server and clone the UberGallery repository and submodules:
 
     ```
-    git clone --recursive git://github.com/UberGallery/UberGallery.git /path/to/gallery-directory
+    git clone --recursive git://github.com/UberGallery/UberGallery.git /path/to/ubergallery
     ```
 
-  2. CD to your UberGallery installation:
-
-    ```
-    cd /path/to/gallery-directory
-    ```
-
-  3. Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
+  2. Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
     ```
     cp resource/sample.galleryConfig.ini resources/galleryConfig.ini
     nano resources/galleryConfig.ini
     ```
 
+  3. Upload images to the `gallery-images/` folder within your gallery directory.
+
   4. Make the `resources/cache/` directory writable by the web server.
 
     ```
-    chmod 777 resources/cache
+    chmod 777 /path/to/resources/cache
     ```
 
-  5. Upload images to the `gallery-images/` folder within your gallery directory.
+  5. Open your web browser and load the page where you installed UberGallery.
 
-  6. Open your web browser and load the page where you installed UberGallery.
-
-**NOTE:** When using this method to install UberGallery, you may update your installation by running
+When using this method to install UberGallery, you may update your installation by running
 the following commands:
 
     cd /path/to/gallery-directory
     git pull origin master
     git submodule update
+
+**NOTE:** If you are installing UberGallery via git into an existing git repository, you will need
+to add it as a submodule.
+
+    git submodule add git://github.com/UberGallery/UberGallery.git path/to/ubergallery
+    git submodule update --init --recursive path/to/ubergallery
 
 
 Troubleshooting
