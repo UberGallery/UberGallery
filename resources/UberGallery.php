@@ -1264,7 +1264,7 @@ class UberGallery {
      */
     private function _isFileCached($filePath) {
 
-        if (file_exists($filePath) && (($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire']) || $this->_config['cache_expire'] < 0 )  {
+        if (file_exists($filePath) && (($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire'] || $this->_config['cache_expire'] < 0 ))  {
             return true;
         }
 
