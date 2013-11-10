@@ -192,6 +192,7 @@ class UberGallery {
 
             // Loop through array and add additional info
             foreach ($dirArray as $key => $image) {
+
                 // Get files relative path
                 $relativePath = $this->_rImgDir . '/' . $key;
 
@@ -200,6 +201,7 @@ class UberGallery {
                     'file_path'    => htmlentities($relativePath),
                     'thumb_path'   => $this->_createThumbnail($image['real_path'])
                 );
+
             }
 
             // Add statistics to gallery array
@@ -209,7 +211,7 @@ class UberGallery {
             $galleryArray['paginator'] = $this->_getPaginatorArray($galleryArray['stats']['current_page'], $galleryArray['stats']['total_pages']);
 
             // Save the sorted array
-            if ($this->_config['cache_expire'] > 0) {
+            if ($this->isCachingEnabled()) {
                 $this->_createIndex($galleryArray, $this->_index);
             }
         }
@@ -350,6 +352,16 @@ class UberGallery {
         return $this;
     }
 
+    /**
+     * Check if caching is enabled
+     *
+     * @return boolean to indiciate whether caching is enabled or not
+     * @access public
+     */
+    public function isCachingEnabled() {
+        return $this->_config['cache_expire'] != 0;
+    }
+
 
     /**
      * Set the number of images to be displayed per page
@@ -486,9 +498,9 @@ class UberGallery {
 
         // Set index name
         if ($this->_config['img_per_page'] < 1) {
-            $this->_index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . 'all.index';
+            $this->_index = $this->_config['cache_dir'] . '/' . $this->_hash($directory) . '-' . 'all.index';
         } else {
-            $this->_index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . $this->_page . '.index';
+            $this->_index = $this->_config['cache_dir'] . '/' . $this->_hash($directory) . '-' . $this->_page . '.index';
         }
 
         return $this;
@@ -511,7 +523,7 @@ class UberGallery {
         }
 
         // Generate unique message key
-        $key = md5(trim($type . $text));
+        $key = $this->_hash(trim($type . $text));
 
         // Set the error message
         $this->_systemMessage[$key] = array(
@@ -520,6 +532,19 @@ class UberGallery {
         );
 
         return true;
+    }
+
+    /**
+     * Generate a hash value (message digest) for specific algorithm.
+     * Default is SHA-256.
+     *
+     * @param string $message the message to generate hash for
+     * @param string $algo hasing algorithm to be used (default: sha256).
+     * @return string hash value (message digest)
+     * @access private
+     */
+    private function _hash($message, $algo = "sha256") {
+        return hash($algo, $message);
     }
 
 
@@ -534,7 +559,7 @@ class UberGallery {
     private function _readDirectory($directory, $paginate = true) {
 
         // Set index path
-        $index = $this->_config['cache_dir'] . '/' . md5($directory) . '-' . 'files' . '.index';
+        $index = $this->_config['cache_dir'] . '/' . $this->_hash($directory) . '-' . 'files' . '.index';
 
         // Read directory array
         $dirArray = $this->_readIndex($index);
@@ -567,7 +592,7 @@ class UberGallery {
             }
 
             // Create directory array
-            if ($this->_config['cache_expire'] > 0) {
+            if ($this->isCachingEnabled()) {
                 $this->_createIndex($dirArray, $index);
             }
         }
@@ -618,7 +643,7 @@ class UberGallery {
         }
 
         // MD5 hash of source image path
-        $fileHash = md5($source);
+        $fileHash = $this->_hash($source);
 
         // Get file extension from source image
         $fileExtension = pathinfo($source, PATHINFO_EXTENSION);
@@ -1239,7 +1264,7 @@ class UberGallery {
      */
     private function _isFileCached($filePath) {
 
-        if (file_exists($filePath) && ($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire']) {
+        if (file_exists($filePath) && (($this->_now - filemtime($filePath)) / 60 <= $this->_config['cache_expire']) || $this->_config['cache_expire'] < 0 )  {
             return true;
         }
 
