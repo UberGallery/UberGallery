@@ -6,7 +6,13 @@
         <ul id="galleryList" class="clearfix">
             
             <?php foreach ($images as $image): ?>
-                <li><a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" rel="<?php echo $relText; ?>"><img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"/></a></li>
+                <li>
+                    <a href="<?php echo $image['file_path']; ?>" title="<?php echo $image['file_title']; ?>" rel="<?php echo $relText; ?>"
+                        style="width: <?php echo $thumbWidth; ?>px; height: <?php echo $thumbHeight; ?>px">
+                        <img src="<?php echo $image['thumb_path']; ?>" alt="<?php echo $image['file_title']; ?>"
+                            style="max-width: <?php echo $thumbWidth; ?>px; max-height: <?php echo $thumbHeight; ?>px"/>
+                    </a>
+                </li>
             <?php endforeach; ?>
             
         </ul>

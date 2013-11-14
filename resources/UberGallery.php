@@ -30,7 +30,6 @@ class UberGallery {
     protected $_rImgDir    = NULL;
     protected $_now        = NULL;
 
-
     /**
      * UberGallery construct function. Runs on object creation.
      */
@@ -210,6 +209,12 @@ class UberGallery {
             // Add gallery paginator to the gallery array
             $galleryArray['paginator'] = $this->_getPaginatorArray($galleryArray['stats']['current_page'], $galleryArray['stats']['total_pages']);
 
+            // Add thumb size to the gallery array
+            $galleryArray['thumbWidth'] = $this->_config['thumbnail']['width'];
+            echo "setting thumb width " . $galleryArray['thumbWidth'];
+            $galleryArray['thumbHeight'] = $this->_config['thumbnail']['height'];
+            echo "setting thumb height " . $galleryArray['thumbHeight'];
+
             // Save the sorted array
             if ($this->isCachingEnabled()) {
                 $this->_createIndex($galleryArray, $this->_index);
@@ -219,7 +224,6 @@ class UberGallery {
         // Return the array
         return $galleryArray;
     }
-
 
     /**
      * Returns a template string with custom data injected into it
@@ -337,7 +341,6 @@ class UberGallery {
         return $template;
 
     }
-
 
     /**
      * Set cache expiration time in minutes
@@ -711,13 +714,14 @@ class UberGallery {
             $image = imagecreatefrompng($source);
             imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagepng($newImage, $destination);
+        } elseif ($imgInfo[2] == IMAGETYPE_BMP) {
+            copy($source, $destination);
         }
 
         // Return relative path to thumbnail
         $relativePath = $this->_rThumbsDir . '/' . $fileName;
         return $relativePath;
     }
-
 
     /**
      * Return array from the cached index
@@ -1163,7 +1167,7 @@ class UberGallery {
         }
 
         // Array of accepted image types
-        $allowedTypes = array(1, 2, 3);
+        $allowedTypes = array(1, 2, 3, 6);
 
         // Determine if the file type is an acceptable image type
         if (in_array($imgType, $allowedTypes)) {
