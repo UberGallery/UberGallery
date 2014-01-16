@@ -29,6 +29,8 @@ class UberGallery {
     protected $_rThumbsDir = NULL;
     protected $_rImgDir    = NULL;
     protected $_now        = NULL;
+    protected $_subalbum   = '';
+    protected $_breadcrumb = array();
 
 
     /**
@@ -45,7 +47,7 @@ class UberGallery {
         } else {
             $this->_page = 1;
         }
-
+        
         // Set class directory constant
         if(!defined('__DIR__')) {
             define('__DIR__', dirname(__FILE__));
@@ -80,19 +82,6 @@ class UberGallery {
 
         } else {
             die("Unable to read galleryConfig.ini, please make sure the file exists at: <pre>{$configPath}</pre>");
-        }
-
-        // Get the relative thumbs directory path
-        $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_config['cache_dir']);
-
-        // Check if cache directory exists and create it if it doesn't
-        if (!file_exists($this->_config['cache_dir'])) {
-            $this->setSystemMessage('error', "Cache directory does not exist, please manually create it.");
-        }
-
-        // Check if cache directory is writeable and warn if it isn't
-        if (!is_writable($this->_config['cache_dir'])) {
-            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 {$this->_config['cache_dir']}</pre>");
         }
 
         // Set debug log path
@@ -174,9 +163,17 @@ class UberGallery {
      * @access public
      */
     public function readImageDirectory($directory) {
-
+        
         // Set relative image directory
         $this->setRelativeImageDirectory($directory);
+
+        // Set subalbum directory
+        if(isset($_GET['path'])) {
+            $this->setSubAlbumDirectory($_GET['path']);
+        }
+
+        // the album path could have been changed by now
+        $directory = $this->_rImgDir;
 
         // Instantiate gallery array
         $galleryArray = array();
@@ -194,12 +191,21 @@ class UberGallery {
             foreach ($dirArray as $key => $image) {
                 // Get files relative path
                 $relativePath = $this->_rImgDir . '/' . $key;
-
-                $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
-                    'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
-                    'file_path'    => htmlentities($relativePath),
-                    'thumb_path'   => $this->_createThumbnail($image['real_path'])
-                );
+                
+                if($image['is_dir']) {
+                  $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
+                    'is_dir'       => true,
+                    'dir_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
+                    'dir_path'    => '?path=' . $this->_subalbum . '/' . htmlentities($key),
+                  );
+                } else {
+                  $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
+                      'is_dir'       => false,
+                      'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
+                      'file_path'    => htmlentities($relativePath),
+                      'thumb_path'   => $this->_createThumbnail($image['real_path'])
+                 );
+                }
             }
 
             // Add statistics to gallery array
@@ -335,6 +341,49 @@ class UberGallery {
         return $template;
 
     }
+    
+    /** 
+     * Returns the current subalbum or an empty string if it's the parent album.
+     * 
+     * @return path of subalbum
+     * @access public
+     */
+    public function getSubAlbum() {
+      return $this->_subalbum;
+    }
+  
+    /**
+     * Returns an array of links from top to the subalbum path for breadcrumb navigation.
+     * Format: array('gallery' => 'gallerylink', 'sub1' => 'sub1link', ...)
+     *
+     * @return array with subalbum links
+     * @access public
+     */
+    public function getBreadCrumbs() {
+      if(empty($this->_breadcrumb)) {
+        $base = '?path=';
+        $this->_breadcrumb = array('gallery' => './');
+        $subs = explode('/', $this->_subalbum);
+        foreach($subs as $sub) {
+          if(empty($sub))
+             continue;
+          
+          $base .= '/' . $sub;
+          $this->_breadcrumb[$sub] = $base;
+        }
+      }
+      return $this->_breadcrumb;
+    }
+  
+    /**
+     * Returns the $_config array
+     *
+     * @return array with configurations
+     * @access public
+     */
+    public function getConfiguration() {
+      return $this->_config;
+    }
 
 
     /**
@@ -441,14 +490,30 @@ class UberGallery {
 
 
     /**
-     * Set the cache directory name
+     * Set the cache directories, absolute (_config[cache_dir]) and relative (_rThumbsDir), and try to create cache directory
      *
      * @param string $directory Cache directory name
      * @return object Self
      * @access public
      */
     public function setCacheDirectory($directory) {
+
+        // Check if cache directory exists and try to create recursively it if it doesn't
+        if (!file_exists($directory)) {
+            if(!mkdir($directory, 0777, true)) {
+                $this->setSystemMessage('error', "Cache directory does not exist, please manually create it.");
+            }
+        }
+
         $this->_config['cache_dir'] = realpath($directory);
+
+        // Check if cache directory is writeable and warn if it isn't
+        if (!is_writable($this->_config['cache_dir'])) {
+            $this->setSystemMessage('error', "Cache directory needs write permissions. If all else fails, try running: <pre>chmod 777 {$this->_config['cache_dir']}</pre>");
+        }
+
+        // Set the relative thumbs directory path
+        $this->_rThumbsDir = $this->_getRelativePath(getcwd(), $this->_config['cache_dir']);
 
         return $this;
     }
@@ -493,6 +558,32 @@ class UberGallery {
 
         return $this;
     }
+
+    /**
+     * Sets the relative and absolute path to a subalbum of the image directory.
+     * Requires that setRelativeImageDirectory is called first.
+     * Path must be in a subdirectory, paths containing ".." will be dropped.
+     *
+     * @param string $subalbum Relative subalbum path.
+     * @return object Self
+     * @access public
+     */
+    public function setSubAlbumDirectory($subalbum) {
+        if(empty($this->_rImgDir)) {
+            throw new Exception("Relative path to image dir not set. setRelativeImageDirectory() was probably not called");
+        }
+
+        if (strstr($subalbum, '..') === false and 
+            is_dir($this->_imgDir . $subalbum)
+            ) {
+          $this->_subalbum = $subalbum;
+          $this->setRelativeImageDirectory($this->_rImgDir . $this->_subalbum);
+          $this->setCacheDirectory($this->_rThumbsDir . $this->_subalbum);
+        }
+
+        return $this;
+    }
+
 
 
     /**
@@ -542,24 +633,34 @@ class UberGallery {
         // Serve from cache if file exists and caching is enabled
         if (!$dirArray) {
 
-            // Initialize the array
+            // Initialize the arrays
             $dirArray = array();
+            $imageArray = array();
 
             // Loop through directory and add information to array
             if ($handle = opendir($directory)) {
                 while (false !== ($file = readdir($handle))) {
-                    if ($file != "." && $file != "..") {
-
-                        // Get files real path
-                        $realPath = realpath($directory . '/' . $file);
-
-                        // If file is an image, add info to array
-                        if ($this->_isImage($realPath)) {
-                            $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
-                                'real_path' => $realPath
-                            );
-                        }
+                    if ($file[0] == ".") {
+                      // skip if hidden directory
+                      continue;
                     }
+
+                    // Get files real path
+                    $realPath = realpath($directory . '/' . $file);
+
+                    // If file is an image, add info to array
+                    if ($this->_isImage($realPath)) {
+                        $imageArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
+                            'real_path' => $realPath,
+                            'is_dir' => false
+                        );
+                    } elseif (is_dir($realPath)) {
+                        $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
+                            'real_path' => $realPath,
+                            'is_dir' => true
+                        );
+                    }
+
                 }
 
                 // Close open file handle
@@ -573,12 +674,17 @@ class UberGallery {
         }
 
         // Set error message if there are no images
-        if (empty($dirArray)) {
+        if (empty($dirArray) and empty($imageArray)) {
             $this->setSystemMessage('error', "No images found, please upload images to your gallery's image directory.");
+            return array();
         }
 
         // Sort the array
         $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method'], $this->_config['reverse_sort']);
+        $imageArray = $this->_arraySort($imageArray, $this->_config['sort_method'], $this->_config['reverse_sort']);
+        
+        // Finally concat them, Directories are now displayed first
+        $dirArray += $imageArray;
 
         // Paginate the array and return current page if enabled
         if ($paginate == true && $this->_config['img_per_page'] > 0) {
@@ -885,6 +991,7 @@ class UberGallery {
         $lastPage  = $currentPage + $range;
         $firstDiff = NULL;
         $lastDiff  = NULL;
+        $linkbase  = '?' . ( empty($this->_subalbum) ? '' : 'path=' . $this->_subalbum . '&' ) . 'page=';
 
         // Ensure first page is within the bounds of available pages
         if ($firstPage <= 1) {
@@ -918,16 +1025,16 @@ class UberGallery {
         if ($currentPage == 1) {
 
             $paginatorArray[] = array(
-                'text'  => '&lt;',
+                'text'  => '<',
                 'class' => 'inactive'
             );
 
         } else {
 
             $paginatorArray[] = array(
-                'text'  => '&lt;',
+                'text'  => '<',
                 'class' => 'active',
-                'href'  => '?page=' . ($currentPage - 1)
+                'href'  => $linkbase . ($currentPage - 1)
             );
 
         }
@@ -937,7 +1044,7 @@ class UberGallery {
             $paginatorArray[] = array(
                 'text'  => '...',
                 'class' => 'more',
-                'href'  => '?page=' . ($currentPage - $range - 1)
+                'href'  => $linkbase . ($currentPage - $range - 1)
             );
         }
 
@@ -956,7 +1063,7 @@ class UberGallery {
                 $paginatorArray[] = array(
                     'text'  => $i,
                     'class' => 'active',
-                    'href'  => '?page=' . $i
+                    'href'  => $linkbase . $i
                 );
 
             }
@@ -968,7 +1075,7 @@ class UberGallery {
             $paginatorArray[] = array(
                 'text'  => '...',
                 'class' => 'more',
-                'href'  => '?page=' . ($currentPage + $range + 1)
+                'href'  => $linkbase . ($currentPage + $range + 1)
             );
         }
 
@@ -985,7 +1092,7 @@ class UberGallery {
             $paginatorArray[] = array(
                 'text'  => '&gt;',
                 'class' => 'active',
-                'href'  => '?page=' . ($currentPage + 1)
+                'href'  => $linkbase . ($currentPage + 1)
             );
 
         }
