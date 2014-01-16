@@ -167,13 +167,13 @@ class UberGallery {
         // Set relative image directory
         $this->setRelativeImageDirectory($directory);
 
-				// Set subalbum directory
+        // Set subalbum directory
         if(isset($_GET['path'])) {
-				    $this->setSubAlbumDirectory($_GET['path']);
+            $this->setSubAlbumDirectory($_GET['path']);
         }
 
-				// the album path could have been changed by now
-				$directory = $this->_rImgDir;
+        // the album path could have been changed by now
+        $directory = $this->_rImgDir;
 
         // Instantiate gallery array
         $galleryArray = array();
@@ -559,16 +559,16 @@ class UberGallery {
         return $this;
     }
 
-		/**
-		 * Sets the relative and absolute path to a subalbum of the image directory.
-		 * Requires that setRelativeImageDirectory is called first.
-		 * Path must be in a subdirectory, paths containing ".." will be dropped.
-		 *
-		 * @param string $subalbum Relative subalbum path.
-		 * @return object Self
-		 * @access public
-		 */
-		public function setSubAlbumDirectory($subalbum) {
+    /**
+     * Sets the relative and absolute path to a subalbum of the image directory.
+     * Requires that setRelativeImageDirectory is called first.
+     * Path must be in a subdirectory, paths containing ".." will be dropped.
+     *
+     * @param string $subalbum Relative subalbum path.
+     * @return object Self
+     * @access public
+     */
+    public function setSubAlbumDirectory($subalbum) {
         if(empty($this->_rImgDir)) {
             throw new Exception("Relative path to image dir not set. setRelativeImageDirectory() was probably not called");
         }
@@ -640,7 +640,8 @@ class UberGallery {
             // Loop through directory and add information to array
             if ($handle = opendir($directory)) {
                 while (false !== ($file = readdir($handle))) {
-                    if ($file == "." || $file == "..") {
+                    if ($file[0] == ".") {
+                      // skip if hidden directory
                       continue;
                     }
 
