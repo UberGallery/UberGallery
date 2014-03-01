@@ -7,7 +7,7 @@
     $gallery = new UberGallery();
 
     // Initialize the gallery array
-    $galleryArray = $gallery->readImageDirectory('gallery-images/2013.01.05_BrunchWillemen');
+    $galleryArray = $gallery->readImageDirectory('gallery-images');
 
     // Define theme path
     if (!defined('THEMEPATH')) {
