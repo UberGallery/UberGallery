@@ -23,5 +23,3 @@
     } else {
         die('ERROR: Failed to initialize theme');
     }
-
-?>
