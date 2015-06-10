@@ -11,6 +11,7 @@ under the [MIT License](http://www.opensource.org/licenses/mit-license.php). Ube
 and UberGallery will automatically generate thumbnails and output standards compliant XHTML markup
 on the fly.
 
+Like this project? Want to keep it free? [Make a donation](https://cash.me/$ChrisKankiewicz).
 
 Features
 --------
