@@ -109,7 +109,7 @@ Install with Git
   2. Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
     ```
-    cp resource/sample.galleryConfig.ini resources/galleryConfig.ini
+    cp resources/sample.galleryConfig.ini resources/galleryConfig.ini
     nano resources/galleryConfig.ini
     ```
 
