@@ -566,6 +566,7 @@ class UberGallery {
 
             // Initialize the array
             $dirArray = array();
+            $modifiedArray = array();
 
             // Loop through directory and add information to array
             if ($handle = opendir($directory)) {
@@ -580,6 +581,7 @@ class UberGallery {
                             $dirArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = array(
                                 'real_path' => $realPath
                             );
+                            $modifiedArray[htmlentities(pathinfo($realPath, PATHINFO_BASENAME))] = filemtime($realPath);
                         }
                     }
                 }
@@ -600,7 +602,8 @@ class UberGallery {
         }
 
         // Sort the array
-        $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method'], $this->_config['reverse_sort']);
+        $dirArray = $this->_arraySort($dirArray, $this->_config['sort_method'], $this->_config['reverse_sort'],
+            $modifiedArray);
 
         // Paginate the array and return current page if enabled
         if ($paginate == true && $this->_config['img_per_page'] > 0) {
@@ -1023,10 +1026,11 @@ class UberGallery {
      * @param array $array Array to be sorted
      * @param string $sort Sorting method (acceptable inputs: natsort, natcasesort, etc.)
      * @param reverse Reverses the sorted array on true (default = false)
+     * @param modifiedArray The last modified times for each array element
      * @return array Sorted array
      * @access private
      */
-    private function _arraySort($array, $sortMethod, $reverse = false) {
+    private function _arraySort($array, $sortMethod, $reverse = false, $modifiedArray = array()) {
         // Create empty array
         $sortedArray = array();
 
@@ -1054,6 +1058,10 @@ class UberGallery {
                 break;
             case 'shuffle':
                 shuffle($keys);
+                break;
+            case 'modified':
+                asort($modifiedArray);
+                $keys = array_keys($modifiedArray);
                 break;
         }
 
