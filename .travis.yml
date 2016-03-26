@@ -8,8 +8,8 @@ cache:
 
 before_script:
    - pecl install imagick
-   
-install: composer intsall
+
+install: composer install
 
 php:
     - 5.3
