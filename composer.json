@@ -1,0 +1,23 @@
+{
+    "name": "phlak/ubergallery",
+    "description": "The simple PHP web photo gallery",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Kankiewicz",
+            "email": "Chris@ChrisKankiewicz.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "intervention/image": "^2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uber\\": "src/"
+        }
+    }
+}
