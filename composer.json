@@ -8,6 +8,10 @@
             "email": "Chris@ChrisKankiewicz.com"
         }
     ],
+    "support": {
+        "email": "UberGallery@GoogleGroups.com",
+        "issues": "https://github.com/UberGallery/UberGallery/issues"
+    },
     "require": {
         "php": ">=5.5"
     },
