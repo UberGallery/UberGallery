@@ -67,6 +67,7 @@ class UberGallery {
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
             $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
             $this->setThemeName($config['basic_settings']['theme_name']);
+            $this->setSiteName($config['basic_settings']['site_name']);
             $this->setSortMethod($config['advanced_settings']['images_sort_by'], $config['advanced_settings']['reverse_sort']);
             $this->setDebugging($config['advanced_settings']['enable_debugging']);
             $this->setCacheDirectory($this->_appDir . '/cache');
@@ -258,6 +259,17 @@ class UberGallery {
         return $this->_config['theme_name'];
     }
 
+    /**
+     * Returns the site name
+     *
+     * @return string Site name as set in user config
+     * @access public
+     */
+    public function getSiteName() {
+        // Return the site name
+        return $this->_config['site_name'];
+    }	
+
 
     /**
      * Returns the path to the chosen theme directory
@@ -414,6 +426,12 @@ class UberGallery {
      */
     public function setThemeName($name = 'uber-blue') {
         $this->_config['theme_name'] = $name;
+
+        return $this;
+    }
+
+    public function setSiteName($name = 'UberGallery') {
+        $this->_config['site_name'] = $name;
 
         return $this;
     }
