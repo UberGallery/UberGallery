@@ -7,7 +7,7 @@ cache:
         - $HOME/.composer/cache
 
 before_script:
-   - pecl install imagick
+   - printf "\n" | pecl install imagick
 
 install: composer install
 
