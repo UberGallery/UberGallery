@@ -9,8 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "intervention/image": "^2.3"
+        "php": ">=5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.2"
