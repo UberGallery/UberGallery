@@ -8,7 +8,7 @@ class ThumbnailTest extends PHPUnit_Framework_TestCase {
     protected $thumbnail;
 
     public function setUp() {
-        $image = new Image(__DIR__ . '/files/test.jpg');
+        $image = new Image(__DIR__ . '/test_files/test.jpg');
         $this->thumbnail = new Thumbnail($image, 180, 120);
     }
 

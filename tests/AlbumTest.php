@@ -7,7 +7,7 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
     protected $album;
 
     public function setUp() {
-        $this->album = new Album(__DIR__ . '/files');
+        $this->album = new Album(__DIR__ . '/test_files');
     }
 
     /** @test */
@@ -17,7 +17,7 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function it_can_add_an_image() {
-        $this->album->add(__DIR__ . '/files/test.png');
+        $this->album->add(__DIR__ . '/test_files/test.png');
         $this->assertCount(4, $this->album->images());
     }
 

@@ -9,9 +9,9 @@ class ImageTest extends PHPUnit_Framework_TestCase {
     protected $jpeg;
 
     public function setUp() {
-        $this->png  = new Image(__DIR__ . '/files/test.png');
-        $this->jpg  = new Image(__DIR__ . '/files/test.jpg');
-        $this->jpeg = new Image(__DIR__ . '/files/test.jpeg');
+        $this->png  = new Image(__DIR__ . '/test_files/test.png');
+        $this->jpg  = new Image(__DIR__ . '/test_files/test.jpg');
+        $this->jpeg = new Image(__DIR__ . '/test_files/test.jpeg');
     }
 
     /** @test */

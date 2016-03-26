@@ -17,7 +17,7 @@ class GalleryTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function it_can_add_an_album() {
-        $this->gallery->add(__DIR__ . '/files');
+        $this->gallery->add(__DIR__ . '/test_files');
         $this->assertCount(1, $this->gallery->albums());
     }
 
