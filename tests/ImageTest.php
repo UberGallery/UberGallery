@@ -15,63 +15,55 @@ class ImageTest extends PHPUnit_Framework_TestCase {
     }
 
     /** @test */
-    public function png_has_contents() {
+    public function image_has_contents() {
         $this->assertNotNull($this->png->contents());
-    }
-
-    /** @test */
-    public function jpg_has_contents() {
         $this->assertNotNull($this->jpg->contents());
-    }
-
-    /** @test */
-    public function jpeg_has_contents() {
         $this->assertNotNull($this->jpeg->contents());
     }
 
     /** @test */
-    public function png_has_base64() {
+    public function image_has_base64() {
         $this->assertRegExp('/^([a-zA-Z0-9\/+]+=*)$/', $this->png->base64());
-    }
-
-    /** @test */
-    public function jpg_has_base64() {
         $this->assertRegExp('/^([a-zA-Z0-9\/+]+=*)$/', $this->jpg->base64());
-    }
-
-    /** @test */
-    public function jpeg_has_base64() {
         $this->assertRegExp('/^([a-zA-Z0-9\/+]+=*)$/', $this->jpeg->base64());
     }
 
     /** @test */
-    public function png_has_mimeType() {
+    public function image_has_a_width() {
+        $this->assertEquals(320, $this->png->width());
+        $this->assertEquals(320, $this->jpg->width());
+        $this->assertEquals(320, $this->jpeg->width());
+    }
+
+    /** @test */
+    public function image_has_a_height() {
+        $this->assertEquals(240, $this->png->height());
+        $this->assertEquals(240, $this->jpg->height());
+        $this->assertEquals(240, $this->jpeg->height());
+    }
+
+    /** @test */
+    public function image_has_mimeType() {
         $this->assertEquals('image/png', $this->png->mimeType());
-    }
-
-    /** @test */
-    public function jpg_has_mimeType() {
         $this->assertEquals('image/jpeg', $this->jpg->mimeType());
-    }
-
-    /** @test */
-    public function jpeg_has_mimeType() {
         $this->assertEquals('image/jpeg', $this->jpeg->mimeType());
     }
 
     /** @test */
-    public function png_has_a_thumbnail() {
-        $this->assertInstanceOf('Uber\Thumbnail', $this->png->thumbnail);
-    }
+    public function image_can_be_resized() {
 
-    /** @test */
-    public function jpg_has_a_thumbnail() {
-        $this->assertInstanceOf('Uber\Thumbnail', $this->jpg->thumbnail);
-    }
+        $pngThumb = $this->png->resize(160, 120);
+        $this->assertEquals(160, $pngThumb->width());
+        $this->assertEquals(120, $pngThumb->height());
 
-    /** @test */
-    public function jpeg_has_a_thumbnail() {
-        $this->assertInstanceOf('Uber\Thumbnail', $this->jpeg->thumbnail);
+        $jpgThumb = $this->jpg->resize(160, 120);
+        $this->assertEquals(160, $jpgThumb->width());
+        $this->assertEquals(120, $jpgThumb->height());
+
+        $jpegThumb = $this->jpeg->resize(160, 120);
+        $this->assertEquals(160, $jpegThumb->width());
+        $this->assertEquals(120, $jpegThumb->height());
+
     }
 
 }
