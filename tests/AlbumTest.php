@@ -11,6 +11,11 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
     }
 
     /** @test */
+    public function test_it_has_a_config() {
+        $this->assertInstanceOf('Uber\Config', $this->album->config);
+    }
+
+    /** @test */
     public function it_has_an_array_of_images() {
         $this->assertCount(3, $this->album->images());
     }
