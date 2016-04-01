@@ -7,7 +7,7 @@ use Uber\Image;
 
 class Album {
 
-    protected $config;
+    public $config;
     protected $images;
 
     /**
