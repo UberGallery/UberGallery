@@ -49,6 +49,12 @@ class ImageTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('image/jpeg', $this->jpeg->mimeType());
     }
 
+    public function image_has_exif() {
+        $this->assertNotNull($this->png->exif());
+        $this->assertNotNull($this->jpg->exif());
+        $this->assertNotNull($this->jpeg->exif());
+    }
+
     /** @test */
     public function image_can_be_resized() {
 
