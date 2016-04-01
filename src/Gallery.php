@@ -11,10 +11,10 @@ class Gallery {
     /**
      * Uber\Gallery constructor, runs on object creation
      *
-     * @param string $path Path to initial album
+     * @param string $albums Array of album directory paths
      */
-    public function __construct($path = null) {
-        if (isset($path)) $this->add($path);
+    public function __construct(array $albums = []) {
+        foreach ($albums as $album) $this->add($album);
     }
 
     /**
