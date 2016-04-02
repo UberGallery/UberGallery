@@ -46,7 +46,7 @@ class Album {
         try {
             $this->images[] = new Image($path);
         } catch (Excetption $e) {
-            // TODO: Handle this exception
+            continue;
         }
 
         return $this;
