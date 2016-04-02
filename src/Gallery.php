@@ -3,18 +3,27 @@
 namespace Uber;
 
 use Uber\Album;
+use Uber\Config;
 
 class Gallery {
 
+    public $config;
     protected $albums = [];
 
     /**
      * Uber\Gallery constructor, runs on object creation
      *
      * @param string $albums Array of album directory paths
+     * @param Config $config Path to gallery config
      */
-    public function __construct(array $albums = []) {
+    public function __construct(array $albums = [], $config = null) {
+
+        $this->config = new Config();
+
+        if (isset($config)) $this->config->load($config);
+
         foreach ($albums as $album) $this->add($album);
+
     }
 
     /**
