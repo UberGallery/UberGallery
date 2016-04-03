@@ -1,6 +1,12 @@
 UberGallery
 ===========
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/UberGallery/UberGallery.svg)](https://packagist.org/packages/UberGallery/UberGallery)
+[![Total Downloads](https://img.shields.io/packagist/dt/UberGallery/UberGallery.svg)](https://packagist.org/packages/UberGallery/UberGallery)
+[![Author](https://img.shields.io/badge/author-Chris%20Kankiewicz-blue.svg)](https://www.ChrisKankiewicz.com)
+[![License](https://img.shields.io/packagist/l/UberGallery/UberGallery.svg)](https://packagist.org/packages/UberGallery/UberGallery)
+[![Build Status](https://img.shields.io/travis/UberGallery/UberGallery.svg)](https://travis-ci.org/UberGallery/UberGallery)
+
 The simple PHP photo gallery -- by, [Chris Kankiewicz](https://www.ChrisKankiewicz.com)
 
 Introduction
@@ -28,7 +34,8 @@ Features
 Requirements
 ------------
 
-UberGallery requires PHP >= 5.5
+  - UberGallery requires PHP >= 5.5
+  - Imagick PHP extension
 
 Installation
 ------------
@@ -43,14 +50,13 @@ More info...
 News & Updates
 --------------
 
-  * [On Googe+]()
-  * Twitter: [@UberGallery](http://twitter.com/ubergallery)
+  * Follow development on [GitHub](https://github.com/UberGallery/UberGallery)
+  * UberGallery on [Google+](https://plus.google.com/collection/08BuMB)
+  * [@UberGallery](https://twitter.com/ubergallery) on Twitter
 
-Please report bugs to the [Github issue tracker](http://github.com/UberGallery/ubergallery/issues).
+Please report bugs to the [GitHub Issue Tracker](https://github.com/UberGallery/UberGallery/issues).
 
-
-License
--------
+-----
 
 **Copyright (c) 2016 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
 
