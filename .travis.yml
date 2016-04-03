@@ -6,7 +6,7 @@ cache:
     directories:
         - $HOME/.composer/cache
 
-before_script:
+before_install:
    - printf "\n" | pecl install imagick
 
 install: composer install
