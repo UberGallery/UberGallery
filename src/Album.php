@@ -4,6 +4,7 @@ namespace Uber;
 
 use Uber\Config;
 use Uber\Image;
+use Exception;
 
 class Album {
 

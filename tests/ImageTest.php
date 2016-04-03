@@ -74,7 +74,7 @@ class ImageTest extends PHPUnit_Framework_TestCase {
 
     /** @test @expectedException Exception */
     public function throw_exception_for_invalid_file_type() {
-        $image = new Image(__DIR__ . '/test_files/config.php');
+        $image = new Image(__DIR__ . '/test_files/test.txt');
     }
 
 }
