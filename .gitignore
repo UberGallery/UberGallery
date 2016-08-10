@@ -1,2 +1,5 @@
 composer.lock
 /vendor/
+/storage/cache/
+
+!*/.gitignore

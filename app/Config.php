@@ -1,9 +1,12 @@
 <?php
 
-namespace Uber;
+namespace App;
+
+use Exception;
 
 class Config {
 
+    /** @var array Array of config options */
     protected $config = [];
 
     /**
@@ -23,8 +26,26 @@ class Config {
      *
      * @return mixed          Configuration option value or $default value
      */
-    public function get($key, $default = null) {
-        return isset($this->config[$key]) ? $this->config[$key] : $default;
+    public function get($key = null, $default = false) {
+
+        if (! isset($key)) return $this->config;
+
+        $config = $this->config;
+        $keys   = explode('.', $key);
+
+        while (! empty($keys) && $key = array_shift($keys)) {
+
+            if (! isset($config[$key])) {
+                $config = $default;
+                break;
+            }
+
+            $config = $config[$key];
+
+        }
+
+        return $config;
+
     }
 
     /**
@@ -59,7 +80,27 @@ class Config {
      * @return object       This Gallery\Config object
      */
     public function load($path) {
-        $this->config = array_merge($this->config, include($path));
+
+        $contents  = include($path);
+
+        if (gettype($contents) != 'array') {
+            throw new Exception('File ' . $path . ' does not contain a valid array');
+        }
+
+        $this->config = array_merge($this->config, $contents);
+
+        return $this;
+
+    }
+
+    /**
+     * Merge another Config object into this one
+     *
+     * @param  Config $config [description]
+     * @return [type]         [description]
+     */
+    public function merge(Config $config) {
+        $this->config = array_merge($this->config, $config->get());
         return $this;
     }
 

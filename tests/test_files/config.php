@@ -1,7 +1,11 @@
 <?php
 
 return [
-    'foo' => 'foo',
+    'foo' => [
+        'bar' => [
+            'baz' => 'foobarbaz'
+        ]
+    ],
     'bar' => 'bar',
     'baz' => 'baz'
 ];

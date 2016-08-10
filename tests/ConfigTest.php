@@ -1,18 +1,21 @@
 <?php
 
-use Uber\Config;
-
 class ConfigTest extends PHPUnit_Framework_TestCase {
 
     protected $config;
 
     public function setUp() {
-        $this->config = new Config(__DIR__ . '/test_files/config.php');
+        $this->config = new App\Config(__DIR__ . '/test_files/config.php');
     }
 
     /** @test */
     public function it_can_get_an_option() {
         $this->assertEquals('bar', $this->config->get('bar'));
+    }
+
+    /** @test */
+    public function it_can_get_an_option_by_dot_notation() {
+        $this->assertEquals('foobarbaz', $this->config->get('foo.bar.baz'));
     }
 
     /** @test */
