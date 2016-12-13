@@ -1,5 +1,6 @@
 <?php
 
+ini_set('max_execution_time', 90); //300 seconds = 5 minutes
 /**
  * UberGallery is an easy to use, simple to manage, web photo gallery written in
  * PHP. UberGallery does not require a database and supports JPEG, GIF and PNG
@@ -198,6 +199,7 @@ class UberGallery {
                 $galleryArray['images'][htmlentities(pathinfo($image['real_path'], PATHINFO_BASENAME))] = array(
                     'file_title'   => str_replace('_', ' ', pathinfo($image['real_path'], PATHINFO_FILENAME)),
                     'file_path'    => htmlentities($relativePath),
+                    'box_path'     => $this->_createThumbnail($image['real_path'],500,500,75),
                     'thumb_path'   => $this->_createThumbnail($image['real_path'])
                 );
 
