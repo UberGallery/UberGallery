@@ -1,10 +1,10 @@
 <?php
 
 if (! defined(APP_ROOT)) {
-    define(APP_ROOT, realpath(__DIR__ . '/../'));
+    define(APP_ROOT, realpath(__DIR__ . '/app'));
 }
 
-require APP_ROOT . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 $config = new PHLAK\Config\Config(APP_ROOT . '/config/');
 $cache = PHLAK\Stash\Cache::make($config->cache->driver, $config->get('cache.config'));
