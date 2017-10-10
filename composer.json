@@ -16,7 +16,7 @@
         "php": ">=5.6",
         "ext-imagick": "*",
         "phlak/config": "^3.0",
-        "phlak/stash": "^4.0",
+        "phlak/stash": "^4.1",
         "ubergallery/framework": "^0.2.0",
         "nikic/fast-route": "^1.2"
     },
