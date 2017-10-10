@@ -60,7 +60,7 @@ Please report bugs to the [GitHub Issue Tracker](https://github.com/UberGallery/
 
 -----
 
-MIT License
+This project is liscensed under the MIT License.
 
 **Copyright (c) 2016 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
 
