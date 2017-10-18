@@ -5,7 +5,7 @@ return [
         // 'driver' => 'file',
         // 'duration' => 5,
         // 'config' => [
-        //     'dir' => __DIR__ . '/../storage/cache' // TODO: Improvoe this
+        //     'dir' => __DIR__ . '/../cache' // TODO: Improvoe this
         // ]
 
         'driver' => 'memcached',

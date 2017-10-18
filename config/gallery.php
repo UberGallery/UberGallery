@@ -2,6 +2,6 @@
 
 return [
     'gallery' => [
-        'theme' => 'default'
+        'theme' => 'redux'
     ]
 ];

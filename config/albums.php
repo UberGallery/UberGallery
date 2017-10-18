@@ -2,7 +2,7 @@
 
 return [
     'albums' => [
-        'default_album' => [
+        'default' => [
             'title' => 'Default Album',
             'thumbnails' => [
                 'width' => 320,

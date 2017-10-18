@@ -18,7 +18,8 @@
         "phlak/config": "^3.0",
         "phlak/stash": "^4.1",
         "ubergallery/framework": "^0.2.0",
-        "nikic/fast-route": "^1.2"
+        "nikic/fast-route": "^1.2",
+        "mustache/mustache": "^2.12"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7"

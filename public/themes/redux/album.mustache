@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{{ album_title }} &bull; {{ gallery_title }}</title>
+
+        <link rel="stylesheet" href="/redux/css/styles.css">
+    </head>
+    <body>
+        <h1>{{ album_title }}</h1>
+
+        {{#images}}
+            <a href="/default/{{ name }}" class="image">
+                <img src="/default/thumbnail/{{ name }}">
+            </a>
+        {{/images}}
+    </body>
+</html>

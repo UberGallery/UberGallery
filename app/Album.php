@@ -2,31 +2,55 @@
 
 namespace App;
 
-use UberGallery\Uber;
-
-class Album extends Controller
+class Album
 {
-    public function show($album)
+    /** @var array Array of Image objects */
+    protected $images;
+
+    /**
+     * Album constructor, runs on object creation.
+     *
+     * @param array $images Array of Image objects
+     */
+    public function __construct(array $images = [])
     {
-        $width = $this->config->get("albums.{$album}.thumbnails.width");
-        $height = $this->config->get("albums.{$album}.thumbnails.height");
-
-        $images = [];
-        foreach (new \DirectoryIterator(realpath(__DIR__ . "/../albums/{$album}")) as $file) {
-            if ($file->isDot()) continue;
-
-            $key = "{$file->getPathname()}-{$width}x{$height}";
-
-            try {
-                $images[] = $this->cache->remember($key, $this->config->cache->duration, function () use ($file, $width, $height) {
-                    return new Uber\Image($file->getPathname(), $width, $height);
-                });
-            } catch (\Exception $e) {
-                // Don't worry about it
-            }
+        foreach ($images as $image) {
+            $this->add($image);
         }
+    }
 
-        // QUESTION: Cache the album?
-        var_dump(new Uber\Album($images));
+    /**
+     * Adds an individual image to the Album.
+     *
+     * @param object $image Instance of Image
+     *
+     * @return object This Album object
+     */
+    public function add(Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get an array of this Album's Images.
+     *
+     * @return array Array of Images
+     */
+    public function images()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Sort the array of images.
+     *
+     * @return object This Album object
+     */
+    public function sort()
+    {
+        // TODO: Sort the images array
+        return $this;
     }
 }
