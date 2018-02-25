@@ -8,7 +8,7 @@ class MiddlewareProvider
 {
     /** @var array Arayy of application middlewares */
     protected $middlewares = [
-        // App\Middleware\SomeMiddleware::class,
+        \App\Middleware\TrailingSlashRedirectMiddleware::class,
     ];
 
     /**
