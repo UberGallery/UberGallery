@@ -1,20 +1,21 @@
 <?php
 
+/**
+ * This file contains the configuration for your albums.
+ */
+
 return [
-    'albums' => [
-        'default' => [
-            'title' => 'Default Album',
-            'thumbnails' => [
-                'width' => 320,
-                'height' => 240
-            ]
-        ],
-        'second_album' => [
-            'title' => 'Second Album',
-            'thumbnails' => [
-                'width' => 640,
-                'height' => 480
-            ]
+
+    'default' => [
+
+        'title' => 'Default Album',
+
+        'thumbnails' => [
+            'width' => 480,
+            'height' => 270,
+            // 'resize' => fit // 'fit', 'force' or 'crop'
         ]
+
     ]
+
 ];

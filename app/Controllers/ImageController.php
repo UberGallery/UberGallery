@@ -3,19 +3,34 @@
 namespace App\Controllers;
 
 use App\Image;
+use App\Exceptions\FileNotFoundException;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ImageController extends Controller
 {
-    public function show($album, $image)
+    /**
+     * App\Controllers\ImageController magic invoke method, runs when accessed
+     * as a callable.
+     *
+     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param array                                   $args     the array of request arguments
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $imagePath = "{$this->app->rootDir()}/albums/{$album}/{$image}";
-
-        if (file_exists($imagePath)) {
-            $image = $this->app->cache->remember($imagePath, $this->app->config->cache->duration, function () use ($imagePath) {
-                return new Image($imagePath);
-            });
-
-            $image->render();
+        try {
+            $imagePath = $this->imagePath($args['album'], $args['image']);
+        } catch (FileNotFoundException $exception) {
+            return $response->withStatus(404)->write('Image not found');
         }
+
+        $image = Image::createFromCache($this->container, $imagePath);
+
+        return $response
+            ->withHeader('Content-Type', $image->mimeType)
+            ->write($image->contents);
     }
 }

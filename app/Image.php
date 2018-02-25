@@ -3,10 +3,13 @@
 namespace App;
 
 use Imagick;
+use App\Traits\Cacheable;
 use App\Exceptions\InvalidImageException;
 
 class Image
 {
+    use Cacheable;
+
     /** @var string Binary string of image data */
     protected $contents;
 
@@ -41,6 +44,7 @@ class Image
             throw new InvalidImageException($path . ' is not a valid image');
         }
 
+        $this->title = $title;
         $this->contents = file_get_contents($path);
 
         $this->path = realpath($path);
@@ -49,21 +53,29 @@ class Image
         if ($width > 0 || $height > 0) {
             $imagick = new Imagick;
             $imagick->readImageBlob($this->contents);
-            $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
+            $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
             $imagick->setImageCompressionQuality(82);
             $this->contents = $imagick->getimageblob();
         }
 
-        list($this->width, $this->height) = getimagesizefromstring($this->contents);
+        [$this->width, $this->height] = getimagesizefromstring($this->contents);
         $this->mimeType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->contents);
-
-        if (isset($title)) {
-            $this->title = $title;
-        }
     }
 
     /**
-     * Get raw image contents
+     * Magic getter method for getting the value of a protected property.
+     *
+     * @param string $property Property name
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Get raw image contents.
      * TODO: Rename this to raw() or binary()?
      *
      * @return string Binary string of image data
@@ -94,37 +106,23 @@ class Image
     }
 
     /**
-     * Render the image to the browser.
+     * Get the image file name.
+     *
+     * @return string Image name
      */
-    public function render()
+    public function name()
     {
-        header('Content-Type: ' . $this->mimeType);
+        return $this->name;
+    }
 
-        $image = imagecreatefromstring($this->contents);
-
-        switch ($this->mimeType) {
-            case 'image/jpg':
-            case 'image/jpeg':
-                imagejpeg($image);
-                break;
-
-            case 'image/png':
-                imagepng($image);
-                break;
-
-            case 'image/gif':
-                imagegif($image);
-                break;
-
-            // case 'image/bmp':
-            //     imagewbmp($image);
-            //     break;
-
-            default:
-                throw new Exception('Invalid image type');
-        }
-
-        imagedestroy($image);
+    /**
+     * Get the canonical image path.
+     *
+     * @return string Image path
+     */
+    public function path()
+    {
+        return $this->path;
     }
 
     /**
@@ -147,6 +145,11 @@ class Image
         return $this->height;
     }
 
+    /**
+     * Get the image dimensions ad [height]x[width].
+     *
+     * @return string Image dimensions
+     */
     public function dimensions()
     {
         return $this->width . 'x' . $this->height;
@@ -221,25 +224,5 @@ class Image
         $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
 
         return in_array($mimeType, ['image/png', 'image/jpeg', 'image/jpg']);
-    }
-
-    /**
-     * [name description]
-     *
-     * @return [type] [description]
-     */
-    public function name()
-    {
-        return $this->name;
-    }
-
-    /**
-     * [path description]
-     *
-     * @return [type] [description]
-     */
-    public function path()
-    {
-        return $this->path;
     }
 }

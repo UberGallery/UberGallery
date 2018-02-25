@@ -3,24 +3,40 @@
 namespace App\Controllers;
 
 use App\Image;
+use App\Traits\Cacheable;
+use App\Exceptions\FileNotFoundException;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ThumbnailController extends Controller
 {
-    public function show($album, $thumbnail)
+    use Cacheable;
+
+    /**
+     * App\Controllers\ThumbnailController magic invoke method, runs when
+     * accessed as a callable.
+     *
+     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param array                                   $args     the array of request arguments
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $imagePath = "{$this->app->rootDir()}/albums/{$album}/{$thumbnail}";
-
-        $width = $this->app->config->get("albums.{$album}.thumbnails.width");
-        $height = $this->app->config->get("albums.{$album}.thumbnails.height");
-
-        $key = "{$imagePath}-{$width}x{$height}";
-
-        if (file_exists($imagePath)) {
-            $image = $this->app->cache->remember($key, $this->app->config->cache->duration, function () use ($imagePath, $width, $height) {
-                return new Image($imagePath, $width, $height);
-            });
-
-            $image->render();
+        try {
+            $imagePath = $this->imagePath($args['album'], $args['image']);
+        } catch (FileNotFoundException $exception) {
+            return $response->withStatus(404)->write('Thumbnail not found');
         }
+
+        $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
+        $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
+
+        $image = Image::createFromCache($this->container, $imagePath, $width, $height);
+
+        return $response
+            ->withHeader('Content-Type', $image->mimeType())
+            ->write($image->contents());
     }
 }

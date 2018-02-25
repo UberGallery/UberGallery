@@ -4,19 +4,25 @@ namespace App;
 
 class Album
 {
+    /** @var string The album title */
+    protected $title;
+
     /** @var array Array of Image objects */
     protected $images;
 
     /**
      * Album constructor, runs on object creation.
      *
-     * @param array $images Array of Image objects
+     * @param array  $images Array of Image objects
+     * @param string $title  The album's title
      */
-    public function __construct(array $images = [])
+    public function __construct(array $images = [], $title = null)
     {
         foreach ($images as $image) {
             $this->add($image);
         }
+
+        $this->title = $title;
     }
 
     /**

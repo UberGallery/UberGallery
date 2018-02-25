@@ -4,32 +4,52 @@ namespace App\Controllers;
 
 use App\Album;
 use App\Image;
+use App\Exceptions\FileNotFoundException;
+use App\Exceptions\InvalidImageException;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use DirectoryIterator;
 
 class AlbumController extends Controller
 {
-    public function show($album)
+    /**
+     * App\Controllers\AlbumController magic invoke method, runs when accessed
+     * as a callable.
+     *
+     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param array                                   $args     the array of request arguments
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $width = $this->app->config->get("albums.{$album}.thumbnails.width");
-        $height = $this->app->config->get("albums.{$album}.thumbnails.height");
+        try {
+            $albumPath = $this->albumPath($args['album']);
+        } catch (FileNotFoundException $exception) {
+            return $response->withStatus(404)->write('Album not found');
+        }
 
-        $images = [];
-        foreach (new \DirectoryIterator($this->app->albumPath($album)) as $file) {
-            if ($file->isDot()) continue;
+        $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
+        $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
 
-            $key = "{$file->getPathname()}-{$width}x{$height}";
+        $album = new Album();
+
+        foreach (new DirectoryIterator($albumPath) as $file) {
+            if ($file->isDot()) { continue; }
 
             try {
-                $images[] = $this->app->cache->remember($key, $this->app->config->cache->duration, function () use ($file, $width, $height) {
-                    return new Image($file->getPathname(), $width, $height);
-                });
-            } catch (\Exception $e) {
+                $album->add(new Image($file->getPathname(), $width, $height));
+            } catch (InvalidImageException $exception) {
                 // Don't worry about it
             }
         }
 
         // QUESTION: Cache the album?
-        $album = new Album($images);
 
-        return $this->view('album', ['app' => $this->app, 'album' => $album, 'images' => $album->images()]);
+        return $response->write($this->view('album', [
+            'container' => $this->container,
+            'album' => $album
+        ]));
     }
 }

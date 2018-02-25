@@ -1,5 +1,4 @@
-composer.lock
 /vendor/
-/storage/cache/
+/composer.lock
 
 !*/.gitignore

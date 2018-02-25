@@ -4,15 +4,15 @@
         <meta charset="utf-8">
         <title>{{ album_title }} &bull; {{ gallery_title }}</title>
 
-        <link rel="stylesheet" href="/redux/css/styles.css">
+        <link rel="stylesheet" href="{{# themePath }}css/styles.css{{/ themePath }}">
     </head>
     <body>
         <h1>{{ album_title }}</h1>
 
-        {{#images}}
+        {{# album.images }}
             <a href="/default/{{ name }}" class="image">
                 <img src="/default/thumbnail/{{ name }}">
             </a>
-        {{/images}}
+        {{/ album.images }}
     </body>
 </html>

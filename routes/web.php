@@ -1,8 +1,14 @@
 <?php
 
-// This is where we define our application routes
+/**
+ * This is where we define our application routes.
+ */
 
-$route->get('/', 'GalleryController@index');
-$route->get('/{album}', 'AlbumController@show');
-$route->get('/{album}/{image}', 'ImageController@show');
-$route->get('/{album}/thumbnail/{image}', 'ThumbnailController@show');
+$app->get('/', App\Controllers\GalleryController::class)->setName('index');
+
+$app->group('/{album}', function () {
+    $this->get('/', App\Controllers\AlbumController::class)->setName('album');
+    // $this->get('/{page:[0-9]+}', App\Controllers\AlbumController::class)->setName('album');
+    $this->get('/{image}', App\Controllers\ImageController::class)->setName('image');
+    $this->get('/thumbnail/{image}', App\Controllers\ThumbnailController::class)->setName('thumbnail');
+});
