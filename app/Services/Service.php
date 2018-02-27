@@ -9,7 +9,7 @@ abstract class Service
     /**
      * App\Services\Service constructor. Runs on object creation.
      *
-     * @param Psr\Container\ContainerInterface $container The Slim app container
+     * @param Psr\Container\ContainerInterface $container The Slim application container
      */
     public function __construct(ContainerInterface $container)
     {

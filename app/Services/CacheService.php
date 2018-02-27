@@ -15,7 +15,6 @@ class CacheService extends Service
     {
         $this->bind('cache', function ($container) {
             return Stash\Cache::make($container->config->cache->driver, $container->config->cache->config);
-            // return Stash\Cache::make(config('cache.driver'), config('cache.config'));
         });
     }
 }

@@ -2,9 +2,15 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>UberGallery 3.0 Redux Theme</title>
+        <title>{{ gallery_title }}</title>
+
+        <link rel="stylesheet" href="{{# themePath }}css/styles.css{{/ themePath }}">
     </head>
     <body>
         <h1>Welcome to UberGallery 3.0!</h1>
+
+        {{# albums }}
+            <a href="/{{ slug }}/">{{ title }}</a>
+        {{/ albums }}
     </body>
 </html>

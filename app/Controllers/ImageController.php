@@ -10,11 +10,10 @@ use Psr\Http\Message\ResponseInterface;
 class ImageController extends Controller
 {
     /**
-     * App\Controllers\ImageController magic invoke method, runs when accessed
-     * as a callable.
+     * Handle an incoming Image request and return a response.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param array                                   $args     the array of request arguments
      *
      * @return Psr\Http\Message\ResponseInterface

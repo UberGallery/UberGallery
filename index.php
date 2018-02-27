@@ -5,7 +5,8 @@ require __DIR__ . '/vendor/autoload.php';
 $app = new \Slim\App([
     'settings' => array_merge([
         'routerCacheFile' => __DIR__ . '/cache/routes.cache.php',
-        'albums' => require __DIR__ . '/config/albums.php'
+        'albums' => require __DIR__ . '/config/albums.php',
+        'cache' => require __DIR__ . '/config/cache.php'
     ], require __DIR__ . '/config/app.php'),
     'root' => __DIR__
 ]);
@@ -13,6 +14,7 @@ $app = new \Slim\App([
 call_user_func(new App\Bootstrap\ServiceProvider, $app);
 call_user_func(new App\Bootstrap\MiddlewareProvider, $app);
 
+// TODO: Make a RouteService
 require __DIR__ . '/routes/web.php';
 
 $app->run();

@@ -13,16 +13,15 @@ class ThumbnailController extends Controller
     use Cacheable;
 
     /**
-     * App\Controllers\ThumbnailController magic invoke method, runs when
-     * accessed as a callable.
+     * Handle an incoming Thumbnail request and return a response.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param array                                   $args     the array of request arguments
      *
      * @return Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $args)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
@@ -36,7 +35,7 @@ class ThumbnailController extends Controller
         $image = Image::createFromCache($this->container, $imagePath, $width, $height);
 
         return $response
-            ->withHeader('Content-Type', $image->mimeType())
-            ->write($image->contents());
+            ->withHeader('Content-Type', $image->mimeType)
+            ->write($image->contents);
     }
 }

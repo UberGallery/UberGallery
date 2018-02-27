@@ -1,8 +1,10 @@
 <?php
 
-// This file allows emulating Apache's "mod_rewrite" functionality with the
-// built-in PHP web server. This makes it easy to test UberGallery without
-// installing a "real" web server.
+/**
+ * This file allows emulating Apache's "mod_rewrite" functionality with the
+ * built-in PHP web server. This makes it easy to test UberGallery without
+ * installing a "real" web server.
+ */
 
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)

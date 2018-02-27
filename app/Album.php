@@ -11,7 +11,7 @@ class Album
     protected $images;
 
     /**
-     * Album constructor, runs on object creation.
+     * App\Album constructor. Runs on object creation.
      *
      * @param array  $images Array of Image objects
      * @param string $title  The album's title
@@ -23,6 +23,30 @@ class Album
         }
 
         $this->title = $title;
+    }
+
+    /**
+     * Magic getter method for getting the value of a protected property.
+     *
+     * @param string $property Property name
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic isset method for determining if a magic property is set.
+     *
+     * @param string $property Property name
+     *
+     * @return bool True if property is set, otherwise false
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
     }
 
     /**
@@ -40,16 +64,6 @@ class Album
     }
 
     /**
-     * Get an array of this Album's Images.
-     *
-     * @return array Array of Images
-     */
-    public function images()
-    {
-        return $this->images;
-    }
-
-    /**
      * Sort the array of images.
      *
      * @return object This Album object
@@ -57,6 +71,7 @@ class Album
     public function sort()
     {
         // TODO: Sort the images array
+
         return $this;
     }
 }

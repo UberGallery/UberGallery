@@ -6,13 +6,13 @@ use Slim\App;
 
 class MiddlewareProvider
 {
-    /** @var array Arayy of application middlewares */
+    /** @var array Array of application middleware */
     protected $middlewares = [
         \App\Middleware\TrailingSlashRedirectMiddleware::class,
     ];
 
     /**
-     * Register application middlewares.
+     * Register application middleware.
      *
      * @param Slim\App $app The Slim application
      *

@@ -6,14 +6,13 @@ use Mustache_Engine;
 use Mustache_Loader_FilesystemLoader;
 use App\Exceptions\FileNotFoundException;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class Controller
 {
     /** @var ContainerInterface An implementation of ContainerInterface */
     protected $container;
-
-    /** @var string Path to the directory of the currently enabled theme */
-    protected $themePath;
 
     /**
      * App\Controllers\Controller constructor. Runs on object creation.
@@ -24,6 +23,17 @@ abstract class Controller
     {
         $this->container = $container;
     }
+
+    /**
+     * Handle an incoming request and return a response.
+     *
+     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
+     * @param array                                   $args     the array of request arguments
+     *
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args);
 
     /**
      * Render a view with some provided data.
@@ -37,15 +47,15 @@ abstract class Controller
     {
         $mustache = new Mustache_Engine([
             'loader' => new Mustache_Loader_FilesystemLoader($this->themePath()),
-            // 'partials_loader' => new Mustache_Loader_FilesystemLoader("$this->themePath/partials"),
-            // 'escape' => function($value) {
-            //     return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
-            // }
+            // TODO: Only enable this if the partials directory exists
+            // 'partials_loader' => new Mustache_Loader_FilesystemLoader($this->themePath('partials')),
+            'escape' => function ($value) {
+                return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+            }
         ]);
 
         $data = array_merge([
             'gallery_title' => 'Static Gallery Title',
-            'album_title' => 'Static Album Title',
             'themePath' => function ($path) {
                 return "/themes/{$this->config('theme')}/{$path}";
             }
@@ -56,10 +66,10 @@ abstract class Controller
     }
 
     /**
-     * Convinience method for fetching config items.
+     * Convinience method for fetching application configuration items from the container.
      *
-     * @param string $key     A unique config item key
-     * @param mixed  $default A value to be returned if the config item doesn't exist
+     * @param string $key     Unique config item key
+     * @param mixed  $default Value to be returned if the config item doesn't exist
      *
      * @return mixed The config item or default value
      */
@@ -71,11 +81,19 @@ abstract class Controller
     /**
      * Return the directory path to the enabled theme.
      *
-     * @return string The them path
+     * @param string $path An optional sub-path to apend to the theme path
+     *
+     * @return string Full path to the theme
      */
-    protected function themePath()
+    protected function themePath($path = null)
     {
-        return $this->container->root . "/themes/{$this->config('theme')}";
+        $themePath = realpath($this->container->root . "/themes/{$this->config('theme')}/{$path}");
+
+        if (! $themePath) {
+            throw new FileNotFoundException("Theme path not found at $themePath");
+        }
+
+        return $themePath;
     }
 
     /**
@@ -89,13 +107,29 @@ abstract class Controller
      */
     protected function albumPath($album)
     {
-        $albumPath = $this->container->root . "/albums/{$album}";
+        $albumPath = realpath($this->container->root . "/albums/{$album}");
 
-        if (! file_exists($albumPath)) {
+        if (! $albumPath) {
             throw new FileNotFoundException("Album not found at {$albumPath}");
         }
 
         return $albumPath;
+    }
+
+    /**
+     * Retrieve the album title from the config or construct it from the
+     * provided slug.
+     *
+     * @param string $album Album slug
+     *
+     * @return string The album title
+     */
+    protected function albumTitle($album)
+    {
+        return $this->config(
+            "albums.{$album}.title",
+            ucwords(str_replace('_', ' ', $album)) . ' Album'
+        );
     }
 
     /**
@@ -110,9 +144,9 @@ abstract class Controller
      */
     protected function imagePath($album, $image)
     {
-        $imagePath = "{$this->albumPath($album)}/{$image}";
+        $imagePath = realpath("{$this->albumPath($album)}/{$image}");
 
-        if (! file_exists($imagePath)) {
+        if (! $imagePath) {
             throw new FileNotFoundException("Image not found at $imagePath");
         }
 

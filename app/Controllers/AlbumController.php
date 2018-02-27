@@ -13,11 +13,10 @@ use DirectoryIterator;
 class AlbumController extends Controller
 {
     /**
-     * App\Controllers\AlbumController magic invoke method, runs when accessed
-     * as a callable.
+     * Handle an incoming Album request and return a response.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  The incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response The outgoing response object
+     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param array                                   $args     the array of request arguments
      *
      * @return Psr\Http\Message\ResponseInterface
@@ -33,10 +32,12 @@ class AlbumController extends Controller
         $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
         $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
 
-        $album = new Album();
+        $album = new Album([], $this->albumTitle($args['album']));
 
         foreach (new DirectoryIterator($albumPath) as $file) {
-            if ($file->isDot()) { continue; }
+            if ($file->isDot()) {
+                continue;
+            }
 
             try {
                 $album->add(new Image($file->getPathname(), $width, $height));

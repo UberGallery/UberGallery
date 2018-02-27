@@ -6,7 +6,7 @@ use Slim\App;
 
 class ServiceProvider
 {
-    /** @var array Arayy of application services */
+    /** @var array Array of application services */
     protected $services = [
         \App\Services\ConfigService::class,
         \App\Services\CacheService::class

@@ -2,16 +2,16 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>{{ album_title }} &bull; {{ gallery_title }}</title>
+        <title>{{ album.title }} &bull; {{ gallery_title }}</title>
 
         <link rel="stylesheet" href="{{# themePath }}css/styles.css{{/ themePath }}">
     </head>
     <body>
-        <h1>{{ album_title }}</h1>
+        <h1>{{ album.title }}</h1>
 
         {{# album.images }}
             <a href="/default/{{ name }}" class="image">
-                <img src="/default/thumbnail/{{ name }}">
+                <img src="/default/thumbnail/{{ name }}" alt="{{ name }}" title="{{ name }}">
             </a>
         {{/ album.images }}
     </body>
