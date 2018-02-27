@@ -21,7 +21,20 @@ abstract class Service
      *
      * @return void
      */
-    abstract public function register();
+    public function register()
+    {
+        // ...
+    }
+
+    /**
+     * Boot a service.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // ...
+    }
 
     /**
      * Bind a service to the container.

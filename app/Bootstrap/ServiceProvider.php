@@ -28,7 +28,14 @@ class ServiceProvider
 
         array_walk($services, function ($service) use ($app) {
             $service = new $service($app->getContainer());
+
             $service->register();
+        });
+
+        array_walk($services, function ($service) use ($app) {
+            $service = new $service($app->getContainer());
+
+            $service->boot();
         });
     }
 }
