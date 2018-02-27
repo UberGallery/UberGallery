@@ -13,8 +13,6 @@ $app = new \Slim\App([
 
 call_user_func(new App\Bootstrap\ServiceProvider, $app);
 call_user_func(new App\Bootstrap\MiddlewareProvider, $app);
-
-// TODO: Make a RouteService
-require __DIR__ . '/routes/web.php';
+call_user_func(new App\Bootstrap\RoutesProvider, $app);
 
 $app->run();
