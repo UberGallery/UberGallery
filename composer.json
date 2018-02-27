@@ -13,7 +13,7 @@
         "issues": "https://github.com/PHLAK/UberGallery/issues"
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=5.6",
         "ext-imagick": "*",
         "mustache/mustache": "^2.12",
         "phlak/config": "^3.0",
