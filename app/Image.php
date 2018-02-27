@@ -47,7 +47,7 @@ class Image
             $this->contents = $this->resizeContents($width, $height);
         }
 
-        [$this->width, $this->height] = getimagesizefromstring($this->contents);
+        list($this->width, $this->height) = getimagesizefromstring($this->contents);
         $this->mimeType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->contents);
     }
 
