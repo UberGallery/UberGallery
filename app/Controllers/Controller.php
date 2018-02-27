@@ -17,7 +17,7 @@ abstract class Controller
     /**
      * App\Controllers\Controller constructor. Runs on object creation.
      *
-     * @param Psr\Container\ContainerInterface $container The Slim application container
+     * @param \Psr\Container\ContainerInterface $container The Slim application container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -27,11 +27,11 @@ abstract class Controller
     /**
      * Handle an incoming request and return a response.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
+     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param array                                   $args     the array of request arguments
      *
-     * @return Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args);
 

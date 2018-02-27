@@ -12,11 +12,11 @@ class ImageController extends Controller
     /**
      * Handle an incoming Image request and return a response.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
+     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param array                                   $args     the array of request arguments
      *
-     * @return Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {

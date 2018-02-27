@@ -15,7 +15,7 @@ class ServiceProvider
     /**
      * Register application services.
      *
-     * @param Slim\App $app The Slim application
+     * @param \Slim\App $app The Slim application
      *
      * @return void
      */

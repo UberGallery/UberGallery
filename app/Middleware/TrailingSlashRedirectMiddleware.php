@@ -10,11 +10,11 @@ class TrailingSlashRedirectMiddleware extends Middleware
     /**
      * Redirect requests to a non-file path without a trailing slash.
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param Psr\Http\Message\ResponseInterface      $response Outgoing response object
+     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
+     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
      * @param callable                                $next     The next middleware
      *
-     * @return Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {

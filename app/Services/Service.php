@@ -6,10 +6,13 @@ use Psr\Container\ContainerInterface;
 
 abstract class Service
 {
+    /** @var \Psr\Container\ContainerInterface $container The Slim application container */
+    protected $container;
+
     /**
      * App\Services\Service constructor. Runs on object creation.
      *
-     * @param Psr\Container\ContainerInterface $container The Slim application container
+     * @param \Psr\Container\ContainerInterface $container The Slim application container
      */
     public function __construct(ContainerInterface $container)
     {

@@ -4,7 +4,7 @@ namespace App;
 
 class Album
 {
-    /** @var string The album title */
+    /** @var string|null The album title */
     protected $title;
 
     /** @var array Array of Image objects */

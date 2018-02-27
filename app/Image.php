@@ -155,7 +155,7 @@ class Image
      * @param int $width  Image width
      * @param int $height Image height
      *
-     * @return App\Image Resized Image object
+     * @return \App\Image Resized Image object
      */
     public function resize($width, $height)
     {

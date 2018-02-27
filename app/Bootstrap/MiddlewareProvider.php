@@ -14,7 +14,7 @@ class MiddlewareProvider
     /**
      * Register application middleware.
      *
-     * @param Slim\App $app The Slim application
+     * @param \Slim\App $app The Slim application
      *
      * @return void
      */
