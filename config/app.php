@@ -7,6 +7,13 @@
 return [
 
     /**
+     * Give your gallery a descriptive title.
+     *
+     * Default value: 'Uber Gallery'
+     */
+    'title' => 'Uber Gallery',
+
+    /**
      * Set your desired theme. Must be the name aof the theme folder as it is in
      * the themes directory.
      *

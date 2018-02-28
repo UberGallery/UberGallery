@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{{ album.title }} &bull; {{ gallery_title }}</title>
+    {{> partials/head }}
 
-        <link rel="stylesheet" href="{{# themePath }}css/styles.css{{/ themePath }}">
-    </head>
     <body>
         <h1>{{ album.title }}</h1>
 
