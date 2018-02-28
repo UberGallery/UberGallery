@@ -9,7 +9,8 @@ class ServiceProvider
     /** @var array Array of application services */
     protected $services = [
         \App\Services\ConfigService::class,
-        \App\Services\CacheService::class
+        \App\Services\CacheService::class,
+        \App\Services\MustacheService::class
     ];
 
     /**

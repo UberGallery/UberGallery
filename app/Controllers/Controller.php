@@ -45,24 +45,12 @@ abstract class Controller
      */
     protected function view($view, $data = [])
     {
-        $mustache = new Mustache_Engine([
-            'loader' => new Mustache_Loader_FilesystemLoader($this->themePath()),
-            // TODO: Only enable this if the partials directory exists
-            // 'partials_loader' => new Mustache_Loader_FilesystemLoader($this->themePath('partials')),
-            'escape' => function ($value) {
-                return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
-            }
-        ]);
-
-        $data = array_merge([
-            'gallery_title' => 'Static Gallery Title',
+        return $this->container->mustache->render($view, array_merge([
+            'gallery_title' => $this->config('title', 'Uber Gallery'),
             'themePath' => function ($path) {
                 return "/themes/{$this->config('theme')}/{$path}";
             }
-        ], $data);
-
-        // TODO: Create some logic to allow template dot notation (i.e. theme.index, theme.album, etc.)
-        return $mustache->loadTemplate($view)->render($data);
+        ], $data));
     }
 
     /**
