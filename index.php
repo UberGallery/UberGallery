@@ -7,7 +7,7 @@
     $gallery = new UberGallery();
 
     // Initialize the gallery array
-    $galleryArray = $gallery->readImageDirectory('gallery-images');
+    $galleryArray = $gallery->readImageDirectory('gallery-images/catalog1');
 
     // Define theme path
     if (!defined('THEMEPATH')) {
