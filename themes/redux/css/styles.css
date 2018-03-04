@@ -1,21 +1,16 @@
 body {
-    background-color: #78909C;
+    background-color: hsl(200, 15%, 50%);
 }
 
 a.image {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .33);
-    border-radius: 8px;
-    display: inline-block;
+    box-shadow: 0 2px 4px hsla(0, 0%, 0%, .33);
     height: 240px;
-    margin: 12px;
     overflow: hidden;
-    position: relative;
     width: 240px;
-    text-align: center;
 }
 
 a.image:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, .5);
+    box-shadow: 0 4px 8px hsla(0, 0%, 0%, .5);
     top: -2px;
 }
 
@@ -23,4 +18,112 @@ a.image:hover {
     min-height: 100%;
     object-fit: cover;
     width: 100%;
+}
+
+#redux-modal {
+    align-items: center;
+    background-color: hsla(200, 10%, 25%, 0.85);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    /* padding-top: 5rem; */
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.redux-modal-image {
+    box-shadow: 0 2px 4px hsla(0, 0%, 0%, .33);
+    display: block;
+    max-width: 1080px;
+    width: 85%;
+}
+
+.redux-modal-caption {
+    background: hsl(0, 0%, 15%);
+    box-shadow: 0 2px 4px hsla(0, 0%, 0%, .33);
+    color: hsl(0, 0%, 85%);
+    display: inline-block;
+    max-width: 960px;
+    text-align: center;
+}
+
+.redux-modal-image, .redux-modal-caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+.redux-modal-close {
+    color: hsl(0, 0%, 85%);
+    display: inline-block;
+    font-size: 2.4rem;
+    font-weight: bold;
+    height: 2.4rem;
+    line-height: 1.4rem;
+    padding: .4rem;
+    position: absolute;
+    right: 2rem;
+    text-align: center;
+    transition: 0.3s;
+    top: 2rem;
+    width: 2.4rem;
+}
+
+.redux-modal-close:hover, .redux-modal-close:focus {
+    background-color: hsl(0, 60%, 40%);
+    box-shadow: 0 2px 4px hsla(0, 0%, 0%, .33);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.redux-modal-navigation {
+    color: hsl(0, 0%, 85%);
+    display: inline-block;
+    font-size: 2.4rem;
+    font-weight: bold;
+    height: 2.4rem;
+    line-height: 1.4rem;
+    padding: .4rem;
+    position: absolute;
+    text-align: center;
+    transition: 0.3s;
+    width: 2.4rem;
+}
+
+.redux-modal-navigation.previous {
+    left: 2rem;
+}
+
+.redux-modal-navigation.next {
+    right: 2rem;
+}
+
+.redux-modal-navigation:hover, .redux-modal-navigation:focus {
+    background-color: hsl(0, 0%, 85%);
+    box-shadow: 0 2px 4px hsla(0, 0%, 0%, .33);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media only screen and (max-width: 700px){
+    #redux-modal {
+        padding-top: 40px;
+    }
+
+    .redux-modal-image {
+        width: 95%;
+    }
 }

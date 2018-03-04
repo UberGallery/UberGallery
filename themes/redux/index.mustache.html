@@ -3,10 +3,14 @@
     {{> partials/head }}
 
     <body>
-        <h1>Welcome to UberGallery 3.0!</h1>
+        <div class="container">
+            <h1 class="display-4">Welcome to UberGallery 3.0!</h1>
 
-        {{# albums }}
-            <a href="/{{ slug }}/">{{ title }}</a>
-        {{/ albums }}
+            <ul>
+                {{# albums }}
+                    <li><a href="/{{ slug }}/">{{ title }}</a></li>
+                {{/ albums }}
+            </ul>
+        </div>
     </body>
 </html>

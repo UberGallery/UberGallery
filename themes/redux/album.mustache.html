@@ -3,12 +3,28 @@
     {{> partials/head }}
 
     <body>
-        <h1>{{ album.title }}</h1>
+        <div id="album" class="container">
+            <h1 id="album-title" class="text-white display-4">
+                <a href="/">&lt;</a>
+                {{ album.title }}
+            </h1>
 
-        {{# album.images }}
-            <a href="/default/{{ name }}" class="image">
-                <img src="/default/thumbnail/{{ name }}" alt="{{ name }}" title="{{ name }}">
-            </a>
-        {{/ album.images }}
+            <div class="d-flex flex-wrap justify-content-around my-3">
+                {{# album.images }}
+                    <a href="/default/{{ name }}" title="{{ name }}" class="image rounded position-relative m-3">
+                        <img src="/default/thumbnail/{{ name }}" alt="{{ name }}">
+                    </a>
+                {{/ album.images }}
+            </div>
+
+        </div>
+
+        {{> partials/pagination }}
+
+        {{> partials/modal }}
+
+        <script src="{{# themePath }}js/modal.js{{/ themePath }}" defer></script>
+
+        Powered by <a href="http://www.ubergallery.net">UberGallery</a>
     </body>
 </html>
