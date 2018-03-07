@@ -22,19 +22,6 @@ return [
     'theme' => 'redux',
 
     /**
-     * You can speed up your application by enabling caching. By default the
-     * the 'file' cache is enabled but you can use any of several different
-     * caching backends including 'file', 'memcached' or 'redis'
-     */
-    'cache' => [
-        'enabled' => false,
-        'driver' => 'file',
-        'config' => function () {
-            return ['dir' => __DIR__ . '/../cache']; // TODO: Improvoe this
-        }
-    ],
-
-    /**
      * Register custom application services.
      *
      * Default value: []

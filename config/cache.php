@@ -25,14 +25,45 @@ return [
     'driver' => 'file',
 
     /**
-     * A driver-specific configuration closure.
-     *
-     * Default value: function () {
-     *     return ['dir' => __DIR__ . '/../cache'];
-     * }
+     * Cache driver configurations. Modified these to customize your driver
+     * configuration to suit your specific environment.
      */
-    'config' => function () {
-        return ['dir' => __DIR__ . '/../cache']; // TODO: Improvoe this
-    }
+    'drivers' => [
+        /**
+         * File driver configuration
+         */
+        'file' => function () {
+            return [
+                'dir' => realpath(__DIR__ . '/../cache') // TODO: Improvoe this
+            ];
+        },
+
+        /**
+         * Memcached driver configuration
+         */
+        'memcached' => function ($memcached) {
+            $memcached->addServer('localhost', 11211);
+
+            return $memcached; // Must return the $memcached object
+        },
+
+        /**
+         * Redis driver configuration
+         */
+        'redis' => function ($redis) {
+            $redis->pconnect('localhost', 6379);
+
+            return $redis; // Must return the $redis object
+        },
+
+        /**
+         * APCu driver configuration
+         */
+        'apcu' => function () {
+            return [
+                // 'prefix' => 'uber_gallery' // Optional prefix
+            ];
+        }
+    ]
 
 ];

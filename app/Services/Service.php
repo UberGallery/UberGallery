@@ -49,6 +49,6 @@ abstract class Service
      */
     protected function bind($name, callable $closure)
     {
-        $this->container[$name] = $closure;
+        $this->container[$name] = $closure($this->container);
     }
 }
