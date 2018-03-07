@@ -8,6 +8,9 @@
 
 return [
 
+    /**
+     * This is the default album.
+     */
     'default' => [
 
         /**
@@ -19,7 +22,7 @@ return [
 
         /**
          * Set the image you would like to use as the album thumnail. If ommited
-         * or set it to null the first image of the album will be used.
+         * or set to null the first image of the album will be used.
          *
          * Default value: null
          */
@@ -46,14 +49,29 @@ return [
             /**
              * TODO: Add a way to override the resize method
              * Override the thumbnail resizing method. Available options are:
-             *   'crop' - Scale and crop to the exact dimensions specified
-             *   'fit' - Keep the image dimensions but fit within specified dimensions
-             *   'force' - Squish the image to the specified dimensions without cropping
+             *   'fit' - Keep the image aspect ratio but fit within specified dimensions
+             *   'crop' - Destructively scale and crop to the exact dimensions specified
+             *   'force' - Destructively scale the image to the specified dimensions without cropping
              *
              * Default value: 'fit'
              */
             'resize' => 'fit'
         ],
+
+        /**
+         * If your album contains many images you may wish to enable pagination
+         * to split up the album into several smaller pages of images.
+         *
+         * Default value: false
+         */
+        'pagination' => false,
+
+        /**
+         * If pagination is enabled this is how many image will be shown per page.
+         *
+         * Default value: 24
+         */
+        'images_per_page' => 24,
 
         /**
          * Override the default album path by providing an absolute path to the

@@ -34,7 +34,7 @@ return [
          */
         'file' => function () {
             return [
-                'dir' => realpath(__DIR__ . '/../cache') // TODO: Improvoe this
+                'dir' => realpath(__DIR__ . '/../cache') // TODO: Improve this
             ];
         },
 
