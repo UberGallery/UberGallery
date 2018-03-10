@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests\Unit;
+
+use Tests\TestCase;
 use App\Image;
 use App\Exceptions\InvalidImageException;
 
-class ImageTest extends PHPUnit_Framework_TestCase
+class ImageTest extends TestCase
 {
     protected $png;
     protected $jpg;
@@ -11,9 +14,9 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->png = new Image(__DIR__ . '/test_files/test.png');
-        $this->jpg = new Image(__DIR__ . '/test_files/test.jpg');
-        $this->jpeg = new Image(__DIR__ . '/test_files/test.jpeg');
+        $this->png = new Image(__DIR__ . '/../test_files/test.png');
+        $this->jpg = new Image(__DIR__ . '/../test_files/test.jpg');
+        $this->jpeg = new Image(__DIR__ . '/../test_files/test.jpeg');
     }
 
     public function test_it_has_contents()
@@ -76,6 +79,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(InvalidImageException::class);
 
-        $image = new Image(__DIR__ . '/test_files/test.txt');
+        $image = new Image(__DIR__ . '/../test_files/test.txt');
     }
 }
