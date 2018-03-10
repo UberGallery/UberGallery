@@ -8,15 +8,20 @@ use App\Exceptions\InvalidImageException;
 
 class ImageTest extends TestCase
 {
+    /** @var \App\Image PNG instance of Image */
     protected $png;
+
+    /** @var \App\Image JPG instance of Image */
     protected $jpg;
+
+    /** @var \App\Image JPEG instance of Image */
     protected $jpeg;
 
     public function setUp()
     {
-        $this->png = new Image(__DIR__ . '/../test_files/test.png');
-        $this->jpg = new Image(__DIR__ . '/../test_files/test.jpg');
-        $this->jpeg = new Image(__DIR__ . '/../test_files/test.jpeg');
+        $this->png = new Image($this->filePath('albums/test/test.png'));
+        $this->jpg = new Image($this->filePath('albums/test/test.jpg'));
+        $this->jpeg = new Image($this->filePath('albums/test/test.jpeg'));
     }
 
     public function test_it_has_contents()
@@ -79,6 +84,6 @@ class ImageTest extends TestCase
     {
         $this->setExpectedException(InvalidImageException::class);
 
-        $image = new Image(__DIR__ . '/../test_files/test.txt');
+        $image = new Image($this->filePath('albums/test/test.txt'));
     }
 }

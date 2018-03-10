@@ -6,11 +6,35 @@ use Tests\TestCase;
 
 class ImageTest extends TestCase
 {
-    public function test_it_can_retrieve_an_image()
+    public function test_it_can_retrieve_a_png_image()
     {
-        $response = $this->get('/default/1297761555736.jpg');
+        $response = $this->get('/default/test.png');
+
+        $this->assertTrue($response->isOk());
+        $this->assertEquals('image/png', $response->getHeaderLine('Content-Type'));
+    }
+
+    public function test_it_can_retrieve_a_jpg_image()
+    {
+        $response = $this->get('/default/test.jpg');
 
         $this->assertTrue($response->isOk());
         $this->assertEquals('image/jpeg', $response->getHeaderLine('Content-Type'));
+    }
+
+    public function test_it_can_retrieve_a_jpeg_image()
+    {
+        $response = $this->get('/default/test.jpeg');
+
+        $this->assertTrue($response->isOk());
+        $this->assertEquals('image/jpeg', $response->getHeaderLine('Content-Type'));
+    }
+
+    public function test_it_returns_a_404_when_trying_to_retrieve_an_invalid_file()
+    {
+        $response = $this->get('/default/test.txt');
+
+        $this->assertFalse($response->isOk());
+        $this->assertEquals(404, $response->getStatusCode());
     }
 }

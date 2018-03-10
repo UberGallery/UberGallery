@@ -3,7 +3,7 @@
 namespace Tests;
 
 use PHPUnit_Framework_TestCase;
-use App\Bootstrap\ApplicationFactory;
+use App\Exceptions\FileNotFoundException;
 use Slim\Http\Environment;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
@@ -18,14 +18,12 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $app = call_user_func(new ApplicationFactory, realpath(__DIR__ . '/..'));
-
-        $app->getContainer()->config->set('albums', [
-            'test' => [
-                'title' => 'Test Album',
-                'path' => $app->getContainer()->root . '/tests/test_files'
-            ]
+        $app = new \Slim\App([
+            'settings' => include __DIR__ . '/files/settings.php',
+            'root' => realpath(__DIR__ . '/../')
         ]);
+
+        call_user_func(new \App\Bootstrap\ApplicationManager, $app);
 
         $this->app = $app;
     }
@@ -60,5 +58,25 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         ]);
 
         return $this->app->run(true);
+    }
+
+    /**
+     * Return the full path to a test file or folder.
+     *
+     * @param string $path An optional sub-path to apend to the test path
+     *
+     * @throws \App\Exceptions\FileNotFoundException
+     *
+     * @return string Full path to the test file or folder
+     */
+    protected function filePath($path = null)
+    {
+        $testPath = realpath(__DIR__ . "/files/{$path}");
+
+        if (! $testPath) {
+            throw new FileNotFoundException("File or folder not found at {$testPath}");
+        }
+
+        return $testPath;
     }
 }

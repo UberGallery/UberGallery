@@ -9,15 +9,15 @@ use App\Exceptions\InvalidImageException;
 
 class AlbumTest extends TestCase
 {
-    /** @var Uber\Album Instance of Uber\Album */
+    /** @var \App\Album Instance of Album */
     protected $album;
 
     public function setUp()
     {
         $this->album = new Album([
-            new Image(__DIR__ . '/../test_files/test.png'),
-            new Image(__DIR__ . '/../test_files/test.jpg'),
-            new Image(__DIR__ . '/../test_files/test.jpeg')
+            new Image($this->filePath('albums/test/test.png')),
+            new Image($this->filePath('albums/test/test.jpg')),
+            new Image($this->filePath('albums/test/test.jpeg'))
         ]);
     }
 
@@ -32,7 +32,7 @@ class AlbumTest extends TestCase
 
     public function test_it_can_add_an_image()
     {
-        $this->album->add(new Image(__DIR__ . '/../test_files/test.png'));
+        $this->album->add(new Image($this->filePath('albums/test/test.png')));
         $this->assertCount(4, $this->album->images);
 
         foreach ($this->album->images as $image) {
@@ -44,7 +44,7 @@ class AlbumTest extends TestCase
     {
         $this->setExpectedException(InvalidImageException::class);
 
-        $this->album->add(new Image(__DIR__ . '/../test_files/test.txt'));
+        $this->album->add(new Image($this->filePath('albums/test/test.txt')));
 
         $this->assertCount(3, $this->album->images);
     }
