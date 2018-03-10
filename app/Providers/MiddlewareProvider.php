@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Bootstrap;
+namespace App\Providers;
 
 use Slim\App;
 
-class MiddlewareProvider
+class MiddlewareProvider extends Provider
 {
     /** @var array Array of application middleware */
     protected $middlewares = [

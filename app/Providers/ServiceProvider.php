@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Bootstrap;
+namespace App\Providers;
 
 use Slim\App;
 
-class ServiceProvider
+class ServiceProvider extends Provider
 {
     /** @var array Array of application services */
     protected $services = [

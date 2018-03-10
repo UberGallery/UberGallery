@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Bootstrap;
+namespace App\Providers;
 
 use Slim\App;
 
-class RoutesProvider
+class RoutesProvider extends Provider
 {
     /**
      * Register application routes.
