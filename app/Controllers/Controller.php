@@ -95,7 +95,10 @@ abstract class Controller
      */
     protected function albumPath($album)
     {
-        $albumPath = realpath($this->container->root . "/albums/{$album}");
+        $albumPath = $this->config(
+            "albums.{$album}.path",
+            realpath($this->container->root . "/albums/{$album}")
+        );
 
         if (! $albumPath) {
             throw new FileNotFoundException("Album not found at {$albumPath}");
