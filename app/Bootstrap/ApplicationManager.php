@@ -4,7 +4,7 @@ namespace App\Bootstrap;
 
 use Slim\App;
 
-class ApplicationFactory
+class ApplicationManager
 {
     /** @var type Array of application providers */
     protected $providers = [
@@ -14,26 +14,15 @@ class ApplicationFactory
     ];
 
     /**
-     * Return the bootstrapped application.
+     * Bootstrap the application.
      *
-     * @param string $appRoot Path to application root directory
+     * @param string $app Path to application root directory
      *
      * @return \App\Slim The Slim application
      */
-    public function __invoke($appRoot)
+    public function __invoke(App $app)
     {
-        $app = new App([
-            'settings' => array_merge([
-                'routerCacheFile' => "{$appRoot}/cache/routes.cache.php",
-                'albums' => (include "{$appRoot}/config/albums.php") ?: [],
-                'cache' => (include "{$appRoot}/config/cache.php") ?: []
-            ], (include "{$appRoot}/config/app.php") ?: []),
-            'root' => $appRoot
-        ]);
-
         $this->registerProviders($app);
-
-        return $app;
     }
 
     /**
