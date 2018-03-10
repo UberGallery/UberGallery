@@ -17,7 +17,7 @@ class AlbumController extends Controller
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
      * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param array                                   $args     the array of request arguments
+     * @param array                                    $args     the array of request arguments
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

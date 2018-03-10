@@ -14,7 +14,7 @@ return [
     'title' => 'Uber Gallery',
 
     /**
-     * Set your desired theme. Must be the name aof the theme folder as it is in
+     * Set your desired theme. Must be the name of the theme folder as it is in
      * the themes directory.
      *
      * Default value: 'redux'
