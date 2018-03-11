@@ -12,7 +12,7 @@ abstract class Middleware
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
      * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param callable                                $next     The next middleware
+     * @param callable                                 $next     The next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

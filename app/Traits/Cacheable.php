@@ -11,7 +11,7 @@ trait Cacheable
      * already cached or caching is disabled.
      *
      * @param \Psr\Container\ContainerInterface $container The Slim application container
-     * @param mixed              $args      Arguments to be bassed to the class constructor
+     * @param mixed                             $args      Arguments to be bassed to the class constructor
      *
      * @return mixed An instantiated object
      */

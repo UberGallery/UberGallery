@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use Mustache_Engine;
-use Mustache_Loader_FilesystemLoader;
 use App\Exceptions\FileNotFoundException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,9 +27,9 @@ abstract class Controller
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
      * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param array                                   $args     the array of request arguments
+     * @param array                                    $args     the array of request arguments
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Slim\Http\Response
      */
     abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args);
 
@@ -71,6 +69,8 @@ abstract class Controller
      *
      * @param string $path An optional sub-path to apend to the theme path
      *
+     * @throws \App\Exceptions\FileNotFoundException
+     *
      * @return string Full path to the theme
      */
     protected function themePath($path = null)
@@ -89,7 +89,7 @@ abstract class Controller
      *
      * @param string $album Album name
      *
-     * @throws FileNotFoundException
+     * @throws \App\Exceptions\FileNotFoundException
      *
      * @return string Full path to the album directory
      */
@@ -129,7 +129,7 @@ abstract class Controller
      * @param string $album Album name
      * @param string $album Image name
      *
-     * @throws FileNotFoundException
+     * @throws \App\Exceptions\FileNotFoundException
      *
      * @return string Full path to the image
      */

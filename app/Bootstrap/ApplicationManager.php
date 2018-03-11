@@ -28,7 +28,7 @@ class ApplicationManager
     /**
      * Register the application providers.
      *
-     * @param  \Slim\App $app The Slim application
+     * @param \Slim\App $app The Slim application
      *
      * @return void
      */
