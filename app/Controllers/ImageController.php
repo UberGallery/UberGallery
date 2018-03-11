@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Image;
-use App\Exceptions\FileNotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Exception;
 
 class ImageController extends Controller
 {
@@ -22,11 +22,10 @@ class ImageController extends Controller
     {
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
-        } catch (FileNotFoundException $exception) {
+            $image = Image::createFromCache($this->container, $imagePath);
+        } catch (Exception $exception) {
             return $response->withStatus(404)->write('Image not found');
         }
-
-        $image = Image::createFromCache($this->container, $imagePath);
 
         return $response
             ->withHeader('Content-Type', $image->mimeType)

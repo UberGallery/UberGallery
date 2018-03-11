@@ -14,7 +14,7 @@ class AlbumTest extends TestCase
         $this->assertContains('Test Album; Please Ignore', (string) $response);
     }
 
-    public function test_it_returns_a_404test_it_returns_a_404_when_an_album_does_not_exist()
+    public function test_it_returns_a_404_when_an_album_does_not_exist()
     {
         $response = $this->get('/404/');
 

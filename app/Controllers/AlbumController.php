@@ -50,6 +50,7 @@ class AlbumController extends Controller
 
         return $response->write($this->view('album', [
             'container' => $this->container,
+            'slug' => $args['album'],
             'album' => $album
         ]));
     }

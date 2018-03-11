@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 use App\Image;
 use App\Traits\Cacheable;
-use App\Exceptions\FileNotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Exception;
 
 class ThumbnailController extends Controller
 {
@@ -23,16 +23,15 @@ class ThumbnailController extends Controller
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        try {
-            $imagePath = $this->imagePath($args['album'], $args['image']);
-        } catch (FileNotFoundException $exception) {
-            return $response->withStatus(404)->write('Thumbnail not found');
-        }
-
         $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
         $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
 
-        $image = Image::createFromCache($this->container, $imagePath, $width, $height);
+        try {
+            $imagePath = $this->imagePath($args['album'], $args['image']);
+            $image = Image::createFromCache($this->container, $imagePath, $width, $height);
+        } catch (Exception $exception) {
+            return $response->withStatus(404)->write('Thumbnail not found');
+        }
 
         return $response
             ->withHeader('Content-Type', $image->mimeType)

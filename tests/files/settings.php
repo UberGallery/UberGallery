@@ -11,8 +11,8 @@ return [
         'test' => [
             'title' => 'Test Album; Please Ignore',
             'thumbnails' => [
-                'width' => 200,
-                'height' => 200,
+                'width' => 320,
+                'height' => 240,
                 'resize' => 'fit'
             ],
             'pagination' => false,
