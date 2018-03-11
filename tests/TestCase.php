@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use App\Exceptions\FileNotFoundException;
 use Slim\Http\Environment;
 
-abstract class TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends PHPUnitTestCase
 {
     /** @var \Slim\App The Slim application */
     protected $app;

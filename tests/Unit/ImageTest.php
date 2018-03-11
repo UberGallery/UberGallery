@@ -82,7 +82,7 @@ class ImageTest extends TestCase
 
     public function test_it_throws_an_invalid_image_exception_for_invalid_file_types()
     {
-        $this->setExpectedException(InvalidImageException::class);
+        $this->expectException(InvalidImageException::class);
 
         $image = new Image($this->filePath('albums/test/test.txt'));
     }

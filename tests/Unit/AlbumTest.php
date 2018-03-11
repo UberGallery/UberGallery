@@ -33,6 +33,7 @@ class AlbumTest extends TestCase
     public function test_it_can_add_an_image()
     {
         $this->album->add(new Image($this->filePath('albums/test/test.png')));
+
         $this->assertCount(4, $this->album->images);
 
         foreach ($this->album->images as $image) {
@@ -42,15 +43,15 @@ class AlbumTest extends TestCase
 
     public function test_it_throws_an_exception_when_attempting_to_add_a_non_image_file()
     {
-        $this->setExpectedException(InvalidImageException::class);
+        $this->expectException(InvalidImageException::class);
 
         $this->album->add(new Image($this->filePath('albums/test/test.txt')));
 
         $this->assertCount(3, $this->album->images);
     }
 
-    public function test_it_can_sort_images()
-    {
-        // ...
-    }
+    // TODO: Write this test
+    // public function test_it_can_sort_images()
+    // {
+    // }
 }
