@@ -21,6 +21,12 @@ return [
         ]
     ],
     'cache' => [
-        'enabled' => false
+        'enabled' => false,
+        'driver' => 'file',
+        'drivers' => [
+            'file' => function () {
+                return ['dir' => __DIR__  . '/cache'];
+            }
+        ]
     ]
 ];
