@@ -12,7 +12,7 @@ class Image
     use Cacheable;
 
     /** @var string Binary string of image data */
-    protected $contents;
+    protected $content;
 
     /** @var string Cannonical image file path */
     protected $path;
@@ -39,16 +39,16 @@ class Image
             throw new InvalidImageException($path . ' is not a valid image');
         }
 
-        $this->contents = file_get_contents($path);
+        $this->content = file_get_contents($path);
 
         $this->path = realpath($path);
 
         if ($width > 0 || $height > 0) {
-            $this->contents = $this->resizeContents($width, $height);
+            $this->content = $this->resizeContents($width, $height);
         }
 
-        list($this->width, $this->height) = getimagesizefromstring($this->contents);
-        $this->mimeType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->contents);
+        list($this->width, $this->height) = getimagesizefromstring($this->content);
+        $this->mimeType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->content);
     }
 
     /**
@@ -96,7 +96,7 @@ class Image
      */
     public function raw()
     {
-        return $this->contents;
+        return $this->content;
     }
 
     /**
@@ -106,7 +106,7 @@ class Image
      */
     public function base64()
     {
-        return base64_encode($this->contents);
+        return base64_encode($this->content);
     }
 
     /**
@@ -146,7 +146,7 @@ class Image
      */
     public function exif()
     {
-        return exif_read_data($this->stream());
+        return exif_read_data($this->stream);
     }
 
     /**
@@ -188,7 +188,7 @@ class Image
     {
         $imagick = new Imagick;
 
-        $imagick->readImageBlob($this->contents);
+        $imagick->readImageBlob($this->content);
         $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
         // QUESTION: Allow this to be customized?
         $imagick->setImageCompressionQuality(82);

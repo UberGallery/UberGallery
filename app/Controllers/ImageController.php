@@ -29,6 +29,6 @@ class ImageController extends Controller
 
         return $response
             ->withHeader('Content-Type', $image->mimeType)
-            ->write($image->contents);
+            ->write($image->content);
     }
 }
