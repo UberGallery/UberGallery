@@ -37,4 +37,24 @@ class ThumbnailTest extends TestCase
         $this->assertFalse($response->isOk());
         $this->assertEquals(404, $response->getStatusCode());
     }
+
+    public function test_it_can_cache_a_thumbnail()
+    {
+        $this->configureApp(['settings' => ['cache' => ['enabled' => true]]]);
+
+        $response = $this->get('/test/thumbnail/test.png');
+
+        $this->assertTrue($response->isOk());
+        $this->assertEquals('image/png', $response->getHeaderLine('Content-Type'));
+
+        $this->assertFileExists(__DIR__ . '/../files/cache/2998fa043fbbbcd3505da186ee39f6ba8c1624f1.cache.php');
+
+        $cachedResponse = $this->get('/test/thumbnail/test.png');
+
+        $this->assertTrue($cachedResponse->isOk());
+        $this->assertEquals('image/png', $cachedResponse->getHeaderLine('Content-Type'));
+
+        $cache = $this->app->getContainer()->cache;
+        $cache->flush();
+    }
 }

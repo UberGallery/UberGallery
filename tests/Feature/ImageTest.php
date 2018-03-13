@@ -37,4 +37,24 @@ class ImageTest extends TestCase
         $this->assertFalse($response->isOk());
         $this->assertEquals(404, $response->getStatusCode());
     }
+
+    public function test_it_can_cache_an_image()
+    {
+        $this->configureApp(['settings' => ['cache' => ['enabled' => true]]]);
+
+        $response = $this->get('/test/test.png');
+
+        $this->assertTrue($response->isOk());
+        $this->assertEquals('image/png', $response->getHeaderLine('Content-Type'));
+
+        $this->assertFileExists(__DIR__ . '/../files/cache/218250c649285dba72768c67e0492776babb91a9.cache.php');
+
+        $cachedResponse = $this->get('/test/test.png');
+
+        $this->assertTrue($cachedResponse->isOk());
+        $this->assertEquals('image/png', $cachedResponse->getHeaderLine('Content-Type'));
+
+        $cache = $this->app->getContainer()->cache;
+        $cache->flush();
+    }
 }
