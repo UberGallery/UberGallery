@@ -46,6 +46,8 @@ class AlbumController extends Controller
             }
         }
 
+        $album = $album->sort();
+
         // QUESTION: Cache the album?
 
         return $response->write($this->view('album', [

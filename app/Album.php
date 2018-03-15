@@ -66,11 +66,13 @@ class Album
     /**
      * Sort the array of images.
      *
-     * @return object This Album object
+     * @return self This Album object
      */
     public function sort()
     {
-        // TODO: Sort the images array
+        usort($this->images, function ($alpha, $beta) {
+            return $alpha->name <=> $beta->name;
+        });
 
         return $this;
     }

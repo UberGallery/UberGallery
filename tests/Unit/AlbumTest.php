@@ -50,8 +50,18 @@ class AlbumTest extends TestCase
         $this->assertCount(3, $this->album->images);
     }
 
-    // TODO: Write this test
-    // public function test_it_can_sort_images()
-    // {
-    // }
+    public function test_it_can_sort_images()
+    {
+        $this->album->sort();
+
+        $images = array_map(function ($image) {
+            return $image->name;
+        }, $this->album->images);
+
+        $this->assertEquals([
+            'test.jpeg',
+            'test.jpg',
+            'test.png'
+        ], $images);
+    }
 }
