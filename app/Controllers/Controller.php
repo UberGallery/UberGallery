@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 abstract class Controller
 {
@@ -25,13 +25,13 @@ abstract class Controller
     /**
      * Handle an incoming request and return a response.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param array                                    $args     the array of request arguments
+     * @param \Slim\Http\Request $request  Incoming request object
+     * @param \Slim\Http\Request $response Outgoing response object
+     * @param array              $args     the array of request arguments
      *
      * @return \Slim\Http\Response
      */
-    abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args);
+    abstract public function __invoke(Request $request, Response $response, array $args);
 
     /**
      * Render a view with some provided data.

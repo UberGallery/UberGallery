@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Image;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Exception;
 
 class ImageController extends Controller
@@ -12,13 +12,13 @@ class ImageController extends Controller
     /**
      * Handle an incoming Image request and return a response.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param array                                    $args     the array of request arguments
+     * @param \Slim\Http\Request  $request  Incoming request object
+     * @param \Slim\Http\Response $response Outgoing response object
+     * @param array               $args     the array of request arguments
      *
      * @return \Slim\Http\Response
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function __invoke(Request $request, Response $response, array $args)
     {
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);

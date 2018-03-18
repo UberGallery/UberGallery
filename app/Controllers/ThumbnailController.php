@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Image;
 use App\Traits\Cacheable;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Exception;
 
 class ThumbnailController extends Controller
@@ -15,13 +15,13 @@ class ThumbnailController extends Controller
     /**
      * Handle an incoming Thumbnail request and return a response.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param array                                    $args     the array of request arguments
+     * @param use \Slim\Http\Request  $request  Incoming request object
+     * @param use \Slim\Http\Response $response Outgoing response object
+     * @param array                   $args     the array of request arguments
      *
      * @return \Slim\Http\Response
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function __invoke(Request $request, Response $response, array $args)
     {
         $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
         $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
