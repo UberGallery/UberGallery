@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use Psr\Container\ContainerInterface;
+use Slim\Container;
 
 abstract class Service
 {
-    /** @var \Psr\Container\ContainerInterface $container The Slim application container */
+    /** @var \Slim\Container $container The Slim application container */
     protected $container;
 
     /**
      * App\Services\Service constructor. Runs on object creation.
      *
-     * @param \Psr\Container\ContainerInterface $container The Slim application container
+     * @param \Slim\Container $container The Slim application container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }

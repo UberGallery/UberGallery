@@ -3,21 +3,21 @@
 namespace App\Controllers;
 
 use App\Exceptions\FileNotFoundException;
-use Psr\Container\ContainerInterface;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 abstract class Controller
 {
-    /** @var ContainerInterface An implementation of ContainerInterface */
+    /** @var \Slim\Container The Slim application container */
     protected $container;
 
     /**
      * App\Controllers\Controller constructor. Runs on object creation.
      *
-     * @param \Psr\Container\ContainerInterface $container The Slim application container
+     * @param \Slim\Container $container The Slim application container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }
