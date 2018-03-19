@@ -3,15 +3,12 @@
 namespace App\Controllers;
 
 use App\Image;
-use App\Traits\Cacheable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Exception;
 
 class ThumbnailController extends Controller
 {
-    use Cacheable;
-
     /**
      * Handle an incoming Thumbnail request and return a response.
      *
