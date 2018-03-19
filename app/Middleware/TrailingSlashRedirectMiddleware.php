@@ -2,21 +2,21 @@
 
 namespace App\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class TrailingSlashRedirectMiddleware extends Middleware
 {
     /**
      * Redirect requests to a non-file path without a trailing slash.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param callable                                 $next     The next middleware
+     * @param \Slim\Http\Request  $request  Incoming request object
+     * @param \Slim\Http\Response $response Outgoing response object
+     * @param callable            $next     The next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    public function __invoke(Request $request, Response $response, callable $next)
     {
         $uri = $request->getUri();
         $path = $uri->getPath();

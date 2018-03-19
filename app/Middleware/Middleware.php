@@ -2,19 +2,19 @@
 
 namespace App\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 abstract class Middleware
 {
     /**
      * Manipulate the Request and Response objects.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  Incoming request object
-     * @param \Psr\Http\Message\ResponseInterface      $response Outgoing response object
-     * @param callable                                 $next     The next middleware
+     * @param \Slim\Http\Request  $request  Incoming request object
+     * @param \Slim\Http\Response $response Outgoing response object
+     * @param callable            $next     The next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next);
+    abstract public function __invoke(Request $request, Response $response, callable $next);
 }
