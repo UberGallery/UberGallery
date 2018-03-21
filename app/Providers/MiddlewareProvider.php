@@ -26,7 +26,7 @@ class MiddlewareProvider extends Provider
         );
 
         array_walk($middlewares, function ($middleware) use ($app) {
-            $app->add(new $middleware);
+            $app->add(new $middleware($app->getContainer()));
         });
     }
 }
