@@ -6,15 +6,15 @@
         <div id="album" class="container">
             <h1 id="album-title" class="text-white display-4">
                 <a href="/">&lt;</a>
-                {{ album.title }}
+                {{ title }}
             </h1>
 
             <div class="d-flex flex-wrap justify-content-around my-3">
-                {{# album.images }}
-                    <a href="/{{ slug }}/{{ name }}" title="{{ name }}" class="image rounded position-relative m-3">
-                        <img src="/{{ slug }}/thumbnail/{{ name }}" alt="{{ name }}">
+                {{# images }}
+                    <a href="{{# imagePath }}{{ name }}{{/ imagePath }}" title="{{ name }}" class="image rounded position-relative m-3">
+                        <img src="{{# thumbnailPath }}{{ name }}{{/ thumbnailPath }}" alt="{{ name }}">
                     </a>
-                {{/ album.images }}
+                {{/ images }}
             </div>
 
         </div>
