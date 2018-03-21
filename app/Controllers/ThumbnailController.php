@@ -25,7 +25,7 @@ class ThumbnailController extends Controller
 
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
-            $image = Image::createFromCache($this->container, $imagePath, $width, $height);
+            $image = new Image($imagePath, $width, $height);
         } catch (Exception $exception) {
             return $response->withStatus(404)->write('Thumbnail not found');
         }

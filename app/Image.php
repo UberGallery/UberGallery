@@ -4,13 +4,10 @@ namespace App;
 
 use Imagick;
 use ReflectionMethod;
-use App\Traits\Cacheable;
 use App\Exceptions\InvalidImageException;
 
 class Image
 {
-    use Cacheable;
-
     /** @var string Binary string of image data */
     protected $content;
 

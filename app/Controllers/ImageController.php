@@ -22,7 +22,7 @@ class ImageController extends Controller
     {
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
-            $image = Image::createFromCache($this->container, $imagePath);
+            $image = new Image($imagePath);
         } catch (Exception $exception) {
             return $response->withStatus(404)->write('Image not found');
         }
