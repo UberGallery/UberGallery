@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Tightenco\Collect\Support\Collection;
 
 class GalleryController extends Controller
 {
@@ -18,11 +19,11 @@ class GalleryController extends Controller
      */
     public function __invoke(Request $request, Response $response, array $args)
     {
-        $albums = $this->config('albums', []);
+        $albums = new Collection($this->config('albums', []));
 
-        $albums = array_map(function ($album, $slug) {
+        $albums = $albums->map(function ($album, $slug) {
             return array_merge($album, ['slug' => $slug]);
-        }, $albums, array_keys($albums));
+        });
 
         return $response->write($this->view('index', ['albums' => $albums]));
     }

@@ -47,12 +47,18 @@ abstract class Controller
             'gallery_title' => $this->config('title', 'Uber Gallery'),
             'themePath' => function ($path) {
                 return "/themes/{$this->config('theme')}/{$path}";
+            },
+            'imagePath' => function ($image) use ($data) {
+                return "/{$data['slug']}/{$image}";
+            },
+            'thumbnailPath' => function ($thumbnail) use ($data) {
+                return "/{$data['slug']}/thumbnail/{$thumbnail}";
             }
         ], $data));
     }
 
     /**
-     * Convinience method for fetching application configuration items from the container.
+     * Convenience method for fetching application configuration items from the container.
      *
      * @param string $key     Unique config item key
      * @param mixed  $default Value to be returned if the config item doesn't exist
