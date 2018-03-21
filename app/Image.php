@@ -24,7 +24,7 @@ class Image
     protected $mimeType;
 
     /**
-     * App\Image constructor. Runs on object creation.
+     * Create a new Image.
      *
      * @param string $path   Path to image file
      * @param int    $width  Resized image width
