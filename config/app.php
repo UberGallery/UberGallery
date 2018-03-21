@@ -22,6 +22,22 @@ return [
     'theme' => 'redux',
 
     /**
+     * Improve performance by defining a router cache file.
+     *
+     * Suggested value: __DIR__ . '/../cache/routes.cache.php'
+     *
+     * Default value: false
+     */
+    'routerCacheFile' => false,
+
+    /**
+     * Show error details on the page by setting this value to 'true'.
+     *
+     * Default value: false
+     */
+    'displayErrorDetails' => true,
+
+    /**
      * Register custom application services.
      *
      * Default value: []

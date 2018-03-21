@@ -16,7 +16,7 @@ return [
     'enabled' => false,
 
     /**
-     * The caching driver to use.
+     * The caching driver to usefor caching image and thumbnail responses.
      *
      * Available options: 'file', 'memcached', 'redis', 'apcu'
      *
@@ -25,12 +25,12 @@ return [
     'driver' => 'file',
 
     /**
-     * Cache driver configurations. Modified these to customize your driver
+     * Cache driver configurations. Modifiy these to customize your driver
      * configuration to suit your specific environment.
      */
     'drivers' => [
         /**
-         * File driver configuration
+         * File driver configuration.
          */
         'file' => function () {
             return [
@@ -39,7 +39,7 @@ return [
         },
 
         /**
-         * Memcached driver configuration
+         * Memcached driver configuration.
          */
         'memcached' => function ($memcached) {
             $memcached->addServer('localhost', 11211);
@@ -48,7 +48,7 @@ return [
         },
 
         /**
-         * Redis driver configuration
+         * Redis driver configuration.
          */
         'redis' => function ($redis) {
             $redis->pconnect('localhost', 6379);
@@ -57,13 +57,13 @@ return [
         },
 
         /**
-         * APCu driver configuration
+         * APCu driver configuration.
          */
         'apcu' => function () {
             return [
                 // 'prefix' => 'uber_gallery' // Optional prefix
             ];
         }
-    ]
+    ],
 
 ];

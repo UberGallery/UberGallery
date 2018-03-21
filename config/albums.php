@@ -32,6 +32,7 @@ return [
          * Configure this album's thumbnail options.
          */
         'thumbnails' => [
+
             /**
              * The maximum width of your thumbnails in pixels.
              *
@@ -56,6 +57,7 @@ return [
              * Default value: 'fit'
              */
             'resize' => 'fit'
+
         ],
 
         /**
