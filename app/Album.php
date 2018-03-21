@@ -4,6 +4,7 @@ namespace App;
 
 use PHLAK\Config\Config;
 use Tightenco\Collect\Support\Collection;
+use App\Exceptions\InvalidImageException;
 use App\Exceptions\FileNotFoundException;
 use SplFileObject;
 
