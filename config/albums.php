@@ -76,8 +76,34 @@ return [
         'images_per_page' => 24,
 
         /**
+         * Customize the sorting of your album images.
+         */
+        'sort' => [
+
+            /**
+            * You may specify the sorting method used by setting one of the
+            * possible values or, for more advanced sorting you can pass a
+            * custom algorithm via a closure. Refer to the documentation for
+            * `uasort` (the method used under the hood) for more info.
+            *
+            * Possible values: 'name', 'size', 'date'
+            *
+            * Default value: 'name'
+            */
+            'method' => 'name',
+
+            /**
+             * Whether or not to reverse the sort order.
+             *
+             * Default value: false
+             */
+            'reverse' => false
+
+        ],
+
+        /**
          * Override the default album path by providing an absolute path to the
-         * album directory. Example: '/var/www/gallrey/albums/cats'
+         * album directory. Example: '/var/www/gallery/albums/cats'
          *
          * Default value: null
          */
