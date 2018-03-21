@@ -3,12 +3,9 @@
 namespace App\Controllers;
 
 use App\Album;
-use App\Image;
 use App\Exceptions\FileNotFoundException;
-use App\Exceptions\InvalidImageException;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use DirectoryIterator;
 
 class AlbumController extends Controller
 {
@@ -24,36 +21,20 @@ class AlbumController extends Controller
     public function __invoke(Request $request, Response $response, array $args)
     {
         try {
-            $albumPath = $this->albumPath($args['album']);
+            $album = new Album($args['album'], $this->container->config->split("albums.{$args['album']}"));
         } catch (FileNotFoundException $exception) {
             return $response->withStatus(404)->write('Album not found');
         }
 
-        $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
-        $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
-
-        $album = new Album([], $this->albumTitle($args['album']));
-
-        foreach (new DirectoryIterator($albumPath) as $file) {
-            if ($file->isDot()) {
-                continue;
-            }
-
-            try {
-                $album->add(new Image($file->getPathname(), $width, $height));
-            } catch (InvalidImageException $exception) {
-                // Don't worry about it
-            }
-        }
-
-        $album = $album->sort();
-
-        // QUESTION: Cache the album?
+        $album->sort(
+            $this->config("albums.{$args['album']}.sort.method", 'name'),
+            $this->config("albums.{$args['album']}.sort.reverse", false)
+        );
 
         return $response->write($this->view('album', [
-            'container' => $this->container,
-            'slug' => $args['album'],
-            'album' => $album
+            'slug' => $album->slug(),
+            'title' => $album->title(),
+            'images' => $album->images($args['page'] ?? 1)->all()
         ]));
     }
 }

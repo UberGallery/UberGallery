@@ -2,78 +2,161 @@
 
 namespace App;
 
+use PHLAK\Config\Config;
+use Tightenco\Collect\Support\Collection;
+use App\Exceptions\FileNotFoundException;
+use SplFileObject;
+
 class Album
 {
-    /** @var string|null The album title */
-    protected $title;
+    /** @var string The album slug */
+    protected $slug;
 
-    /** @var array Array of Image objects */
+    /** @var \PHLAK\Config The album config */
+    protected $config;
+
+    /**
+     * Collection of image files as SplFileObjects.
+     *
+     * @var \Tightenco\Collect\Support\Collection
+     */
     protected $images;
 
     /**
-     * App\Album constructor. Runs on object creation.
+     * Create a new Album.
      *
-     * @param array  $images Array of Image objects
-     * @param string $title  The album's title
+     * @param string        $slug   Album slug
+     * @param \PHLAK\Config $config The album config
      */
-    public function __construct(array $images = [], $title = null)
+    public function __construct($slug, Config $config)
     {
-        foreach ($images as $image) {
-            $this->add($image);
+        $this->slug = $slug;
+        $this->config = $config;
+
+        $this->images = Collection::make(
+            glob("{$this->path()}/*.{gif,jpeg,jpg,png}", GLOB_BRACE)
+        )->map(function ($image) {
+            return new SplFileObject($image);
+        });
+    }
+
+    /**
+     * Return the album slug.
+     *
+     * @return string Album slug
+     */
+    public function slug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Return the album title.
+     *
+     * @return string Album title
+     */
+    public function title()
+    {
+        return $this->config->get('title', $this->calculatedTitle());
+    }
+
+    /**
+     * Return a collection of album images for a specific page.
+     *
+     * @param int $page The page number
+     *
+     * @return \Tightenco\Collect\Support\Collection Collection of Images
+     */
+    public function images($page = 1)
+    {
+        return $this->images
+            ->when($this->config->get('pagination', false), function ($images) use ($page) {
+                return $images->forPage($page, $this->config->get('images_per_page', 24));
+            })
+            ->map(function ($image) {
+                $width = $this->config->get('thumbnails.width', 480);
+                $height = $this->config->get('thumbnails.height', 480);
+
+                try {
+                    return new Image($image->getRealPath(), $width, $height);
+                } catch (InvalidImageException $exception) {
+                    // Don't worry about it
+                }
+            })
+            ->values();
+    }
+
+    /**
+     * Sort the album images using a pre-defined method or a custom algorithm.
+     *
+     * @param string|Closure $method Sort method or closure
+     *
+     * @return self This Album
+     */
+    public function sort($method, $reverse = false)
+    {
+        if ($method instanceof \Closure) {
+            $this->images = $this->images->sort($method);
         }
 
-        $this->title = $title;
-    }
+        switch ($method) {
+            case 'date':
+                $sortFunction = function ($first, $second) {
+                    return strtotime($first->getMTime()) <=> strtotime($second->getMTime());
+                };
+                break;
 
-    /**
-     * Magic getter method for getting the value of a protected property.
-     *
-     * @param string $property Property name
-     *
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
+            case 'size':
+                $sortFunction = function ($first, $second) {
+                    return $first->getSize() <=> $second->getSize();
+                };
+                break;
 
-    /**
-     * Magic isset method for determining if a magic property is set.
-     *
-     * @param string $property Property name
-     *
-     * @return bool True if property is set, otherwise false
-     */
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
+            default:
+                $sortFunction = function ($first, $second) {
+                    return $first->getFilename() <=> $second->getFilename();
+                };
+                break;
+        }
 
-    /**
-     * Adds an individual image to the Album.
-     *
-     * @param object $image Instance of Image
-     *
-     * @return object This Album object
-     */
-    public function add(Image $image)
-    {
-        $this->images[] = $image;
+        $this->images = $this->images
+            ->sort($sortFunction)
+            ->when($reverse, function ($images) {
+                return $images->reverse();
+            });
 
         return $this;
     }
 
     /**
-     * Sort the array of images.
+     * Return the album directory path.
      *
-     * @return self This Album object
+     * @throws \App\Exceptions\FileNotFoundException
+     *
+     * @return string Full path to the album directory
      */
-    public function sort()
+    public function path()
     {
-        usort($this->images, function ($alpha, $beta) {
-            return $alpha->name <=> $beta->name;
-        });
+        $albumPath = $this->config->get(
+            'path',
+            // TODO: Make this an absolute path?
+            realpath(__DIR__ . "/../albums/{$this->slug}")
+        );
 
-        return $this;
+        if (! $albumPath) {
+            throw new FileNotFoundException("Album not found at {$albumPath}");
+        }
+
+        return $albumPath;
+    }
+
+    /**
+     * Return the calculated album title.
+     *
+     * @return string Caculated album title
+     */
+    protected function calculatedTitle()
+    {
+        return ucwords(str_replace('_', ' ', $this->slug)) . ' Album';
     }
 }
