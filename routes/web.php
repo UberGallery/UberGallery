@@ -6,7 +6,7 @@
 
 $app->get('/', App\Controllers\GalleryController::class)->setName('index');
 
-$app->group('/{album}', function ($app) {
+$app->group('/{album:[\w\d-]+}', function ($app) {
     $app->get('/[{page:[0-9]+}]', App\Controllers\AlbumController::class)
         ->setName('album');
 
