@@ -4,64 +4,42 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Album;
-use App\Image;
-use App\Exceptions\InvalidImageException;
 
 class AlbumTest extends TestCase
 {
-    /** @var \App\Album Instance of Album */
+    /** @var \App\Album Instance of App\Album */
     protected $album;
 
     public function setUp()
     {
-        $this->album = new Album([
-            new Image($this->filePath('albums/test/test.png')),
-            new Image($this->filePath('albums/test/test.jpg')),
-            new Image($this->filePath('albums/test/test.jpeg'))
+        parent::setUp();
+
+        $this->album = new Album('test', $this->app->getContainer()->config->split('albums.test'));
+    }
+
+    public function test_it_can_instantiate_an_album()
+    {
+        $this->assertInstanceOf(Album::class, $this->album);
+    }
+
+    public function test_it_can_return_the_album_slug()
+    {
+        $this->assertEquals('test', $this->album->slug());
+    }
+
+    public function test_it_can_return_the_album_title()
+    {
+        $this->assertEquals('Test Album; Please Ignore', $this->album->title());
+    }
+
+    public function test_it_can_return_an_album_title_when_one_is_not_set()
+    {
+        $this->configureApp([
+            'settings' => ['albums' => ['test' => ['title' => null]]]
         ]);
-    }
 
-    public function test_it_has_an_array_of_images()
-    {
-        $this->assertCount(3, $this->album->images);
+        $album = new Album('test', $this->app->getContainer()->config->split('albums.test'));
 
-        foreach ($this->album->images as $image) {
-            $this->assertInstanceOf(Image::class, $image);
-        }
-    }
-
-    public function test_it_can_add_an_image()
-    {
-        $this->album->add(new Image($this->filePath('albums/test/test.png')));
-
-        $this->assertCount(4, $this->album->images);
-
-        foreach ($this->album->images as $image) {
-            $this->assertInstanceOf(Image::class, $image);
-        }
-    }
-
-    public function test_it_throws_an_exception_when_attempting_to_add_a_non_image_file()
-    {
-        $this->expectException(InvalidImageException::class);
-
-        $this->album->add(new Image($this->filePath('albums/test/test.txt')));
-
-        $this->assertCount(3, $this->album->images);
-    }
-
-    public function test_it_can_sort_images()
-    {
-        $this->album->sort();
-
-        $images = array_map(function ($image) {
-            return $image->name;
-        }, $this->album->images);
-
-        $this->assertEquals([
-            'test.jpeg',
-            'test.jpg',
-            'test.png'
-        ], $images);
+        $this->assertEquals('Test Album', $album->title());
     }
 }

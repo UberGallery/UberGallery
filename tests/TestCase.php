@@ -3,6 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use App\Bootstrap\ApplicationManager;
 use App\Exceptions\FileNotFoundException;
 use Slim\Http\Environment;
 
@@ -24,7 +25,7 @@ abstract class TestCase extends PHPUnitTestCase
     /**
      * Set up or override the test application configuration.
      *
-     * @param  array $config Application config array
+     * @param array $config Application config array
      *
      * @return void
      */
@@ -35,7 +36,7 @@ abstract class TestCase extends PHPUnitTestCase
             'root' => realpath(__DIR__ . '/../')
         ], $config));
 
-        call_user_func(new \App\Bootstrap\ApplicationManager, $app);
+        call_user_func(new ApplicationManager, $app);
 
         $this->app = $app;
     }

@@ -11,6 +11,6 @@ class GalleryTest extends TestCase
         $response = $this->get('/');
 
         $this->assertTrue($response->isOk());
-        $this->assertContains('Test Gallery', (string) $response);
+        $this->assertContains('Test Gallery', (string) $response->getBody());
     }
 }

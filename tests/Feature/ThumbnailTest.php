@@ -47,7 +47,7 @@ class ThumbnailTest extends TestCase
         $this->assertTrue($response->isOk());
         $this->assertEquals('image/png', $response->getHeaderLine('Content-Type'));
 
-        $this->assertFileExists(__DIR__ . '/../files/cache/2998fa043fbbbcd3505da186ee39f6ba8c1624f1.cache.php');
+        $this->assertFileExists(__DIR__ . '/../files/cache/e8385a06943cc88819cb7be8fcbd015117539b1c.cache.php');
 
         $cachedResponse = $this->get('/test/thumbnail/test.png');
 

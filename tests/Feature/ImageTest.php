@@ -47,7 +47,7 @@ class ImageTest extends TestCase
         $this->assertTrue($response->isOk());
         $this->assertEquals('image/png', $response->getHeaderLine('Content-Type'));
 
-        $this->assertFileExists(__DIR__ . '/../files/cache/218250c649285dba72768c67e0492776babb91a9.cache.php');
+        $this->assertFileExists(__DIR__ . '/../files/cache/8266304c10d8e78c04f573c352e98c2dd62bc396.cache.php');
 
         $cachedResponse = $this->get('/test/test.png');
 
