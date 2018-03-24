@@ -25,13 +25,13 @@ class ThumbnailController extends Controller
 
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
-            $image = new Image($imagePath, $width, $height);
+            $image = new Image($imagePath);
         } catch (Exception $exception) {
             return $response->withStatus(404)->write('Thumbnail not found');
         }
 
         return $response
-            ->withHeader('Content-Type', $image->mimeType)
-            ->write($image->content);
+            ->withHeader('Content-Type', $image->mimeType())
+            ->write($image->thumbnail($width, $height));
     }
 }

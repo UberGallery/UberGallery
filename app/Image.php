@@ -2,122 +2,40 @@
 
 namespace App;
 
-use Imagick;
-use ReflectionMethod;
 use App\Exceptions\InvalidImageException;
+use Imagick;
 
 class Image
 {
-    /** @var string Binary string of image data */
-    protected $content;
-
     /** @var string Cannonical image file path */
     protected $path;
-
-    /** @var int Image width */
-    protected $width;
-
-    /** @var int Image height */
-    protected $height;
-
-    /** @var string Image mime type */
-    protected $mimeType;
 
     /**
      * Create a new Image.
      *
-     * @param string $path   Path to image file
-     * @param int    $width  Resized image width
-     * @param int    $height Resized image height
+     * @param string $path Path to image file
      */
-    public function __construct($path, $width = 0, $height = 0)
+    public function __construct($path)
     {
+        $this->path = realpath($path);
+
         if (! $this->isImage($path)) {
             throw new InvalidImageException($path . ' is not a valid image');
         }
-
-        $this->content = file_get_contents($path);
-
-        $this->path = realpath($path);
-
-        if ($width > 0 || $height > 0) {
-            $this->content = $this->resizeContents($width, $height);
-        }
-
-        list($this->width, $this->height) = getimagesizefromstring($this->content);
-        $this->mimeType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $this->content);
     }
 
     /**
-     * Magic getter method for getting the value of a protected property.
-     *
-     * @param string $property Property name
-     *
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (method_exists($this, $property)) {
-            $reflection = new ReflectionMethod($this, $property);
-
-            if ($reflection->isPublic()) {
-                return $this->$property();
-            }
-        }
-
-        return $this->$property;
-    }
-
-    /**
-     * Magic isset method for determining if a magic property is set.
-     *
-     * @param string $property Property name
-     *
-     * @return bool True if property is set, otherwise false
-     */
-    public function __isset($property)
-    {
-        if (method_exists($this, $property)) {
-            $reflection = new ReflectionMethod($this, $property);
-
-            return $reflection->isPublic();
-        }
-
-        return isset($this->$property);
-    }
-
-    /**
-     * Get raw image contents.
+     * Return the raw image content.
      *
      * @return string Binary string of image data
      */
-    public function raw()
+    public function content()
     {
-        return $this->content;
+        return file_get_contents($this->path);
     }
 
     /**
-     * Get base64 encoded image contents.
-     *
-     * @return string Base64 encoded string of image data
-     */
-    public function base64()
-    {
-        return base64_encode($this->content);
-    }
-
-    /**
-     * Get stream wrapped image contents.
-     *
-     * @return string Stream wrapped string of image data
-     */
-    public function stream()
-    {
-        return 'data://' . $this->mimeType . ';base64,' . $this->base64();
-    }
-
-    /**
-     * Get the image file name.
+     * Return the image file name.
      *
      * @return string Image name
      */
@@ -127,69 +45,80 @@ class Image
     }
 
     /**
-     * Get the image dimensions ad [height]x[width].
+     * Return the image mime type.
+     *
+     * @return string Mime type
+     */
+    public function mimeType()
+    {
+        return mime_content_type($this->path);
+    }
+
+    /**
+     * Return the image dimensions as [height]x[width].
      *
      * @return string Image dimensions
      */
     public function dimensions()
     {
-        return $this->width . 'x' . $this->height;
+        [$width, $height] = getimagesize($this->path);
+
+        return $width . 'x' . $height;
     }
 
     /**
-     * Get image exif data.
+     * Return the image width.
      *
-     * @return array Exif data
+     * @return int Image width
      */
-    public function exif()
+    public function width()
     {
-        return exif_read_data($this->stream);
+        [$width, $height] = getimagesize($this->path);
+
+        return $width;
     }
 
     /**
-     * Get a new instance of the image with specified dimensions.
+     * Return the image height.
      *
-     * @param int $width  Image width
-     * @param int $height Image height
-     *
-     * @return \App\Image Resized Image object
+     * @return int Image height
      */
-    public function resize($width, $height)
+    public function height()
     {
-        return new static($this->stream(), $width, $height);
+        [$width, $height] = getimagesize($this->path);
+
+        return $height;
     }
 
     /**
-     * Determine if specified file is an image.
+     * Return the image thumbnail with specified dimensions.
      *
-     * @param string $path Path to file
+     * @param int $width   Image width
+     * @param int $height  Image height
+     * @param int $quality Image compression quality (Default: 82)
      *
-     * @return bool True if file is a valid image, otherwise false
+     * @return string Binary string of thumbnail data
      */
-    protected function isImage($path)
-    {
-        $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
-
-        return in_array($mimeType, ['image/png', 'image/jpeg', 'image/jpg']);
-    }
-
-    /**
-     * Resize the image from it's contents.
-     *
-     * @param int $width  Resized image width
-     * @param int $height Resized image height
-     *
-     * @return string Binary string of resized image data
-     */
-    protected function resizeContents($width, $height)
+    public function thumbnail($width, $height, $quality = 82)
     {
         $imagick = new Imagick;
 
-        $imagick->readImageBlob($this->content);
+        $imagick->readImage($this->path);
         $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
-        // QUESTION: Allow this to be customized?
-        $imagick->setImageCompressionQuality(82);
+        $imagick->setImageCompressionQuality($quality);
 
         return $imagick->getimageblob();
+    }
+
+    /**
+     * Determine if the file is an image.
+     *
+     * @return bool True if file is a valid image, otherwise false
+     */
+    protected function isImage()
+    {
+        return in_array($this->mimeType(), [
+            'image/gif', 'image/png', 'image/jpeg', 'image/jpg'
+        ]);
     }
 }
