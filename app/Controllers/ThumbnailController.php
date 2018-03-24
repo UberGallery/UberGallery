@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Image;
+use App\Thumbnail;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Exception;
@@ -25,13 +26,13 @@ class ThumbnailController extends Controller
 
         try {
             $imagePath = $this->imagePath($args['album'], $args['image']);
-            $image = new Image($imagePath);
+            $thumbnail = new Thumbnail(new Image($imagePath), $width, $height);
         } catch (Exception $exception) {
             return $response->withStatus(404)->write('Thumbnail not found');
         }
 
         return $response
-            ->withHeader('Content-Type', $image->mimeType())
-            ->write($image->thumbnail($width, $height));
+            ->withHeader('Content-Type', $thumbnail->mimeType())
+            ->write($thumbnail->content());
     }
 }
