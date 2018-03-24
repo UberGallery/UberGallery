@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Thumbnail;
 use App\Exceptions\InvalidImageException;
 use Imagick;
 
@@ -22,6 +23,16 @@ class Image
         if (! $this->isImage($path)) {
             throw new InvalidImageException($path . ' is not a valid image');
         }
+    }
+
+    /**
+     * Return the image path.
+     *
+     * @return string Path to the image file
+     */
+    public function path()
+    {
+        return $this->path;
     }
 
     /**
@@ -101,13 +112,7 @@ class Image
      */
     public function thumbnail($width, $height, $quality = 82)
     {
-        $imagick = new Imagick;
-
-        $imagick->readImage($this->path);
-        $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
-        $imagick->setImageCompressionQuality($quality);
-
-        return $imagick->getimageblob();
+        return new Thumbnail($this, $width, $height, $quality);
     }
 
     /**
