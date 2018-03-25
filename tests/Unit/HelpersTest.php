@@ -6,14 +6,6 @@ use Tests\TestCase;
 
 class HelpersTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        global $app;
-        $app = $this->app;
-    }
-
     public function test_it_can_get_the_application_instance()
     {
         $this->assertInstanceOf(\Slim\App::class, app());

@@ -31,6 +31,8 @@ abstract class TestCase extends PHPUnitTestCase
      */
     protected function configureApp(array $config = [])
     {
+        global $app;
+
         $app = new \Slim\App(array_replace_recursive([
             'settings' => include __DIR__ . '/files/settings.php',
             'root' => realpath(__DIR__ . '/../')
