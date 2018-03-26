@@ -152,6 +152,19 @@ class Album
     }
 
     /**
+     * Return an album configuration item.
+     *
+     * @param string $key     Unique config item key
+     * @param mixed  $default Value to be returned if the config item doesn't exist
+     *
+     * @return mixed The config item or default value
+     */
+    public function config($key, $default = null)
+    {
+        return $this->config->get($key, $default);
+    }
+
+    /**
      * Return the calculated album title.
      *
      * @return string Caculated album title
