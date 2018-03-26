@@ -65,29 +65,13 @@ abstract class Controller
      *
      * @return mixed The config item or default value
      */
-    public function config($key, $default = null)
+    protected function config($key = null, $default = null)
     {
-        return $this->container->config->get($key, $default);
-    }
-
-    /**
-     * Return the directory path to the enabled theme.
-     *
-     * @param string $path An optional sub-path to apend to the theme path
-     *
-     * @throws \App\Exceptions\FileNotFoundException
-     *
-     * @return string Full path to the theme
-     */
-    protected function themePath($path = null)
-    {
-        $themePath = realpath($this->container->root . "/themes/{$this->config('theme')}/{$path}");
-
-        if (! $themePath) {
-            throw new FileNotFoundException("Theme path not found at $themePath");
+        if (is_null($key)) {
+            return $this->container->config;
         }
 
-        return $themePath;
+        return $this->container->config->get($key, $default);
     }
 
     /**
@@ -95,37 +79,13 @@ abstract class Controller
      *
      * @param string $album Album name
      *
-     * @throws \App\Exceptions\FileNotFoundException
-     *
      * @return string Full path to the album directory
      */
     protected function albumPath($album)
     {
-        $albumPath = $this->config(
-            "albums.{$album}.path",
-            realpath($this->container->root . "/albums/{$album}")
-        );
-
-        if (! $albumPath) {
-            throw new FileNotFoundException("Album not found at {$albumPath}");
-        }
-
-        return $albumPath;
-    }
-
-    /**
-     * Retrieve the album title from the config or construct it from the
-     * provided slug.
-     *
-     * @param string $album Album slug
-     *
-     * @return string The album title
-     */
-    protected function albumTitle($album)
-    {
         return $this->config(
-            "albums.{$album}.title",
-            ucwords(str_replace('_', ' ', $album)) . ' Album'
+            "albums.{$album}.path",
+            realpath(base_path("albums/{$album}"))
         );
     }
 
@@ -135,18 +95,10 @@ abstract class Controller
      * @param string $album Album name
      * @param string $album Image name
      *
-     * @throws \App\Exceptions\FileNotFoundException
-     *
      * @return string Full path to the image
      */
     protected function imagePath($album, $image)
     {
-        $imagePath = realpath("{$this->albumPath($album)}/{$image}");
-
-        if (! $imagePath) {
-            throw new FileNotFoundException("Image not found at $imagePath");
-        }
-
-        return $imagePath;
+        return realpath("{$this->albumPath($album)}/{$image}");
     }
 }
