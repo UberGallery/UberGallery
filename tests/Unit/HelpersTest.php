@@ -31,11 +31,9 @@ class HelpersTest extends TestCase
         $this->assertEquals(realpath(__DIR__ . '/../../tests/'), base_path('tests'));
     }
 
-    public function test_it_throws_an_exception_when_getting_an_invalid_application_base_path()
+    public function test_it_returns_false_when_getting_an_invalid_application_base_path()
     {
-        $this->expectException(\App\Exceptions\FileNotFoundException::class);
-
-        base_path('not_a_real_folder');
+        $this->assertFalse(base_path('not_a_real_folder'));
     }
 
     public function test_it_can_get_the_app_path()
@@ -48,10 +46,8 @@ class HelpersTest extends TestCase
         $this->assertEquals(realpath(__DIR__ . '/../../app/Bootstrap'), app_path('Bootstrap'));
     }
 
-    public function test_it_throws_an_exception_when_getting_an_invalid_app_path()
+    public function test_it_returns_false_when_getting_an_invalid_app_path()
     {
-        $this->expectException(\App\Exceptions\FileNotFoundException::class);
-
-        app_path('not_a_real_folder');
+        $this->assertFalse(app_path('not_a_real_folder'));
     }
 }
