@@ -21,7 +21,7 @@ class AlbumController extends Controller
     public function __invoke(Request $request, Response $response, array $args)
     {
         try {
-            $album = new Album($args['album'], $this->container->config->split("albums.{$args['album']}"));
+            $album = new Album($args['album'], $this->config()->split("albums.{$args['album']}"));
         } catch (FileNotFoundException $exception) {
             return $response->withStatus(404)->write('Album not found');
         }
