@@ -22,6 +22,8 @@ abstract class Service
     /**
      * Register a service.
      *
+     * @codeCoverageIgnore
+     *
      * @return void
      */
     public function register()
@@ -31,6 +33,8 @@ abstract class Service
 
     /**
      * Boot a service.
+     *
+     * @codeCoverageIgnore
      *
      * @return void
      */
