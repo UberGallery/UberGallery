@@ -13,9 +13,9 @@ class ThumbnailController extends Controller
     /**
      * Handle an incoming Thumbnail request and return a response.
      *
-     * @param use \Slim\Http\Request  $request  Incoming request object
-     * @param use \Slim\Http\Response $response Outgoing response object
-     * @param array                   $args     the array of request arguments
+     * @param \Slim\Http\Request  $request  Incoming request object
+     * @param \Slim\Http\Response $response Outgoing response object
+     * @param array               $args     the array of request arguments
      *
      * @return \Slim\Http\Response
      */

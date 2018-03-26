@@ -21,8 +21,9 @@ class ImageController extends Controller
     public function __invoke(Request $request, Response $response, array $args)
     {
         try {
-            $imagePath = $this->imagePath($args['album'], $args['image']);
-            $image = new Image($imagePath);
+            $image = new Image(
+                $this->imagePath($args['album'], $args['image'])
+            );
         } catch (Exception $exception) {
             return $response->withStatus(404)->write('Image not found');
         }

@@ -20,8 +20,8 @@ class Image
     {
         $this->path = realpath($path);
 
-        if (! $this->isImage($path)) {
-            throw new InvalidImageException($path . ' is not a valid image');
+        if (! $this->isImage($this->path)) {
+            throw new InvalidImageException($this->path . ' is not a valid image');
         }
     }
 
