@@ -2,11 +2,12 @@
 
 namespace App;
 
+use App\Model;
 use App\Thumbnail;
 use App\Exceptions\InvalidImageException;
 use Imagick;
 
-class Image
+class Image extends Model
 {
     /** @var string Cannonical image file path */
     protected $path;
@@ -113,17 +114,5 @@ class Image
     public function thumbnail($width, $height, $quality = 82)
     {
         return new Thumbnail($this, $width, $height, $quality);
-    }
-
-    /**
-     * Determine if the file is an image.
-     *
-     * @return bool True if file is a valid image, otherwise false
-     */
-    protected function isImage()
-    {
-        return in_array($this->mimeType(), [
-            'image/gif', 'image/png', 'image/jpeg', 'image/jpg'
-        ]);
     }
 }

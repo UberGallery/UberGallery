@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Model;
 use PHLAK\Config\Config;
 use Tightenco\Collect\Support\Collection;
 use App\Exceptions\InvalidImageException;
 use App\Exceptions\FileNotFoundException;
 use SplFileObject;
 
-class Album
+class Album extends Model
 {
     /** @var string The album slug */
     protected $slug;
@@ -36,8 +37,10 @@ class Album
 
         $this->images = Collection::make(
             glob("{$this->path()}/*.{gif,jpeg,jpg,png}", GLOB_BRACE)
-        )->map(function ($image) {
-            return new SplFileObject($image);
+        )->filter(function ($file) {
+            return $this->isImage($file);
+        })->map(function ($file) {
+            return new SplFileObject($file);
         });
     }
 
@@ -73,18 +76,9 @@ class Album
         return $this->images
             ->when($this->config->get('pagination', false), function ($images) use ($page) {
                 return $images->forPage($page, $this->config->get('images_per_page', 24));
-            })
-            ->map(function ($image) {
-                $width = $this->config->get('thumbnails.width', 480);
-                $height = $this->config->get('thumbnails.height', 480);
-
-                try {
-                    return new Image($image->getRealPath(), $width, $height);
-                } catch (InvalidImageException $exception) {
-                    // Don't worry about it
-                }
-            })
-            ->values();
+            })->map(function ($image) {
+                return new Image($image->getRealPath());
+            })->values();
     }
 
     /**
