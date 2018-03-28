@@ -97,7 +97,7 @@ class Album extends Model
         switch ($method) {
             case 'date':
                 $sortFunction = function ($first, $second) {
-                    return strtotime($first->getMTime()) <=> strtotime($second->getMTime());
+                    return $first->getMTime() <=> $second->getMTime();
                 };
                 break;
 
