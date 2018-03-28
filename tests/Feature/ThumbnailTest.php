@@ -40,7 +40,7 @@ class ThumbnailTest extends TestCase
 
     public function test_it_can_cache_a_thumbnail()
     {
-        $this->configureApp(['settings' => ['cache' => ['enabled' => true]]]);
+        $this->configureApp('cache.enabled', true);
 
         $response = $this->get('/test/thumbnail/test.png');
 

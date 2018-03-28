@@ -35,16 +35,8 @@ class AlbumTest extends TestCase
 
     public function test_it_has_the_correct_number_of_images_when_pagination_is_enabled()
     {
-        $this->configureApp([
-            'settings' => [
-                'albums' => [
-                    'test' => [
-                        'pagination' => true,
-                        'images_per_page' => 2
-                    ]
-                ]
-            ]
-        ]);
+        $this->configureApp('albums.test.pagination', true);
+        $this->configureApp('albums.test.images_per_page', 2);
 
         $response = $this->get('/test/');
 

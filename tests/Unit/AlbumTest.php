@@ -34,9 +34,7 @@ class AlbumTest extends TestCase
 
     public function test_it_can_return_an_album_title_when_one_is_not_set()
     {
-        $this->configureApp([
-            'settings' => ['albums' => ['test' => ['title' => null]]]
-        ]);
+        $this->configureApp('albums.test.title', null);
 
         $album = new Album('test', $this->app->getContainer()->config->split('albums.test'));
 

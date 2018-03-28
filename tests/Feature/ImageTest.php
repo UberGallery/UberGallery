@@ -40,7 +40,7 @@ class ImageTest extends TestCase
 
     public function test_it_can_cache_an_image()
     {
-        $this->configureApp(['settings' => ['cache' => ['enabled' => true]]]);
+        $this->configureApp('cache.enabled', true);
 
         $response = $this->get('/test/test.png');
 

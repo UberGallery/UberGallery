@@ -19,28 +19,29 @@ abstract class TestCase extends PHPUnitTestCase
      */
     public function setUp()
     {
-        $this->configureApp();
-    }
-
-    /**
-     * Set up or override the test application configuration.
-     *
-     * @param array $config Application config array
-     *
-     * @return void
-     */
-    protected function configureApp(array $config = [])
-    {
         global $app;
 
-        $app = new \Slim\App(array_replace_recursive([
+        $app = new \Slim\App([
             'settings' => include __DIR__ . '/files/settings.php',
             'root' => realpath(__DIR__ . '/../')
-        ], $config));
+        ]);
 
         call_user_func(new ApplicationManager, $app);
 
         $this->app = $app;
+    }
+
+    /**
+     * Override the test application configuration.
+     *
+     * @param string $key   Unique configuration option key
+     * @param mixed  $value Config item value
+     *
+     * @return void
+     */
+    protected function configureApp($key, $value)
+    {
+        $this->app->getContainer()->config->set($key, $value);
     }
 
     /**
