@@ -5,7 +5,9 @@ namespace Tests;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use App\Bootstrap\ApplicationManager;
 use App\Exceptions\FileNotFoundException;
+use Symfony\Component\DomCrawler\Crawler;
 use Slim\Http\Environment;
+use Slim\Http\Response;
 
 abstract class TestCase extends PHPUnitTestCase
 {
@@ -94,5 +96,20 @@ abstract class TestCase extends PHPUnitTestCase
         }
 
         return $testPath;
+    }
+
+    /**
+     * Return an element by it's class.
+     *
+     * @param string              $selector An element selector or filter
+     * @param \Slim\Http\Response $response A Slim application response
+     *
+     * @return \DOMElement An array of DOMElements
+     */
+    protected function getElements($selector, Response $response)
+    {
+        $crawler = new Crawler((string) $response->getBody());
+
+        return $crawler->filter($selector);
     }
 }
