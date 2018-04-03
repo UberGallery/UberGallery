@@ -15,7 +15,7 @@ class MustacheService extends Service
     public function register()
     {
         $this->bind('mustache', function ($container) {
-            $themePath = realpath($container->root . "/themes/{$container->config->get('theme')}");
+            $themePath = realpath($container->root . "/themes/{$container->config->get('gallery.theme')}");
 
             return new Mustache_Engine([
                 'loader' => new Mustache_Loader_FilesystemLoader($themePath, [

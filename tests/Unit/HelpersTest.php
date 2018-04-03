@@ -18,7 +18,7 @@ class HelpersTest extends TestCase
 
     public function test_it_can_get_a_configuration_item()
     {
-        $this->assertEquals('Test Gallery', config('title'));
+        $this->assertEquals('Test Gallery', config('gallery.title'));
     }
 
     public function test_it_can_get_the_application_base_path()

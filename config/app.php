@@ -7,19 +7,12 @@
 return [
 
     /**
-     * Give your gallery a descriptive title.
+     * Show error details on the page by setting this value to 'true'.
      *
-     * Default value: 'Uber Gallery'
+     * Default value: false
      */
-    'title' => 'Uber Gallery',
+    'displayErrorDetails' => true,
 
-    /**
-     * Set your desired theme. Must be the name of the theme folder as it is in
-     * the themes directory.
-     *
-     * Default value: 'redux'
-     */
-    'theme' => 'redux',
 
     /**
      * Improve performance by defining a router cache file.
@@ -29,13 +22,6 @@ return [
      * Default value: false
      */
     'routerCacheFile' => false,
-
-    /**
-     * Show error details on the page by setting this value to 'true'.
-     *
-     * Default value: false
-     */
-    'displayErrorDetails' => true,
 
     /**
      * Register custom application services.

@@ -3,10 +3,8 @@
 require __DIR__ . '/vendor/autoload.php';
 
 $app = new \Slim\App([
-    'settings' => array_merge([
-        'albums' => (include __DIR__ . '/config/albums.php') ?: [],
-        'cache' => (include __DIR__ . '/config/cache.php') ?: []
-    ], (include __DIR__ . '/config/app.php') ?: []),
+    'settings' => include __DIR__ . '/config/app.php' ?: [],
+    'config_path' => __DIR__ . '/config/',
     'root' => __DIR__
 ]);
 
