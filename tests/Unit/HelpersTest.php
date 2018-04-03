@@ -50,4 +50,34 @@ class HelpersTest extends TestCase
     {
         $this->assertFalse(app_path('not_a_real_folder'));
     }
+
+    public function test_it_can_get_the_cache_path()
+    {
+        $this->assertEquals(realpath(__DIR__ . '/../../cache/'), cache_path());
+    }
+
+    public function test_it_can_get_an_cache_path_relative_to_the_path()
+    {
+        $this->assertEquals(realpath(__DIR__ . '/../../cache/some_sub_dir'), cache_path('some_sub_dir'));
+    }
+
+    public function test_it_returns_false_when_getting_an_invalid_cache_path()
+    {
+        $this->assertFalse(cache_path('not_a_real_folder'));
+    }
+
+    public function test_it_can_get_the_albums_path()
+    {
+        $this->assertEquals(realpath(__DIR__ . '/../../albums'), albums_path());
+    }
+
+    public function test_it_can_get_a_specific_albums_path()
+    {
+        $this->assertEquals(realpath(__DIR__ . '/../../app/default'), album_path('default'));
+    }
+
+    public function test_it_returns_false_when_getting_an_invalid_album_path()
+    {
+        $this->assertFalse(album_path('not_a_real_album'));
+    }
 }

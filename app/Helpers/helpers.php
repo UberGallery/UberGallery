@@ -70,3 +70,43 @@ if (! function_exists('app_path')) {
         return base_path('app' . DIRECTORY_SEPARATOR . $path);
     }
 }
+
+if (! function_exists('cache_path')) {
+    /**
+    * Return a path to the application cache directory.
+    *
+    * @param string $path File or directory sub-path
+    *
+    * @return string Path to cache file or directory
+    */
+    function cache_path($path = '')
+    {
+        return base_path('cache' . DIRECTORY_SEPARATOR . $path);
+    }
+}
+
+if (! function_exists('albums_path')) {
+    /**
+     * Return a path to the albums directory.
+     *
+     * @return string Path to albums directory
+     */
+    function albums_path()
+    {
+        return base_path('albums');
+    }
+}
+
+if (! function_exists('album_path')) {
+    /**
+    * Return a path to the directory of a specific album.
+    *
+    * @param string $album Album name
+    *
+    * @return string Path to album directory
+    */
+    function album_path($album)
+    {
+        return base_path('album' . DIRECTORY_SEPARATOR . $album);
+    }
+}
