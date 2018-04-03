@@ -33,9 +33,7 @@ return [
          * File driver configuration.
          */
         'file' => function () {
-            return [
-                'dir' => realpath(__DIR__ . '/../cache') // TODO: Improve this
-            ];
+            $this->setCacheDir(__DIR__ . '/../cache'); // TODO: Improve this
         },
 
         /**
@@ -43,8 +41,6 @@ return [
          */
         'memcached' => function ($memcached) {
             $memcached->addServer('localhost', 11211);
-
-            return $memcached; // Must return the $memcached object
         },
 
         /**
@@ -52,17 +48,13 @@ return [
          */
         'redis' => function ($redis) {
             $redis->pconnect('localhost', 6379);
-
-            return $redis; // Must return the $redis object
         },
 
         /**
          * APCu driver configuration.
          */
         'apcu' => function () {
-            return [
-                // 'prefix' => 'uber_gallery' // Optional prefix
-            ];
+            // $this->setPrefix('uber_gallery'); // Optional prefix
         }
     ],
 

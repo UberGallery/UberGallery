@@ -16,10 +16,10 @@ class CacheService extends Service
         $this->bind('cache', function ($container) {
             $driver = $container->config->get('cache.driver', 'file');
             $config = $container->config->get("cache.drivers.{$driver}", function () {
-                return ['dir' => realpath(__DIR__ . '/../../cache')];
+                $this->setCacheDir(__DIR__ . '/../../cache'); // TODO: Improve this
             });
 
-            return Stash\Cache::make($driver, $config);
+            return Stash\Cache::$driver($config);
         });
     }
 }

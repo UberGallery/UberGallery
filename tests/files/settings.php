@@ -30,7 +30,7 @@ return [
         'driver' => 'file',
         'drivers' => [
             'file' => function () {
-                return ['dir' => __DIR__ . '/cache'];
+                $this->setCacheDir(__DIR__ . '/cache');
             }
         ]
     ]
