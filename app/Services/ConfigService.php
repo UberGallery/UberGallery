@@ -20,27 +20,41 @@ class ConfigService extends Service
     public function register()
     {
         $this->bind('config', function ($container) {
-            return new Config\Config($container->settings->all());
-        });
+            $config = new Config\Config();
 
-        $this->loadConfigs($this->container->config_path);
+            foreach (new DirectoryIterator($container->config_path) as $file) {
+                if ($this->isIgnored($file)) {
+                    continue;
+                }
+
+                $config->load($file->getPathname(), $file->getBasename('.php'));
+            }
+
+            return $config;
+        });
     }
 
     /**
-     * Load config files from a directory.
+     * Determine if a file should be ignored.
      *
-     * @param string $path Path to a directory of configuration files
+     * @param  \DirectoryIterator $file An instance of a DirectoryIterator file
      *
-     * @return void
+     * @return boolean True if file should be ignored, otherwise false
      */
-    protected function loadConfigs($path)
+    protected function isIgnored(DirectoryIterator $file)
     {
-        foreach (new DirectoryIterator($path) as $file) {
-            if ($file->isDot() || $file->isDir() || in_array($file->getBasename(), $this->ignored)) {
-                continue;
-            }
-
-            $this->container->config->load($file->getPathname(), $file->getBasename('.php'));
+        if ($file->isDot() || $file->isDir()) {
+            return true;
         }
+
+        if (in_array($file->getBasename(), $this->ignored)) {
+            return true;
+        }
+
+        if ($file->getExtension() != 'php') {
+            return true;
+        }
+
+        return false;
     }
 }
