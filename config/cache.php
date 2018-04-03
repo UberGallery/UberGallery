@@ -33,7 +33,7 @@ return [
          * File driver configuration.
          */
         'file' => function () {
-            $this->setCacheDir(__DIR__ . '/../cache'); // TODO: Improve this
+            $this->setCacheDir(cache_path());
         },
 
         /**
