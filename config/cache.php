@@ -54,7 +54,7 @@ return [
          * APCu driver configuration.
          */
         'apcu' => function () {
-            // $this->setPrefix('uber_gallery'); // Optional prefix
+            $this->setPrefix('uber_gallery');
         }
     ],
 

@@ -18,7 +18,7 @@ return [
             $redis->pconnect('localhost', 6379);
         },
         'apcu' => function () {
-            // $this->setPrefix('uber_gallery'); // Optional prefix
+            $this->setPrefix('uber_gallery');
         }
     ]
 ];
