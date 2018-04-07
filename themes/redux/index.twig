@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-    {{> partials/head }}
+    {{ include('partials/head.twig') }}
 
     <body>
         <div class="container">
             <h1 class="display-4">Welcome to UberGallery 3.0!</h1>
 
             <ul>
-                {{# albums }}
-                    <li><a href="/{{ slug }}/">{{ title }}</a></li>
-                {{/ albums }}
+                {% for album in albums %}
+                    <li><a href="/{{ album.slug }}/">{{ album.title }}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </body>

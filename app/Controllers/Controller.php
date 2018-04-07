@@ -6,6 +6,7 @@ use App\Exceptions\FileNotFoundException;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Twig_SimpleFunction;
 
 abstract class Controller
 {
@@ -43,20 +44,9 @@ abstract class Controller
      */
     protected function view($view, $data = [])
     {
-        return $this->container->response->write(
-            $this->container->view->render($view, array_merge([
-                'gallery_title' => $this->config('gallery.title', 'Uber Gallery'),
-                'themePath' => function ($path) {
-                    return "/themes/{$this->config('gallery.theme')}/{$path}";
-                },
-                'imagePath' => function ($image) use ($data) {
-                    return "/{$data['slug']}/{$image}";
-                },
-                'thumbnailPath' => function ($thumbnail) use ($data) {
-                    return "/{$data['slug']}/thumbnail/{$thumbnail}";
-                }
-            ], $data))
-        );
+        return $this->container->view->render($this->container->get('response'), "{$view}.twig", array_merge([
+            'gallery_title' => $this->config('gallery.title', 'Uber Gallery')
+        ], $data));
     }
 
     /**
