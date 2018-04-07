@@ -5,16 +5,16 @@ namespace App\Services;
 use Mustache_Engine;
 use Mustache_Loader_FilesystemLoader;
 
-class MustacheService extends Service
+class ViewService extends Service
 {
     /**
-     * Register Mustache service.
+     * Register the view service.
      *
      * @return void
      */
     public function register()
     {
-        $this->bind('mustache', function ($container) {
+        $this->bind('view', function ($container) {
             $themePath = realpath($container->root . "/themes/{$container->config->get('gallery.theme')}");
 
             return new Mustache_Engine([

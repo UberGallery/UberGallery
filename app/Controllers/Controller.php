@@ -43,7 +43,7 @@ abstract class Controller
      */
     protected function view($view, $data = [])
     {
-        return $this->container->mustache->render($view, array_merge([
+        return $this->container->view->render($view, array_merge([
             'gallery_title' => $this->config('gallery.title', 'Uber Gallery'),
             'themePath' => function ($path) {
                 return "/themes/{$this->config('gallery.theme')}/{$path}";

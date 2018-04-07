@@ -10,7 +10,7 @@ class ServiceProvider extends Provider
     protected $services = [
         \App\Services\ConfigService::class,
         \App\Services\CacheService::class,
-        \App\Services\MustacheService::class
+        \App\Services\ViewService::class
     ];
 
     /**
