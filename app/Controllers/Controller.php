@@ -39,22 +39,24 @@ abstract class Controller
      * @param string $view The view name to be rendered
      * @param array  $data An array of data passed to the view
      *
-     * @return string The rendered view
+     * @return \Slim\Http\Response
      */
     protected function view($view, $data = [])
     {
-        return $this->container->view->render($view, array_merge([
-            'gallery_title' => $this->config('gallery.title', 'Uber Gallery'),
-            'themePath' => function ($path) {
-                return "/themes/{$this->config('gallery.theme')}/{$path}";
-            },
-            'imagePath' => function ($image) use ($data) {
-                return "/{$data['slug']}/{$image}";
-            },
-            'thumbnailPath' => function ($thumbnail) use ($data) {
-                return "/{$data['slug']}/thumbnail/{$thumbnail}";
-            }
-        ], $data));
+        return $this->container->response->write(
+            $this->container->view->render($view, array_merge([
+                'gallery_title' => $this->config('gallery.title', 'Uber Gallery'),
+                'themePath' => function ($path) {
+                    return "/themes/{$this->config('gallery.theme')}/{$path}";
+                },
+                'imagePath' => function ($image) use ($data) {
+                    return "/{$data['slug']}/{$image}";
+                },
+                'thumbnailPath' => function ($thumbnail) use ($data) {
+                    return "/{$data['slug']}/thumbnail/{$thumbnail}";
+                }
+            ], $data))
+        );
     }
 
     /**

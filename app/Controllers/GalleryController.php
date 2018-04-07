@@ -25,6 +25,6 @@ class GalleryController extends Controller
             return array_merge($album, ['slug' => $slug]);
         });
 
-        return $response->write($this->view('index', ['albums' => $albums]));
+        return $this->view('index', ['albums' => $albums]);
     }
 }

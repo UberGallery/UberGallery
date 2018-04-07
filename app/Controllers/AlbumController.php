@@ -31,10 +31,10 @@ class AlbumController extends Controller
             $album->config("sort.reverse", false)
         );
 
-        return $response->write($this->view('album', [
+        return $this->view('album', [
             'slug' => $album->slug(),
             'title' => $album->title(),
             'images' => $album->images($args['page'] ?? 1)->all()
-        ]));
+        ]);
     }
 }
