@@ -11,7 +11,7 @@ return [
      *
      * Default value: false
      */
-    'displayErrorDetails' => true,
+    'displayErrorDetails' => env('DISPLAY_ERRORS', false),
 
 
     /**
@@ -21,7 +21,7 @@ return [
      *
      * Default value: false
      */
-    'routerCacheFile' => false,
+    'routerCacheFile' => env('ROUTER_CACHE_FILE', false),
 
     /**
      * Register custom application services.

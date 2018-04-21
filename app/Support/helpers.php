@@ -26,6 +26,23 @@ if (! function_exists('container')) {
     }
 }
 
+if (! function_exists('env')) {
+    /**
+     * Return the value of an environment vairable.
+     *
+     * @param  string $envar The name of an environment variable
+     * @param  mixed $default  Default value to return if no environment variable is set
+     *
+     * @return mixed
+     */
+    function env($envar, $default = null)
+    {
+        $value = getenv($envar);
+
+        return $value ?: $default;
+    }
+}
+
 if (! function_exists('config')) {
     /**
      * Return application configuration items from the container.

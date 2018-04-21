@@ -16,6 +16,15 @@ class HelpersTest extends TestCase
         $this->assertInstanceOf(\Slim\Container::class, container());
     }
 
+    public function test_it_can_get_environment_variables()
+    {
+        putenv('TEST_STRING=John Pinkerton');
+
+        $this->assertEquals('John Pinkerton', env('TEST_STRING'));
+        $this->assertNull(env('NON_EXISTANT'));
+        $this->assertEquals('foo', env('NON_EXISTANT', 'foo'));
+    }
+
     public function test_it_can_get_a_configuration_item()
     {
         $this->assertEquals('Test Gallery', config('gallery.title'));

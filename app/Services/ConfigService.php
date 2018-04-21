@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Dotenv\Dotenv;
 use PHLAK\Config;
 use DirectoryIterator;
 
@@ -20,6 +21,8 @@ class ConfigService extends Service
     public function register()
     {
         $this->bind('config', function ($container) {
+            (new Dotenv($container->root))->load();
+
             $config = new Config\Config();
 
             foreach (new DirectoryIterator($container->config_path) as $file) {

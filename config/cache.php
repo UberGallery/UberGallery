@@ -13,7 +13,7 @@ return [
      *
      * Default value: false
      */
-    'enabled' => false,
+    'enabled' => env('CACHE_ENABLED', false),
 
     /**
      * The caching driver to usefor caching image and thumbnail responses.
@@ -22,7 +22,7 @@ return [
      *
      * Default value: 'file'
      */
-    'driver' => 'file',
+    'driver' => env('CACHE_DRIVER', 'file'),
 
     /**
      * Cache driver configurations. Modifiy these to customize your driver
@@ -33,28 +33,34 @@ return [
          * File driver configuration.
          */
         'file' => function () {
-            $this->setCacheDir(cache_path());
+            $this->setCacheDir(env('CACHE_PATH', cache_path()));
         },
 
         /**
          * Memcached driver configuration.
          */
         'memcached' => function ($memcached) {
-            $memcached->addServer('localhost', 11211);
+            $memcached->addServer(
+                env('MEMCACHED_HOST', 'localhost'),
+                env('MEMCACHED_PORT', 11211)
+            );
         },
 
         /**
          * Redis driver configuration.
          */
         'redis' => function ($redis) {
-            $redis->pconnect('localhost', 6379);
+            $redis->pconnect(
+                env('REDIS_HOST', 'localhost'),
+                env('REDIS_PORT', 6379)
+            );
         },
 
         /**
          * APCu driver configuration.
          */
         'apcu' => function () {
-            $this->setPrefix('uber_gallery');
+            $this->setPrefix(env('APCU_PREFIX', 'uber_gallery'));
         }
     ],
 
