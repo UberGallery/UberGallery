@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use Dotenv\Dotenv;
 use PHLAK\Config;
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use DirectoryIterator;
 
 class ConfigService extends Service
@@ -21,7 +22,7 @@ class ConfigService extends Service
     public function register()
     {
         $this->bind('config', function ($container) {
-            (new Dotenv($container->root))->load();
+            $this->loadEnvironmentVariables();
 
             $config = new Config\Config();
 
@@ -35,6 +36,20 @@ class ConfigService extends Service
 
             return $config;
         });
+    }
+
+    /**
+     * Load environment variables from a .env file.
+     *
+     * @return void
+     */
+    protected function loadEnvironmentVariables()
+    {
+        try {
+            (new Dotenv($this->container->root))->load();
+        } catch (InvalidPathException $exception) {
+            // Ignore it
+        }
     }
 
     /**
