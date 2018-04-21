@@ -1,0 +1,33 @@
+version: '2'
+services:
+
+  nginx:
+    container_name: ubergallery-nginx
+    image: nginx:1.13
+    ports:
+      - 8000:80
+    volumes:
+      - ./.docker/nginx/files/default.conf:/etc/nginx/conf.d/default.conf
+    volumes_from:
+      - php
+    restart: unless-stopped
+
+  php:
+    container_name: ubergallery-php
+    build: ./.docker/php/
+    environment:
+      MEMCACHED_HOST: memcached
+      REDIS_HOST: redis
+    volumes:
+      - .:/var/www/html
+    restart: unless-stopped
+
+  memcached:
+    container_name: ubergallery-memcached
+    image: memcached:1.5
+    restart: unless-stopped
+
+  redis:
+    container_name: ubergallery-redis
+    image: redis:3.2
+    restart: unless-stopped
