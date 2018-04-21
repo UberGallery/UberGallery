@@ -19,8 +19,16 @@ class HelpersTest extends TestCase
     public function test_it_can_get_environment_variables()
     {
         putenv('TEST_STRING=John Pinkerton');
+        putenv('TEST_QUOTED_STRING=John Pinkerton');
+        putenv('TEST_STRING_WITH_QUOTES=John "Pinky" Pinkerton');
+        putenv('TEST_TRUE=true');
+        putenv('TEST_FALSE=false');
 
         $this->assertEquals('John Pinkerton', env('TEST_STRING'));
+        $this->assertEquals('John Pinkerton', env('TEST_QUOTED_STRING'));
+        $this->assertEquals('John "Pinky" Pinkerton', env('TEST_STRING_WITH_QUOTES'));
+        $this->assertTrue(env('TEST_TRUE'));
+        $this->assertFalse(env('TEST_FALSE'));
         $this->assertNull(env('NON_EXISTANT'));
         $this->assertEquals('foo', env('NON_EXISTANT', 'foo'));
     }
