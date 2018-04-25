@@ -103,4 +103,21 @@ class AlbumTest extends TestCase
             '/test/test.gif'
         ], $images->extract('href'));
     }
+
+    public function test_it_can_be_sorted_with_a_closure()
+    {
+        $this->configureApp('albums.test.sort.method', function ($first, $second) {
+            return $first->getExtension()[1] <=> $second->getExtension()[1];
+        });
+
+        $response = $this->get('/test/');
+        $images = $this->getElements('.image', $response);
+
+        $this->assertEquals([
+            '/test/test.gif',
+            '/test/test.png',
+            '/test/test.jpeg',
+            '/test/test.jpg'
+        ], $images->extract('href'));
+    }
 }

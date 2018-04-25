@@ -92,6 +92,8 @@ class Album extends Model
     {
         if ($method instanceof \Closure) {
             $this->images = $this->images->sort($method);
+
+            return $this;
         }
 
         switch ($method) {
