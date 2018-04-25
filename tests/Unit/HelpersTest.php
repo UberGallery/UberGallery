@@ -23,12 +23,14 @@ class HelpersTest extends TestCase
         putenv('TEST_STRING_WITH_QUOTES=John "Pinky" Pinkerton');
         putenv('TEST_TRUE=true');
         putenv('TEST_FALSE=false');
+        putenv('TEST_NULL=null');
 
         $this->assertEquals('John Pinkerton', env('TEST_STRING'));
         $this->assertEquals('John Pinkerton', env('TEST_QUOTED_STRING'));
         $this->assertEquals('John "Pinky" Pinkerton', env('TEST_STRING_WITH_QUOTES'));
         $this->assertTrue(env('TEST_TRUE'));
         $this->assertFalse(env('TEST_FALSE'));
+        $this->assertNull(env('TEST_NULL'));
         $this->assertNull(env('NON_EXISTANT'));
         $this->assertEquals('foo', env('NON_EXISTANT', 'foo'));
     }
