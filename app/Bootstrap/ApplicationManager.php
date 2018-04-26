@@ -6,11 +6,23 @@ use Slim\App;
 
 class ApplicationManager
 {
-    /** @var type Array of application providers */
+    /** @var \Slim\App $app The Slim application */
+    protected $app;
+
+    /** @var \Slim\Container $app The Slim application container */
+    protected $container;
+
+    /** @var array Array of application providers */
     protected $providers = [
-        \App\Providers\ServiceProvider::class,
         \App\Providers\MiddlewareProvider::class,
         \App\Providers\RoutesProvider::class
+    ];
+
+    /** @var array Array of application services */
+    protected $services = [
+        \App\Services\ConfigService::class,
+        \App\Services\CacheService::class,
+        \App\Services\ViewService::class
     ];
 
     /**
@@ -22,20 +34,61 @@ class ApplicationManager
      */
     public function __invoke(App $app)
     {
-        $this->registerProviders($app);
+        $this->app = $app;
+        $this->container = $app->getContainer();
+
+        $this->registerServices();
+        $this->registerProviders();
+        $this->bootServices();
+    }
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    protected function registerServices()
+    {
+        $services = array_merge(
+            $this->services,
+            $this->container->settings->services ?? []
+        );
+
+        array_walk($services, function ($service) {
+            $service = new $service($this->container);
+
+            $service->register();
+        });
     }
 
     /**
      * Register the application providers.
      *
-     * @param \Slim\App $app The Slim application
+     * @return void
+     */
+    protected function registerProviders()
+    {
+        foreach ($this->providers as $provider) {
+            call_user_func(new $provider, $this->app);
+        }
+    }
+
+    /**
+     * Boot the application services.
      *
      * @return void
      */
-    protected function registerProviders(App $app)
+    protected function bootServices()
     {
-        foreach ($this->providers as $provider) {
-            call_user_func(new $provider, $app);
-        }
+        $services = array_merge(
+            $this->services,
+            $this->container->settings->services ?? []
+        );
+
+        array_walk($services, function ($service) {
+            $service = new $service($this->container);
+
+            $service->boot();
+        });
     }
 }
