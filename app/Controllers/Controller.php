@@ -2,11 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Exceptions\FileNotFoundException;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Twig_SimpleFunction;
 
 abstract class Controller
 {

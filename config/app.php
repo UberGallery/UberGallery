@@ -3,7 +3,6 @@
 /**
  * This file contains general application configuration settings.
  */
-
 return [
 
     /**

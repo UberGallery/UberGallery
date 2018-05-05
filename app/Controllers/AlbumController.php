@@ -27,8 +27,8 @@ class AlbumController extends Controller
         }
 
         $album->sort(
-            $album->config("sort.method", 'name'),
-            $album->config("sort.reverse", false)
+            $album->config('sort.method', 'name'),
+            $album->config('sort.reverse', false)
         );
 
         return $this->view('album', [

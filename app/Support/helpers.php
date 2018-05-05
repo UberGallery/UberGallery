@@ -42,8 +42,8 @@ if (! function_exists('env')) {
     /**
      * Return the value of an environment vairable.
      *
-     * @param  string $envar The name of an environment variable
-     * @param  mixed $default  Default value to return if no environment variable is set
+     * @param string $envar   The name of an environment variable
+     * @param mixed  $default Default value to return if no environment variable is set
      *
      * @return mixed
      */
@@ -117,12 +117,12 @@ if (! function_exists('app_path')) {
 
 if (! function_exists('cache_path')) {
     /**
-    * Return a path to the application cache directory.
-    *
-    * @param string $path File or directory sub-path
-    *
-    * @return string Path to cache file or directory
-    */
+     * Return a path to the application cache directory.
+     *
+     * @param string $path File or directory sub-path
+     *
+     * @return string Path to cache file or directory
+     */
     function cache_path($path = '')
     {
         return base_path('cache' . DIRECTORY_SEPARATOR . $path);
@@ -143,12 +143,12 @@ if (! function_exists('albums_path')) {
 
 if (! function_exists('album_path')) {
     /**
-    * Return a path to the directory of a specific album.
-    *
-    * @param string $album Album name
-    *
-    * @return string Path to album directory
-    */
+     * Return a path to the directory of a specific album.
+     *
+     * @param string $album Album name
+     *
+     * @return string Path to album directory
+     */
     function album_path($album)
     {
         return base_path('album' . DIRECTORY_SEPARATOR . $album);

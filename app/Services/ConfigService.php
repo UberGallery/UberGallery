@@ -55,9 +55,9 @@ class ConfigService extends Service
     /**
      * Determine if a file should be ignored.
      *
-     * @param  \DirectoryIterator $file An instance of a DirectoryIterator file
+     * @param \DirectoryIterator $file An instance of a DirectoryIterator file
      *
-     * @return boolean True if file should be ignored, otherwise false
+     * @return bool True if file should be ignored, otherwise false
      */
     protected function isIgnored(DirectoryIterator $file)
     {

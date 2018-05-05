@@ -2,10 +2,7 @@
 
 namespace App;
 
-use App\Model;
-use App\Thumbnail;
 use App\Exceptions\InvalidImageException;
-use Imagick;
 
 class Image extends Model
 {

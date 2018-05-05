@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Image;
 use Imagick;
 
 class Thumbnail
@@ -64,10 +63,10 @@ class Thumbnail
     }
 
     /**
-    * Return the thumbnail dimensions as [height]x[width].
-    *
-    * @return string Thumbnail dimensions
-    */
+     * Return the thumbnail dimensions as [height]x[width].
+     *
+     * @return string Thumbnail dimensions
+     */
     public function dimensions()
     {
         [$width, $height] = getimagesizefromstring($this->content);
