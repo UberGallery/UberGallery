@@ -19,7 +19,7 @@ class ViewService extends Service
             $themePath = realpath($container->root . "/themes/{$container->config->get('gallery.theme')}");
 
             $view = new Twig($themePath, [
-                // 'cache' => $container->root . '/cache'
+                // 'cache' => $container->root . '/cache/views'
             ]);
 
             // Instantiate and add Slim specific extension
