@@ -16,6 +16,11 @@ class HelpersTest extends TestCase
         $this->assertInstanceOf(\Slim\Container::class, container());
     }
 
+    public function test_it_can_get_the_curretnt_request()
+    {
+        $this->assertInstanceOf(\Slim\Http\Request::class, request());
+    }
+
     public function test_it_can_get_environment_variables()
     {
         putenv('TEST_STRING=John Pinkerton');

@@ -26,6 +26,18 @@ if (! function_exists('container')) {
     }
 }
 
+if (! function_exists('request')) {
+    /**
+     * Get the current request.
+     *
+     * @return \Slim\Http\Request
+     */
+    function request()
+    {
+        return container()->request;
+    }
+}
+
 if (! function_exists('env')) {
     /**
      * Return the value of an environment vairable.
