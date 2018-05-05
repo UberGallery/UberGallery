@@ -3,6 +3,7 @@
 namespace App\Bootstrap;
 
 use Slim\App;
+use Tightenco\Collect\Support\Collection;
 
 class ApplicationManager
 {
@@ -49,14 +50,11 @@ class ApplicationManager
      */
     protected function registerServices()
     {
-        $services = array_merge(
-            $this->services,
-            $this->container->settings->services ?? []
-        );
+        $services = Collection::make($this->services)
+            ->concat($this->container->settings->services ?? []);
 
-        array_walk($services, function ($service) {
+        $services->each(function ($service) {
             $service = new $service($this->container);
-
             $service->register();
         });
     }
@@ -80,14 +78,11 @@ class ApplicationManager
      */
     protected function bootServices()
     {
-        $services = array_merge(
-            $this->services,
-            $this->container->settings->services ?? []
-        );
+        $services = Collection::make($this->services)
+            ->concat($this->container->settings->services ?? []);
 
-        array_walk($services, function ($service) {
+        $services->each(function ($service) {
             $service = new $service($this->container);
-
             $service->boot();
         });
     }
