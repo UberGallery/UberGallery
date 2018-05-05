@@ -25,6 +25,7 @@ abstract class TestCase extends PHPUnitTestCase
 
         $app = new \Slim\App([
             'config_path' => __DIR__ . '/files/config/',
+            'env_path' => __DIR__ . '/files/',
             'root' => realpath(__DIR__ . '/../')
         ]);
 

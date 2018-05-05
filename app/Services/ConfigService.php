@@ -46,7 +46,7 @@ class ConfigService extends Service
     protected function loadEnvironmentVariables()
     {
         try {
-            (new Dotenv($this->container->root))->load();
+            (new Dotenv($this->container->env_path))->load();
         } catch (InvalidPathException $exception) {
             // Ignore it
         }
