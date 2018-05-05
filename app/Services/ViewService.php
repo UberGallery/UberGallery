@@ -31,7 +31,7 @@ class ViewService extends Service
     }
 
     /**
-     * Boot the view service
+     * Boot the view service.
      *
      * @return void
      */
@@ -43,11 +43,15 @@ class ViewService extends Service
             return "/themes/{$themeName}/{$path}";
         });
 
-        $this->addFunction('imagePath', function ($album, $image) {
+        $this->addFunction('imagePath', function ($image) {
+            $album = $this->albumSlug();
+
             return "/{$album}/{$image}";
         });
 
-        $this->addFunction('thumbnailPath', function ($album, $image) {
+        $this->addFunction('thumbnailPath', function ($image) {
+            $album = $this->albumSlug();
+
             return "/{$album}/thumbnail/{$image}";
         });
     }
@@ -63,5 +67,19 @@ class ViewService extends Service
         $this->container->view->getEnvironment()->addFunction(
             new Twig_SimpleFunction($name, $function)
         );
+    }
+
+    /**
+     * Return the album slug.
+     *
+     * @return string The album slug
+     */
+    protected function albumSlug()
+    {
+        $path = $this->container->request->getUri()->getPath();
+
+        preg_match_all('/\/([a-zA-Z0-9]+)/', $path, $matches);
+
+        return $matches[1][0];
     }
 }
