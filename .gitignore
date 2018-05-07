@@ -1,5 +1,4 @@
 .env
 /vendor/
-/composer.lock
 
 !*/.gitignore
