@@ -2,6 +2,12 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+try {
+    (new \Dotenv\Dotenv(__DIR__))->load();
+} catch (\Dotenv\Exception\InvalidPathException $exception) {
+    // Ignore it
+}
+
 $app = new \Slim\App([
     'settings' => include __DIR__ . '/config/app.php' ?: [],
     'config_path' => __DIR__ . '/config/',
