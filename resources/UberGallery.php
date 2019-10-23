@@ -66,6 +66,7 @@ class UberGallery {
             $this->setPaginatorThreshold($config['basic_settings']['paginator_threshold']);
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
             $this->setThumbQuality($config['basic_settings']['thumbnail_quality']);
+            $this->setThumbCroppingMode($config['basic_settings']['thumbnail_cropping_mode']);
             $this->setThemeName($config['basic_settings']['theme_name']);
             $this->setSortMethod($config['advanced_settings']['images_sort_by'], $config['advanced_settings']['reverse_sort']);
             $this->setDebugging($config['advanced_settings']['enable_debugging']);
@@ -406,6 +407,20 @@ class UberGallery {
 
 
     /**
+     * Set thumbnail cropping mode.
+     *
+     * @param string $mode Cropping mode: "crop" or "fit". (default = "crop")
+     * @return object Self
+     * @access public
+     */
+    public function setThumbCroppingMode($mode = "crop") {
+        $this->_config['thumbnail']['cropping_mode'] = $mode;
+
+        return $this;
+    }
+
+
+    /**
      * Set theme name
      *
      * @param string $name Theme name (default = uber-blue)
@@ -664,33 +679,77 @@ class UberGallery {
         $x       = 0;
         $y       = 0;
 
+	$tx	 = 0;
+	$ty	 = 0;
+	$resizedWidth = $thumbWidth;
+	$resizedHeight = $thumbHeight;
+
         // Calculate ratios
         $srcRatio   = $width / $height;
         $thumbRatio = $thumbWidth / $thumbHeight;
 
-        if ($srcRatio > $thumbRatio) {
+	switch ($this->_config['thumbnail']['cropping_mode']) {
+		case "fit":
 
-            // Preserver original width
-            $originalWidth = $width;
+	        if ($srcRatio >= $thumbRatio) {
 
-            // Crop image width to proper ratio
-            $width = $height * $thumbRatio;
+		    $resizedWidth = $thumbWidth;
+	            $resizedHeight = $thumbHeight * $srcRatio;
 
-            // Set thumbnail x offset
-            $x = ceil(($originalWidth - $width) / 2);
+	            // Set thumbnail x offset
+		    $tx = 0;
+	            $ty = ceil(($thumbHeight - $resizedHeight) / 2);
 
-        } elseif ($srcRatio < $thumbRatio) {
+	        } else {
 
-            // Preserver original height
-            $originalHeight = $height;
+	            $resizedWidth = $thumbWidth * $srcRatio;
+		    $resizedHeight = $thumbHeight;
 
-            // Crop image height to proper ratio
-            $height = ($width / $thumbRatio);
+	            // Set thumbnail x offset
+	            $tx = ceil(($thumbWidth - $resizedWidth) / 2);
+		    $ty = 0;
 
-            // Set thumbnail y offset
-            $y = ceil(($originalHeight - $height) / 2);
+	        }
+		break;
 
-        }
+		case "crop":
+
+	        if ($srcRatio > $thumbRatio) {
+
+	            // Preserver original width
+	            $originalWidth = $width;
+
+	            // Crop image width to proper ratio
+	            $width = $height * $thumbRatio;
+
+	            // Set thumbnail x offset
+	            $x = ceil(($originalWidth - $width) / 2);
+
+	        } elseif ($srcRatio < $thumbRatio) {
+
+	            // Preserver original height
+	            $originalHeight = $height;
+
+	            // Crop image height to proper ratio
+	            $height = ($width / $thumbRatio);
+
+	            // Set thumbnail y offset
+	            $y = ceil(($originalHeight - $height) / 2);
+
+	        }
+		break;
+
+		case "vary":
+	        if ($srcRatio >= $thumbRatio) {
+		    $resizedHeight = $thumbHeight = $thumbWidth * $srcRatio;
+
+	        } else {
+
+		    $resizedWidth = $thumbWidth = $thumbHeight * $srcRatio;
+
+	        }
+		break;
+	}
 
         // Create new empty image of proper dimensions
         $newImage = imagecreatetruecolor($thumbWidth, $thumbHeight);
@@ -698,15 +757,15 @@ class UberGallery {
         // Create new thumbnail
         if ($imgInfo[2] == IMAGETYPE_JPEG) {
             $image = imagecreatefromjpeg($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
+            imagecopyresampled($newImage, $image, $tx, $ty, $x, $y, $resizedWidth, $resizedHeight, $width, $height);
             imagejpeg($newImage, $destination, $quality);
         } elseif ($imgInfo[2] == IMAGETYPE_GIF) {
             $image = imagecreatefromgif($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
+            imagecopyresampled($newImage, $image, $tx, $ty, $x, $y, $resizedWidth, $resizedHeight, $width, $height);
             imagegif($newImage, $destination);
         } elseif ($imgInfo[2] == IMAGETYPE_PNG) {
             $image = imagecreatefrompng($source);
-            imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
+            imagecopyresampled($newImage, $image, $tx, $ty, $x, $y, $resizedWidth, $resizedHeight, $width, $height);
             imagepng($newImage, $destination);
         }
 
