@@ -740,12 +740,12 @@ class UberGallery {
 		break;
 
 		case "vary":
-	        if ($srcRatio >= $thumbRatio) {
-		    $resizedHeight = $thumbHeight = $thumbWidth * $srcRatio;
+	        if ($thumbRatio>$srcRatio) {
+		    $resizedWidth = $thumbWidth = $thumbHeight * $srcRatio;
 
 	        } else {
 
-		    $resizedWidth = $thumbWidth = $thumbHeight * $srcRatio;
+		    $resizedHeight = $thumbHeight = $thumbWidth / $srcRatio;
 
 	        }
 		break;
