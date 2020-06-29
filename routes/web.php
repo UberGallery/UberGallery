@@ -18,3 +18,7 @@ $app->group('/{album:[\w\d-]+}', function ($app) {
         ->add(new App\Middleware\CacheMiddleware($app->getContainer()))
         ->setName('thumbnail');
 });
+
+$app->get('/asset', App\Controllers\AssetController::class)
+    ->add(new App\Middleware\CacheMiddleware($app->getContainer()))
+    ->setName('asset');

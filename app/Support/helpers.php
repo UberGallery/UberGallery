@@ -87,7 +87,7 @@ if (! function_exists('config')) {
 
 if (! function_exists('base_path')) {
     /**
-     * Return a path to a file or directory based on the application base path.
+     * Return the path to a file or directory based on the application base path.
      *
      * @param string $path File or directory sub-path
      *
@@ -103,7 +103,7 @@ if (! function_exists('base_path')) {
 
 if (! function_exists('app_path')) {
     /**
-     * Return a path to a file or directory based on the application path.
+     * Return the path to a file or directory based on the application path.
      *
      * @param string $path File or directory sub-path
      *
@@ -117,7 +117,7 @@ if (! function_exists('app_path')) {
 
 if (! function_exists('cache_path')) {
     /**
-     * Return a path to the application cache directory.
+     * Return the path to the application cache directory.
      *
      * @param string $path File or directory sub-path
      *
@@ -131,7 +131,7 @@ if (! function_exists('cache_path')) {
 
 if (! function_exists('albums_path')) {
     /**
-     * Return a path to the albums directory.
+     * Return the path to the albums directory.
      *
      * @return string Path to albums directory
      */
@@ -143,7 +143,7 @@ if (! function_exists('albums_path')) {
 
 if (! function_exists('album_path')) {
     /**
-     * Return a path to the directory of a specific album.
+     * Return the path to the directory of a specific album.
      *
      * @param string $album Album name
      *
@@ -152,5 +152,31 @@ if (! function_exists('album_path')) {
     function album_path($album)
     {
         return base_path('album' . DIRECTORY_SEPARATOR . $album);
+    }
+}
+
+if (! function_exists('themes_path')) {
+    /**
+     * Return the path to the application themes directory.
+     *
+     * @return string Path to themes directory
+     */
+    function themes_path()
+    {
+        return base_path('themes');
+    }
+}
+
+if (! function_exists('theme_path')) {
+    /**
+     * Return the path to the directory of a specific theme.
+     *
+     * @param string $theme Theme name
+     *
+     * @return string Path to theme directory
+     */
+    function theme_path($theme)
+    {
+        return base_path('themes' . DIRECTORY_SEPARATOR . $theme);
     }
 }

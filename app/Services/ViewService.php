@@ -43,6 +43,10 @@ class ViewService extends Service
             return "/themes/{$themeName}/{$path}";
         });
 
+        $this->addFunction('asset', function ($path) {
+            return "/asset?path={$path}";
+        });
+
         $this->addFunction('imagePath', function ($image) {
             $album = $this->albumSlug();
 

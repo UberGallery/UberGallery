@@ -109,6 +109,18 @@ return [
          */
         'path' => null,
 
-    ]
+    ],
+
+    'test' => [
+        'title' => 'Test Album; Please Ignore',
+        'thumbnails' => [
+            'width' => 200,
+            'height' => 200,
+            'resize' => 'fit'
+        ],
+        'pagination' => false,
+        'images_per_page' => 24,
+        'path' => __DIR__ . '/../tests/files/albums/test'
+    ],
 
 ];

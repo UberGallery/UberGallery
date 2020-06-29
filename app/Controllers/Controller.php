@@ -80,7 +80,17 @@ abstract class Controller
     }
 
     /**
-     * Return the directory path for a given album and image.
+     * Return the path to the theme.
+     *
+     * @return string Full path to the theme directory
+     */
+    public function themePath()
+    {
+        return realpath("{$this->container->root}/themes/{$this->config('gallery.theme')}");
+    }
+
+    /**
+     * Return the path to a given album and image.
      *
      * @param string $album Album name
      * @param string $album Image name

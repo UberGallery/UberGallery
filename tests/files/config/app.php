@@ -1,3 +1,11 @@
 <?php
 
-// I should be ignored when loading the config
+return [
+    'services' => [
+        // App\Services\SomeService::class,
+    ],
+
+    'middleware' => [
+        // App\Middleware\SomeMiddleware::class,
+    ],
+];
