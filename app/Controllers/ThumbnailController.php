@@ -2,37 +2,32 @@
 
 namespace App\Controllers;
 
+use App\Album;
 use App\Image;
 use App\Thumbnail;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Exception;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 class ThumbnailController extends Controller
 {
-    /**
-     * Handle an incoming Thumbnail request and return a response.
-     *
-     * @param \Slim\Http\Request  $request  Incoming request object
-     * @param \Slim\Http\Response $response Outgoing response object
-     * @param array               $args     the array of request arguments
-     *
-     * @return \Slim\Http\Response
-     */
-    public function __invoke(Request $request, Response $response, array $args)
+    /** Handle an incoming Thumbnail request and return a response. */
+    public function __invoke(Request $request, Response $response, string $album, string $image): Response
     {
-        $width = $this->config("albums.{$args['album']}.thumbnails.width", 480);
-        $height = $this->config("albums.{$args['album']}.thumbnails.height", 480);
+        $config = $this->container->get('albums')[$album];
+        $width = $config['thumbnails']['width'] ?? 480;
+        $height = $config['thumbnails']['height'] ?? 480;
 
         try {
-            $imagePath = $this->imagePath($args['album'], $args['image']);
-            $thumbnail = new Thumbnail(new Image($imagePath), $width, $height);
+            $album = new Album($album, $this->container->get('albums')[$album]);
+            $image = Image::fromAlbumAndName($album, $image);
+            $thumbnail = new Thumbnail($image, $width, $height);
         } catch (Exception $exception) {
-            return $response->withStatus(404)->write('Thumbnail not found');
+            return $response->withStatus(404, 'Thumbnail not found');
         }
 
-        return $response
-            ->withHeader('Content-Type', $thumbnail->mimeType())
-            ->write($thumbnail->content());
+        $response->getBody()->write($thumbnail->content());
+
+        return $response->withHeader('Content-Type', $thumbnail->mimeType());
     }
 }

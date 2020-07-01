@@ -1,0 +1,27 @@
+{% extends "layouts/app.twig" %}
+
+{% block content %}
+    {% include "components/header.twig" %}
+
+    <div id="album" class="container">
+        <h1 id="album-title" class="text-white display-4">
+            <a href="/">&lt;</a>
+            {{ title }}
+        </h1>
+
+        <div class="d-flex flex-wrap justify-content-around my-3">
+            {% for image in images %}
+                <a href="{{ image_url(album, image) }}" title="{{ image.name }}" class="image rounded position-relative m-3">
+                    <img src="{{ thumbnail_url(album, image) }}" alt="{{ image.name }}">
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {{ include('components/pagination.twig') }}
+
+    {% include 'components/footer.twig' %}
+
+    {{ include('components/modal.twig') }}
+    <script src="{{ asset('modal.js') }}" defer></script>
+{% endblock %}

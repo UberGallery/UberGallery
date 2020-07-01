@@ -2,33 +2,18 @@
 
 namespace App;
 
-use PHLAK\Config\Config;
-use Tightenco\Collect\Support\Collection;
 use App\Exceptions\FileNotFoundException;
 use SplFileObject;
+use Tightenco\Collect\Support\Collection;
 
 class Album extends Model
 {
-    /** @var string The album slug */
-    protected $slug;
+    protected string $slug;
+    protected array $config = [];
+    protected Collection $images;
 
-    /** @var \PHLAK\Config The album config */
-    protected $config;
-
-    /**
-     * Collection of image files as SplFileObjects.
-     *
-     * @var \Tightenco\Collect\Support\Collection
-     */
-    protected $images;
-
-    /**
-     * Create a new Album.
-     *
-     * @param string        $slug   Album slug
-     * @param \PHLAK\Config $config The album config
-     */
-    public function __construct($slug, Config $config)
+    /** Create a new Album. */
+    public function __construct(string $slug, array $config = [])
     {
         $this->slug = $slug;
         $this->config = $config;
@@ -42,38 +27,24 @@ class Album extends Model
         });
     }
 
-    /**
-     * Return the album slug.
-     *
-     * @return string Album slug
-     */
-    public function slug()
+    /** Get the album slug. */
+    public function slug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * Return the album title.
-     *
-     * @return string Album title
-     */
-    public function title()
+    /** Get the album title. */
+    public function title(): string
     {
-        return $this->config->get('title', $this->calculatedTitle());
+        return $this->config['title'] ?? $this->calculatedTitle();
     }
 
-    /**
-     * Return a collection of album images for a specific page.
-     *
-     * @param int $page The page number
-     *
-     * @return \Tightenco\Collect\Support\Collection Collection of Images
-     */
-    public function images($page = 1)
+    /** Get a collection of album images for a specific page. */
+    public function images(int $page = 1): Collection
     {
         return $this->images
-            ->when($this->config->get('pagination', false), function ($images) use ($page) {
-                return $images->forPage($page, $this->config->get('images_per_page', 24));
+            ->when($this->config['pagination'], function ($images) use ($page) {
+                return $images->forPage($page, $this->config['images_per_page']);
             })->map(function ($image) {
                 return new Image($image->getRealPath());
             })->values();
@@ -83,10 +54,8 @@ class Album extends Model
      * Sort the album images using a pre-defined method or a custom algorithm.
      *
      * @param string|Closure $method Sort method or closure
-     *
-     * @return self This Album
      */
-    public function sort($method, $reverse = false)
+    public function sort($method, bool $reverse = false): self
     {
         if ($method instanceof \Closure) {
             $this->images = $this->images->sort($method);
@@ -123,20 +92,10 @@ class Album extends Model
         return $this;
     }
 
-    /**
-     * Return the album directory path.
-     *
-     * @throws \App\Exceptions\FileNotFoundException
-     *
-     * @return string Full path to the album directory
-     */
-    public function path()
+    /** Get the album directory path. */
+    public function path(): string
     {
-        $albumPath = $this->config->get(
-            'path',
-            // TODO: Make this an absolute path?
-            realpath(__DIR__ . "/../albums/{$this->slug}")
-        );
+        $albumPath = $this->config['path'] ?? realpath(__DIR__ . "/../albums/{$this->slug}");
 
         if (! $albumPath) {
             throw new FileNotFoundException("Album not found at {$albumPath}");
@@ -145,25 +104,14 @@ class Album extends Model
         return $albumPath;
     }
 
-    /**
-     * Return an album configuration item.
-     *
-     * @param string $key     Unique config item key
-     * @param mixed  $default Value to be returned if the config item doesn't exist
-     *
-     * @return mixed The config item or default value
-     */
-    public function config($key, $default = null)
+    /** Get an album configuration item. */
+    public function config(string $key, $default = null)
     {
-        return $this->config->get($key, $default);
+        return $this->config[$key] ?? $default;
     }
 
-    /**
-     * Return the calculated album title.
-     *
-     * @return string Caculated album title
-     */
-    protected function calculatedTitle()
+    /** Get the calculated album title. */
+    protected function calculatedTitle(): string
     {
         return ucwords(str_replace('_', ' ', $this->slug)) . ' Album';
     }

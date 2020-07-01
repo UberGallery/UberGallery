@@ -1,0 +1,18 @@
+{% extends 'layouts/app.twig' %}
+{% set title = message %}
+
+{% block content %}
+    {% include 'components/header.twig' %}
+
+    <div id="content" class="flex-grow container flex flex-col justify-center items-center mx-auto px-4">
+        <p class="font-thin text-4xl text-gray-600">
+            {{ message | default('An unexpected error occured') }}
+        </p>
+
+        <p class="text-lg text-gray-400">
+            {{ subtext }}
+        </p>
+    </div>
+
+    {% include 'components/footer.twig' %}
+{% endblock %}

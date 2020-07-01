@@ -1,0 +1,17 @@
+{% extends "layouts/app.twig" %}
+
+{% block content %}
+    {% include "components/header.twig" %}
+
+    <div class="container">
+        <h1 class="display-4">Welcome to UberGallery 3.0!</h1>
+
+        <ul>
+            {% for album in albums %}
+                <li><a href="/{{ album.slug }}/">{{ album.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% include 'components/footer.twig' %}
+{% endblock %}

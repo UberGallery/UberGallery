@@ -1,17 +1,50 @@
-sudo: false
-
+os: linux
+dist: bionic
 language: php
+
 php:
-  - 7.1
-  - 7.2
+  - 7.4
+  - nightly
+
+jobs:
+  allow_failures:
+    - php: nightly
+
+services:
+  - memcached
+  - redis
 
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.npm
     - vendor
 
 before_install:
-  - phpenv config-rm xdebug.ini
-  - printf "\n" | pecl install imagick
+  - printf "\n" | pecl install -f imagick 
+  - printf "\n" | pecl install -f apcu-5.1.18 memcached
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
-install: composer install
+install:
+  - composer install --no-suggest
+  - npm ci
+
+script:
+  - vendor/bin/php-cs-fixer fix --diff --dry-run
+  - vendor/bin/psalm --show-info=true
+  - vendor/bin/phpunit --coverage-text
+  - npm run production --verbose
+
+before_deploy: make artifacts
+
+deploy:
+  on:
+    tags: true
+  provider: releases
+  token: ${GITHUB_TOKEN}
+  name: v${TRAVIS_TAG}
+  draft: true
+  file:
+    - artifacts/UberGallery-${TRAVIS_TAG}.tar.gz
+    - artifacts/UberGallery-${TRAVIS_TAG}.zip
+  edge: true

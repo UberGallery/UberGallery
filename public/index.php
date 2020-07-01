@@ -1,22 +1,24 @@
 <?php
 
-define('UBER_GALLERY_START', microtime(true));
+use App\Bootstrap\AppManager;
+use DI\ContainerBuilder;
+use Dotenv\Dotenv;
 
-require __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-try {
-    (new \Dotenv\Dotenv(__DIR__))->load();
-} catch (\Dotenv\Exception\InvalidPathException $exception) {
-    // Ignore it
-}
+// Initialize environment variable handler
+Dotenv::createUnsafeImmutable(dirname(__DIR__))->safeLoad();
 
-$app = new \Slim\App([
-    'settings' => include __DIR__ . '/../config/app.php' ?: [],
-    'config_path' => __DIR__ . '/../config/',
-    'env_path' => __DIR__ . '/..',
-    'root' => __DIR__ . '/..'
-]);
+// Initialize the container
+$files = glob(dirname(__DIR__) . '/config/*.php');
+$container = (new ContainerBuilder)->addDefinitions(...$files);
 
-call_user_func(new \App\Bootstrap\ApplicationManager, $app);
+// if (getenv('APP_DEBUG') !== 'true') {
+//     $container->enableCompilation(__DIR__ . '/cache');
+// }
 
+// Initialize the application
+$app = $container->build()->call(AppManager::class);
+
+// Engage!
 $app->run();

@@ -2,102 +2,35 @@
 
 namespace App\Controllers;
 
-use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use DI\Container;
+use Slim\Views\Twig;
 
 abstract class Controller
 {
-    /** @var \Slim\Container The Slim application container */
-    protected $container;
+    protected Container $container;
+    protected Twig $view;
 
-    /**
-     * App\Controllers\Controller constructor. Runs on object creation.
-     *
-     * @param \Slim\Container $container The Slim application container
-     */
-    public function __construct(Container $container)
+    /** Create a new Controller object. */
+    public function __construct(Container $container, Twig $view)
     {
         $this->container = $container;
+        $this->view = $view;
     }
 
-    /**
-     * Handle an incoming request and return a response.
-     *
-     * @param \Slim\Http\Request $request  Incoming request object
-     * @param \Slim\Http\Request $response Outgoing response object
-     * @param array              $args     the array of request arguments
-     *
-     * @return \Slim\Http\Response
-     */
-    abstract public function __invoke(Request $request, Response $response, array $args);
-
-    /**
-     * Render a view with some provided data.
-     *
-     * @param string $view The view name to be rendered
-     * @param array  $data An array of data passed to the view
-     *
-     * @return \Slim\Http\Response
-     */
-    protected function view($view, $data = [])
-    {
-        return $this->container->view->render($this->container->get('response'), "{$view}.twig", array_merge([
-            'gallery_title' => $this->config('gallery.title', 'Uber Gallery')
-        ], $data));
-    }
-
-    /**
-     * Convenience method for fetching application configuration items from the container.
-     *
-     * @param string $key     Unique config item key
-     * @param mixed  $default Value to be returned if the config item doesn't exist
-     *
-     * @return mixed The config item or default value
-     */
+    /** Convenience method for fetching configuration items from the container. */
     protected function config($key = null, $default = null)
     {
-        if (is_null($key)) {
-            return $this->container->config;
-        }
-
-        return $this->container->config->get($key, $default);
+        return $this->container->get($key) ?? $default;
     }
 
-    /**
-     * Return the directory path for a given album.
-     *
-     * @param string $album Album name
-     *
-     * @return string Full path to the album directory
-     */
-    protected function albumPath($album)
+    /** Get the directory path for an album. */
+    protected function albumPath($album): string
     {
-        return $this->config(
-            "albums.{$album}.path",
-            realpath(base_path("albums/{$album}"))
-        );
+        return sprintf('%s/%s', $this->container->get('albums_path'), $album);
     }
 
-    /**
-     * Return the path to the theme.
-     *
-     * @return string Full path to the theme directory
-     */
-    public function themePath()
-    {
-        return realpath("{$this->container->root}/themes/{$this->config('gallery.theme')}");
-    }
-
-    /**
-     * Return the path to a given album and image.
-     *
-     * @param string $album Album name
-     * @param string $album Image name
-     *
-     * @return string Full path to the image
-     */
-    protected function imagePath($album, $image)
+    /** Get the path to a given album and image. */
+    protected function imagePath(string $album, string $image): string
     {
         return realpath("{$this->albumPath($album)}/{$image}");
     }

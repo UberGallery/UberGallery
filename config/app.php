@@ -1,43 +1,48 @@
 <?php
 
-/**
- * This file contains general application configuration settings.
- */
+use App\Support\Helpers;
+
 return [
-
-    /**
-     * Show error details on the page by setting this value to 'true'.
+    /*
+     * Enable application debugging and display error messages.
+     *
+     * !!! WARNING !!!
+     * It is recommended that debug remains OFF unless troubleshooting an issue.
+     * Leaving this enabled WILL cause leakage of sensitive server information.
      *
      * Default value: false
      */
-    'displayErrorDetails' => env('DISPLAY_ERRORS', false),
+    'debug' => Helpers::env('APP_DEBUG', false),
 
-
-    /**
-     * Improve performance by defining a router cache file.
+    /*
+     * The application interface language.
      *
-     * Suggested value: __DIR__ . '/../cache/routes.cache.php'
+     * Possible values: See 'app/translations' folder for available translations.
      *
-     * Default value: false
+     * Defualt value: 'en'
      */
-    'routerCacheFile' => env('ROUTER_CACHE_FILE', false),
+    'language' => Helpers::env('APP_LANGUAGE', 'en'),
 
-    /**
-     * Register custom application services.
+    /*
+     * Give your gallery a descriptive title.
      *
-     * Default value: []
+     * Default value: 'Uber Gallery'
      */
-    'services' => [
-        // App\Services\SomeService::class,
-    ],
+    'gallery_title' => 'Uber Gallery',
 
-    /**
-     * Register custom application middleware.
+    /*
+     * Default date format. For additional info on date formatting see:
+     * https://www.php.net/manual/en/function.date.php.
      *
-     * Default value: []
+     * Default value: 'Y-m-d H:i:s'
      */
-    'middleware' => [
-        // App\Middleware\SomeMiddleware::class,
-    ],
+    'date_format' => Helpers::env('DATE_FORMAT', 'Y-m-d H:i:s'),
 
+    /*
+     * Timezone used for date formatting. For a list of supported timezones see:
+     * https://www.php.net/manual/en/timezones.php.
+     *
+     * Default value: The server's timezone
+     */
+    'timezone' => Helpers::env('TIMEZONE', date_default_timezone_get()),
 ];

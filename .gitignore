@@ -1,4 +1,5 @@
-.env
+/node_modules/
 /vendor/
-
-!*/.gitignore
+/.env
+/.php_cs.cache
+/.phpunit.result.cache

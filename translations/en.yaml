@@ -1,0 +1,7 @@
+home: Home
+powered_by: Powered by
+
+error:
+  unexpected: An unexpected error occurred
+
+enable_debugging: Enable debugging for additional information

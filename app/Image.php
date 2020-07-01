@@ -19,8 +19,16 @@ class Image extends Model
         $this->path = realpath($path);
 
         if (! $this->isImage($this->path)) {
-            throw new InvalidImageException($this->path . ' is not a valid image');
+            throw InvalidImageException::fromPath($this->path);
         }
+    }
+
+    /** Create an image from album and name */
+    public static function fromAlbumAndName(Album $album, string $name): self
+    {
+        return new static(
+            realpath(sprintf('%s/%s', $album->path(), $name))
+        );
     }
 
     /**

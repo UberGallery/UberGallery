@@ -7,14 +7,15 @@ enabled:
 
 disabled:
   - concat_without_spaces
-  - length_ordered_imports
+  - post_increment
   - trailing_comma_in_multiline_array
 
 finder:
-  exclude:
+  path:
+    - "app"
     - "tests"
-    - "vendor"
   name:
     - "*.php"
-  path:
-    - "src"
+  exclude:
+    - "cache"
+    - "vendor"

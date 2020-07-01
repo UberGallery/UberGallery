@@ -2,22 +2,14 @@
 
 namespace App\Controllers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Tightenco\Collect\Support\Collection;
 
 class GalleryController extends Controller
 {
-    /**
-     * Handle an incoming Gallery request and return a response.
-     *
-     * @param \Slim\Http\Request  $request  Incoming request object
-     * @param \Slim\Http\Response $response Outgoing response object
-     * @param array               $args     the array of request arguments
-     *
-     * @return \Slim\Http\Response
-     */
-    public function __invoke(Request $request, Response $response, array $args)
+    /** Handle an incoming Gallery request and return a response. */
+    public function __invoke(Request $request, Response $response): Response
     {
         $albums = new Collection($this->config('albums', []));
 
@@ -25,6 +17,6 @@ class GalleryController extends Controller
             return array_merge($album, ['slug' => $slug]);
         });
 
-        return $this->view('index', ['albums' => $albums]);
+        return $this->view->render($response, 'index.twig', ['albums' => $albums]);
     }
 }

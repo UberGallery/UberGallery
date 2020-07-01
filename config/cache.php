@@ -1,65 +1,86 @@
 <?php
 
-/**
- * This file contains configuration settings for your application cache. You can
- * speed up your application by enabling caching. By default the 'file' driver
- * is enabled but can use any of several different caching drivers.
- */
+use App\Support\Helpers;
 
 return [
     /*
-     * Whether or not the cache is enabled.
+     * The application cache driver. Setting this value to 'array' will disable
+     * the cache across requests. Additional driver-specific options may require
+     * configuration below.
      *
-     * Default value: false
-     */
-    'enabled' => env('CACHE_ENABLED', false),
-
-    /*
-     * The caching driver to use for caching image and thumbnail responses.
-     *
-     * Available options: 'file', 'memcached', 'redis', 'apcu'
+     * Possible values: apcu, array, file, memcached, redis, php-file
      *
      * Default value: 'file'
      */
-    'driver' => env('CACHE_DRIVER', 'file'),
+    'cache_driver' => Helpers::env('CACHE_DRIVER', 'file'),
 
     /*
-     * Cache driver configurations. Modifiy these to customize your driver
-     * configuration to suit your specific environment.
+     * The app cache lifetime (in seconds). If set to 0, cache indefinitely.
+     *
+     * Default value: 0 (indefinitely)
      */
-    'drivers' => [
-        /*
-         * File driver configuration.
-         */
-        'file' => function () {
-            $this->setCacheDir(env('CACHE_PATH', cache_path()));
-        },
+    'cache_lifetime' => Helpers::env('CACHE_LIFETIME', 0),
 
-        /*
-         * Memcached driver configuration.
-         */
-        'memcached' => function ($memcached) {
-            $memcached->addServer(
-                env('MEMCACHED_HOST', 'localhost'),
-                env('MEMCACHED_PORT', 11211)
-            );
-        },
+    /*
+     * Path to the view cache directory. Set to 'false' to disable view caching
+     * entirely. The view cache is separate from the application cache.
+     *
+     * Default value: 'cache/views'
+     */
+    'view_cache' => Helpers::env('VIEW_CACHE', 'cache/views'),
 
-        /*
-         * Redis driver configuration.
-         */
-        'redis' => function ($redis) {
-            $redis->pconnect(
-                env('REDIS_HOST', 'localhost'),
-                env('REDIS_PORT', 6379)
-            );
-        },
+    /*
+     * The Memcached configuration closure. This option is used when the
+     * 'cache_driver' configuration option is set to 'memcached'. The closure
+     * receives a Memcached object as it's only parameter. You can use this
+     * object to configure the Memcached connection. At a minimum you must
+     * connect to one or more Memcached servers via the 'addServer()' or
+     * 'addServers()' methods.
+     *
+     * Reference the PHP Memcached documentation for Memcached configuration
+     * options: https://secure.php.net/manual/en/book.memcached.php
+     *
+     * Default value: Adds a server at localhost:11211
+     */
+    'memcached_config' => DI\value(function (Memcached $memcached): void {
+        $memcached->addServer(
+            Helpers::env('MEMCACHED_HOST', 'localhost'),
+            Helpers::env('MEMCACHED_PORT', 11211)
+        );
+    }),
 
-        /*
-         * APCu driver configuration.
-         */
-        'apcu' => function () {
-            $this->setPrefix(env('APCU_PREFIX', 'uber_gallery'));
-        }
+    /*
+     * The Redis configuration closure. This option is used when the
+     * 'cache_driver' configuration option is set to 'redis'. The closure
+     * receives a Redis object as it's only parameter. You can use this object
+     * to configure the Redis connection. At a minimum you must connect to one
+     * or more Redis servers via the 'connect()' or 'pconnect()' methods.
+     *
+     * Reference the phpredis documentation for Redis configuration options:
+     * https://github.com/phpredis/phpredis#readme
+     *
+     * Default value: Adds a server at localhost:6379
+     */
+    'redis_config' => DI\value(function (Redis $redis): void {
+        $redis->pconnect(
+            Helpers::env('REDIS_HOST', 'localhost'),
+            Helpers::env('REDIS_PORT', 6379)
+        );
+    }),
+
+    /*
+     * HTTP expires values to control browser cache durations.
+     *
+     * Possible values: An array of mime types mapped to their cache duration
+     * as a relative datetime string.
+     *
+     * Default value: [
+     *     'application/zip' => '+1 hour',
+     *     'text/json' => '+1 hour',
+     * ]
+     */
+    'http_expires' => [
+        'application/zip' => '+1 hour',
+        'text/json' => '+1 hour',
     ],
 ];

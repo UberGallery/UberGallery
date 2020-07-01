@@ -2,34 +2,26 @@
 
 namespace App\Controllers;
 
+use App\Album;
 use App\Image;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Exception;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 class ImageController extends Controller
 {
-    /**
-     * Handle an incoming Image request and return a response.
-     *
-     * @param \Slim\Http\Request  $request  Incoming request object
-     * @param \Slim\Http\Response $response Outgoing response object
-     * @param array               $args     the array of request arguments
-     *
-     * @return \Slim\Http\Response
-     */
-    public function __invoke(Request $request, Response $response, array $args)
+    /** Handle an incoming Image request and return a response. */
+    public function __invoke(Request $request, Response $response, string $album, string $image): Response
     {
         try {
-            $image = new Image(
-                $this->imagePath($args['album'], $args['image'])
-            );
+            $album = new Album($album, $this->container->get('albums')[$album]);
+            $image = Image::fromAlbumAndName($album, $image);
         } catch (Exception $exception) {
-            return $response->withStatus(404)->write('Image not found');
+            return $response->withStatus(404, 'Image not found');
         }
 
-        return $response
-            ->withHeader('Content-Type', $image->mimeType())
-            ->write($image->content());
+        $response->getBody()->write($image->content());
+
+        return $response->withHeader('Content-Type', $image->mimeType());
     }
 }
