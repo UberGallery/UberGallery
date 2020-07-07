@@ -10,12 +10,15 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 Dotenv::createUnsafeImmutable(dirname(__DIR__))->safeLoad();
 
 // Initialize the container
-$files = glob(dirname(__DIR__) . '/config/*.php');
-$container = (new ContainerBuilder)->addDefinitions(...$files);
+$container = call_user_func_array(
+    [new ContainerBuilder, 'addDefinitions'],
+    glob(dirname(__DIR__) . '/config/*.php')
+);
 
-// if (getenv('APP_DEBUG') !== 'true') {
-//     $container->enableCompilation(__DIR__ . '/cache');
-// }
+// Compile the container
+if (filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN) !== true) {
+    $container->enableCompilation(__DIR__ . '/cache');
+}
 
 // Initialize the application
 $app = $container->build()->call(AppManager::class);
