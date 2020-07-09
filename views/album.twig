@@ -3,25 +3,20 @@
 {% block content %}
     {% include "components/header.twig" %}
 
-    <div id="album" class="container">
-        <h1 id="album-title" class="text-white display-4">
-            <a href="/">&lt;</a>
-            {{ title }}
-        </h1>
-
-        <div class="d-flex flex-wrap justify-content-around my-3">
+    <div class="flex-grow container mx-auto px-4">
+        <ul class="flex justify-center flex-wrap">
             {% for image in images %}
-                <a href="{{ image_url(album, image) }}" title="{{ image.name }}" class="image rounded position-relative m-3">
-                    <img src="{{ thumbnail_url(album, image) }}" alt="{{ image.name }}">
-                </a>
+                <li class="m-4">
+                    <a href="{{ image_url(album, image) }}" title="{{ image.name }}" class="block relative rounded shadow-md overflow-hidden hover:-top-2 hover:shadow-lg">
+                        <img src="{{ thumbnail_url(album, image) }}" alt="{{ image.name }}" class="w-64 h-64 object-cover">
+                    </a>
+                </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
-
-    {{ include('components/pagination.twig') }}
 
     {% include 'components/footer.twig' %}
 
-    {{ include('components/modal.twig') }}
+    {% include 'components/modal.twig' %}
     <script src="{{ asset('modal.js') }}" defer></script>
 {% endblock %}

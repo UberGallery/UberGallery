@@ -3,12 +3,16 @@
 {% block content %}
     {% include "components/header.twig" %}
 
-    <div class="container">
+    <div class="flex flex-col flex-grow container mx-auto px-4">
         <h1 class="display-4">Welcome to UberGallery 3.0!</h1>
 
-        <ul>
+        <ul class="list-disc ml-6">
             {% for album in albums %}
-                <li><a href="/{{ album.slug }}/">{{ album.title }}</a></li>
+                <li>
+                    <a href="/{{ album.slug }}/" class="underline">
+                        {{ album.title }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     </div>
