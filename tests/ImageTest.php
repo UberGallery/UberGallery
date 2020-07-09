@@ -1,31 +1,25 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests;
 
-use Tests\TestCase;
+use App\Exceptions\InvalidImageException;
 use App\Image;
 use App\Thumbnail;
-use App\Exceptions\InvalidImageException;
 
 class ImageTest extends TestCase
 {
-    /** @var \App\Image PNG instance of Image */
-    protected $png;
+    protected Image $png;
+    protected Image $jpg;
+    protected Image $jpeg;
 
-    /** @var \App\Image JPG instance of Image */
-    protected $jpg;
-
-    /** @var \App\Image JPEG instance of Image */
-    protected $jpeg;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->png = new Image($this->filePath('albums/test/test.png'));
         $this->jpg = new Image($this->filePath('albums/test/test.jpg'));
         $this->jpeg = new Image($this->filePath('albums/test/test.jpeg'));
     }
 
-    public function test_it_can_return_the_image_content()
+    public function test_it_can_return_the_image_content(): void
     {
         $png = $this->png->content();
         $this->assertEquals('image/png', $this->mimeType($png));
@@ -37,42 +31,42 @@ class ImageTest extends TestCase
         $this->assertEquals('image/jpeg', $this->mimeType($jpg));
     }
 
-    public function test_it_can_return_the_base_file_name()
+    public function test_it_can_return_the_base_file_name(): void
     {
         $this->assertEquals('test.png', $this->png->name());
         $this->assertEquals('test.jpg', $this->jpg->name());
         $this->assertEquals('test.jpeg', $this->jpeg->name());
     }
 
-    public function test_it_has_dimensions()
+    public function test_it_has_dimensions(): void
     {
         $this->assertEquals('320x240', $this->png->dimensions());
         $this->assertEquals('320x240', $this->jpg->dimensions());
         $this->assertEquals('320x240', $this->jpeg->dimensions());
     }
 
-    public function test_it_has_a_width()
+    public function test_it_has_a_width(): void
     {
         $this->assertEquals(320, $this->png->width());
         $this->assertEquals(320, $this->jpg->width());
         $this->assertEquals(320, $this->jpeg->width());
     }
 
-    public function test_it_has_a_height()
+    public function test_it_has_a_height(): void
     {
         $this->assertEquals(240, $this->png->height());
         $this->assertEquals(240, $this->jpg->height());
         $this->assertEquals(240, $this->jpeg->height());
     }
 
-    public function test_it_has_a_mimeType()
+    public function test_it_has_a_mimeType(): void
     {
         $this->assertEquals('image/png', $this->png->mimeType());
         $this->assertEquals('image/jpeg', $this->jpg->mimeType());
         $this->assertEquals('image/jpeg', $this->jpeg->mimeType());
     }
 
-    public function test_it_can_get_a_thumbnail()
+    public function test_it_can_get_a_thumbnail(): void
     {
         $pngThumbnail = $this->png->thumbnail(160, 120);
         $this->assertInstanceOf(Thumbnail::class, $pngThumbnail);
@@ -84,7 +78,7 @@ class ImageTest extends TestCase
         $this->assertInstanceOf(Thumbnail::class, $jpegThumbnail);
     }
 
-    public function test_it_throws_an_invalid_image_exception_for_invalid_file_types()
+    public function test_it_throws_an_invalid_image_exception_for_invalid_file_types(): void
     {
         $this->expectException(InvalidImageException::class);
 

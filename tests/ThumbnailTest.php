@@ -1,44 +1,42 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests;
 
-use Tests\TestCase;
 use App\Image;
 use App\Thumbnail;
 
 class ThumbnailTest extends TestCase
 {
-    /** @var \App\Thumbnail An instance of App\Thumbnail */
-    protected $thumbnail;
+    protected Thumbnail $thumbnail;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->thumbnail = new Thumbnail(new Image($this->filePath('albums/test/test.png')), 160, 120);
     }
 
-    public function test_it_can_return_the_content()
+    public function test_it_can_return_the_content(): void
     {
         $this->assertEquals('image/png', $this->mimeType(
             $this->thumbnail->content()
         ));
     }
 
-    public function test_it_can_return_the_width()
+    public function test_it_can_return_the_width(): void
     {
         $this->assertEquals(160, $this->thumbnail->width());
     }
 
-    public function test_it_can_return_the_height()
+    public function test_it_can_return_the_height(): void
     {
         $this->assertEquals(120, $this->thumbnail->height());
     }
 
-    public function test_it_can_return_the_dimensions()
+    public function test_it_can_return_the_dimensions(): void
     {
         $this->assertEquals('160x120', $this->thumbnail->dimensions());
     }
 
-    public function test_it_can_return_the_mime_type()
+    public function test_it_can_return_the_mime_type(): void
     {
         $this->assertEquals('image/png', $this->thumbnail->mimeType());
     }
