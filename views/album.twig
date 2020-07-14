@@ -3,20 +3,23 @@
 {% block content %}
     {% include "components/header.twig" %}
 
-    <div class="flex-grow container mx-auto px-4">
-        <ul class="flex justify-center flex-wrap">
-            {% for image in images %}
-                <li class="m-4">
-                    <a href="{{ image_url(album, image) }}" title="{{ image.name }}" class="block relative rounded shadow-md overflow-hidden hover:-top-2 hover:shadow-lg">
-                        <img src="{{ thumbnail_url(album, image) }}" alt="{{ image.name }}" class="w-64 h-64 object-cover">
+    <div id="album" class="my-4" x-data="{ open: false }">
+        <div class="flex-grow container mx-auto px-4">
+            <div class="flex justify-center flex-wrap">
+                {% for image in images %}
+                    <a href="{{ image_url(album, image) }}" title="{{ image.name }}" @click.prevent="open = true"
+                        class="relative block rounded shadow-md overflow-hidden w-32 h-32 m-2 sm:w-48 sm:h-48 sm:m-4 xl:w-64 xl:h-64 hover:-top-2 hover:shadow-lg"
+                    >
+                        <div class="relative pb-100">
+                            <img src="{{ thumbnail_url(album, image) }}" alt="{{ image.name }}" class="absolute w-full h-full object-cover">
+                        </div>
                     </a>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include 'components/modal.twig' %}
     </div>
 
     {% include 'components/footer.twig' %}
-
-    {% include 'components/modal.twig' %}
-    <script src="{{ asset('modal.js') }}" defer></script>
 {% endblock %}

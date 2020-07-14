@@ -1,10 +1,18 @@
-<div id="redux-modal" class="d-flex hidden">
-    <div class="redux-modal-content">
-        <img src="http://localhost:8000/default/1297761517585.jpg" alt="1297761517585.jpg"  class="redux-modal-image rounded mx-auto">
-        <span class="redux-modal-caption rounded p-2 m-3">1297761517585.jpg</span>
+<div class="fixed top-0 flex justify-between items-center w-screen h-screen z-50 bg-gray-900 bg-opacity-50" x-show="open">
+    <div class="flex flex-col justify-center items-center mx-8 my-16 order-2">
+        <img src="/default/1297761517585.jpg" alt="1297761517585.jpg" class="rounded-lg shadow-lg mx-auto">
+        <span class="rounded shadow-lg bg-white p-2 my-4">1297761517585.jpg</span>
     </div>
 
-    <span class="redux-modal-navigation previous rounded-circle">&laquo;</span>
-    <span class="redux-modal-navigation next rounded-circle">&raquo;</span>
-    <div class="redux-modal-close rounded-circle">&times;</div>
+    <button class="flex items-center h-full p-4 order-1 hover:bg-gray-900 hover:bg-opacity-25">
+        <div class="flex justify-center items-center w-8 h-8 text-xl text-white">
+            <i class="fas fa-arrow-left fa-lg"></i>
+        </div>
+    </button>
+
+    <button class="flex items-center h-full p-4 order-3 hover:bg-gray-900 hover:bg-opacity-25">
+        <div class="flex justify-center items-center w-8 h-8 text-xl text-white">
+            <i class="fas fa-arrow-right fa-lg"></i>
+        </div>
+    </button>
 </div>
