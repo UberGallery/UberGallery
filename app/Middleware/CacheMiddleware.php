@@ -21,7 +21,7 @@ class CacheMiddleware
         $this->cache = $cache;
     }
 
-    /** Example middleware invokable class */
+    /** Retrieve a response from the cache if present. */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
         [$status, $headers, $body] = $this->cache->get(
