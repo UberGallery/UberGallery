@@ -16,9 +16,6 @@ class ExceptionManager
 
     /**
      * Create a new ExceptionManager object.
-     *
-     * @param \Slim\App     $app
-     * @param \DI\Container $container
      */
     public function __construct(App $app, Container $container)
     {
@@ -28,8 +25,6 @@ class ExceptionManager
 
     /**
      * Set up and configure exception handling.
-     *
-     * @return void
      */
     public function __invoke(): void
     {

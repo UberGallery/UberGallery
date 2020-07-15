@@ -2,20 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Album;
 use App\Image;
 use Exception;
-use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
 class ImageController extends Controller
 {
     /** Handle an incoming Image request and return a response. */
-    public function __invoke(Request $request, Response $response, string $album, string $image): Response
+    public function __invoke(Response $response, string $image): Response
     {
         try {
-            $album = new Album($album, $this->container->get('albums')[$album]);
-            $image = Image::fromAlbumAndName($album, $image);
+            $image = new Image(sprintf('%s/%s', $this->container->get('gallery_path'), $image));
         } catch (Exception $exception) {
             return $response->withStatus(404, 'Image not found');
         }

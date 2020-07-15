@@ -20,9 +20,6 @@ class ErrorHandler implements ErrorHandlerInterface
 
     /**
      * Create a new ErrorHandler object.
-     *
-     * @param \Slim\Views\Twig                                   $view
-     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      */
     public function __construct(Twig $view, TranslatorInterface $translator)
     {
@@ -32,14 +29,6 @@ class ErrorHandler implements ErrorHandlerInterface
 
     /**
      * Invoke the ErrorHandler class.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Throwable                               $exception
-     * @param bool                                     $displayErrorDetails
-     * @param bool                                     $logErrors
-     * @param bool                                     $logErrorDetails
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(
         ServerRequestInterface $request,

@@ -7,7 +7,7 @@ use Middlewares as HttpMiddlewares;
 use Psr\Container\ContainerInterface;
 
 return [
-    /* Path definitions */
+    // Path definitions
     'base_path' => dirname(__DIR__),
     'app_path' => DI\string('{base_path}/app'),
     'asset_path' => DI\string('{app_path}/public/assets'),
@@ -15,15 +15,15 @@ return [
     'config_path' => DI\string('{base_path}/config'),
     'translations_path' => DI\string('{base_path}/translations'),
     'views_path' => DI\string('{base_path}/views'),
-    'albums_path' => DI\string('{base_path}/albums'),
+    'gallery_path' => DI\string('{base_path}/gallery'),
 
-    /* Array of application middlewares */
+    // Array of application middlewares
     'middlewares' => fn (ContainerInterface $container): array => [
         Middlewares\WhoopsMiddleware::class,
-        // new HttpMiddlewares\Expires($container->get('http_expires')),
+        new HttpMiddlewares\Expires($container->get('http_expires')),
     ],
 
-    /* Array of view functions */
+    // Array of view functions
     'view_functions' => [
         ViewFunctions\Asset::class,
         ViewFunctions\Config::class,
@@ -33,7 +33,8 @@ return [
         // ViewFunctions\Url::class,
     ],
 
-    /* Container definitions */
+    // Container definitions
+    Symfony\Component\Finder\Finder::class => DI\factory(Factories\FinderFactory::class),
     Symfony\Contracts\Cache\CacheInterface::class => DI\factory(Factories\CacheFactory::class),
     Symfony\Contracts\Translation\TranslatorInterface::class => DI\factory(Factories\TranslationFactory::class),
     Slim\Views\Twig::class => DI\factory(Factories\TwigFactory::class),

@@ -2,16 +2,15 @@
 
 namespace App\ViewFunctions;
 
-use App\Album;
-use App\Image;
+use Symfony\Component\Finder\SplFileInfo;
 
 class ThumbnailUrl extends ViewFunction
 {
     protected string $name = 'thumbnail_url';
 
     /** Return the URL to an image. */
-    public function __invoke(Album $album, Image $image): string
+    public function __invoke(SplFileInfo $image): string
     {
-        return sprintf('/%s/thumbnail/%s', $album->slug(), $image->name());
+        return sprintf('/thumbnail/%s', $image->getFilename());
     }
 }

@@ -8,11 +8,6 @@ class Str
 {
     /**
      * Explode a string by a string into a collection.
-     *
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return \Tightenco\Collect\Support\Collection
      */
     public static function explode(string $string, string $delimiter): Collection
     {

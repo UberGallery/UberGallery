@@ -16,7 +16,11 @@ class Config extends ViewFunction
         $this->container = $container;
     }
 
-    /** Retrieve an item from the view config. */
+    /**
+     * Retrieve an item from the view config.
+     *
+     * @param mixed $default
+     */
     public function __invoke(string $key, $default = null)
     {
         try {

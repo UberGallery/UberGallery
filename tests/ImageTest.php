@@ -38,27 +38,6 @@ class ImageTest extends TestCase
         $this->assertEquals('test.jpeg', $this->jpeg->name());
     }
 
-    public function test_it_has_dimensions(): void
-    {
-        $this->assertEquals('320x240', $this->png->dimensions());
-        $this->assertEquals('320x240', $this->jpg->dimensions());
-        $this->assertEquals('320x240', $this->jpeg->dimensions());
-    }
-
-    public function test_it_has_a_width(): void
-    {
-        $this->assertEquals(320, $this->png->width());
-        $this->assertEquals(320, $this->jpg->width());
-        $this->assertEquals(320, $this->jpeg->width());
-    }
-
-    public function test_it_has_a_height(): void
-    {
-        $this->assertEquals(240, $this->png->height());
-        $this->assertEquals(240, $this->jpg->height());
-        $this->assertEquals(240, $this->jpeg->height());
-    }
-
     public function test_it_has_a_mimeType(): void
     {
         $this->assertEquals('image/png', $this->png->mimeType());
@@ -68,13 +47,13 @@ class ImageTest extends TestCase
 
     public function test_it_can_get_a_thumbnail(): void
     {
-        $pngThumbnail = $this->png->thumbnail(160, 120);
+        $pngThumbnail = $this->png->thumbnail(160, 120, 65);
         $this->assertInstanceOf(Thumbnail::class, $pngThumbnail);
 
-        $jpgThumbnail = $this->jpg->thumbnail(160, 120);
+        $jpgThumbnail = $this->jpg->thumbnail(160, 120, 65);
         $this->assertInstanceOf(Thumbnail::class, $jpgThumbnail);
 
-        $jpegThumbnail = $this->jpeg->thumbnail(160, 120);
+        $jpegThumbnail = $this->jpeg->thumbnail(160, 120, 65);
         $this->assertInstanceOf(Thumbnail::class, $jpegThumbnail);
     }
 

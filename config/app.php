@@ -24,13 +24,6 @@ return [
     'language' => Helpers::env('APP_LANGUAGE', 'en'),
 
     /*
-     * Give your gallery a descriptive title.
-     *
-     * Default value: 'Uber Gallery'
-     */
-    'gallery_title' => 'Uber Gallery',
-
-    /*
      * Default date format. For additional info on date formatting see:
      * https://www.php.net/manual/en/function.date.php.
      *

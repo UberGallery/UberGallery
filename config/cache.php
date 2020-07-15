@@ -75,12 +75,14 @@ return [
      * as a relative datetime string.
      *
      * Default value: [
-     *     'application/zip' => '+1 hour',
-     *     'text/json' => '+1 hour',
+     *     'image/gif' => '+1 day',
+     *     'image/jpeg' => '+1 day',
+     *     'image/png' => '+1 day',
      * ]
      */
     'http_expires' => [
-        'application/zip' => '+1 hour',
-        'text/json' => '+1 hour',
+        'image/gif' => '+1 day',
+        'image/jpeg' => '+1 day',
+        'image/png' => '+1 day',
     ],
 ];

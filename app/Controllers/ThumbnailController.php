@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Album;
 use App\Image;
 use App\Thumbnail;
 use Exception;
@@ -12,16 +11,15 @@ use Slim\Psr7\Response;
 class ThumbnailController extends Controller
 {
     /** Handle an incoming Thumbnail request and return a response. */
-    public function __invoke(Request $request, Response $response, string $album, string $image): Response
+    public function __invoke(Response $response, string $image): Response
     {
-        $config = $this->container->get('albums')[$album];
-        $width = $config['thumbnails']['width'] ?? 480;
-        $height = $config['thumbnails']['height'] ?? 480;
-
         try {
-            $album = new Album($album, $this->container->get('albums')[$album]);
-            $image = Image::fromAlbumAndName($album, $image);
-            $thumbnail = new Thumbnail($image, $width, $height);
+            $thumbnail = new Thumbnail(
+                new Image(sprintf('%s/%s', $this->container->get('gallery_path'), $image)),
+                $this->container->get('thumbnail_width'),
+                $this->container->get('thumbnail_height'),
+                $this->container->get('thumbnail_quality')
+            );
         } catch (Exception $exception) {
             return $response->withStatus(404, 'Thumbnail not found');
         }

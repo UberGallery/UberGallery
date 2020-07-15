@@ -20,13 +20,11 @@ class RouteManager
     /** Register the application routes. */
     public function __invoke(): void
     {
-        $this->app->get('/', Controllers\GalleryController::class)->setName('index');
-
         // TODO: Cache image and thumbnail responses via middleware
-        $this->app->group('/{album:[\w\d-]+}', function (RouteCollectorProxy $group): void {
-            $group->get('/[{page:[0-9]+}]', Controllers\AlbumController::class)->setName('album');
-            $group->get('/{image}', Controllers\ImageController::class)->setName('image');
-            $group->get('/thumbnail/{image}', Controllers\ThumbnailController::class)->setName('thumbnail');
+        $this->app->group('/', function (RouteCollectorProxy $group) {
+            $group->get('[{page:[0-9]+}]', Controllers\GalleryController::class)->setName('gallery');
+            $group->get('image/{image}', Controllers\ImageController::class)->setName('image');
+            $group->get('thumbnail/{image}', Controllers\ThumbnailController::class)->setName('thumbnail');
         });
     }
 }

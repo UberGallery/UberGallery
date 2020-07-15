@@ -15,7 +15,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 class CacheFactory
 {
     /** @const Namespace for external cache drivers */
-    protected const NAMESPACE_EXTERNAL = 'directory_lister';
+    protected const NAMESPACE_EXTERNAL = 'ubergallery';
 
     /** @const Namespace for internal cache drivers */
     protected const NAMESPACE_INTERNAL = 'app';

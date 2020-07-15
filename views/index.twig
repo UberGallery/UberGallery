@@ -3,18 +3,22 @@
 {% block content %}
     {% include "components/header.twig" %}
 
-    <div class="flex flex-col flex-grow container mx-auto px-4">
-        <h1 class="display-4">Welcome to UberGallery 3.0!</h1>
-
-        <ul class="list-disc ml-6">
-            {% for album in albums %}
-                <li>
-                    <a href="/{{ album.slug }}/" class="underline">
-                        {{ album.title }}
+    <div id="album" class="my-4" x-data="{ open: false }">
+        <div class="flex-grow container mx-auto px-4">
+            <div class="flex justify-center flex-wrap">
+                {% for image in images %}
+                    <a href="{{ image_url(image) }}" title="{{ image.getFilename }}" @click.prevent="open = true"
+                        class="relative block rounded shadow-md overflow-hidden w-32 h-32 m-2 sm:w-48 sm:h-48 sm:m-4 xl:w-64 xl:h-64 hover:-top-2 hover:shadow-lg"
+                    >
+                        <div class="relative pb-100">
+                            <img src="{{ thumbnail_url(image) }}" alt="{{ image.getFilename }}" class="absolute w-full h-full object-cover">
+                        </div>
                     </a>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include 'components/modal.twig' %}
     </div>
 
     {% include 'components/footer.twig' %}

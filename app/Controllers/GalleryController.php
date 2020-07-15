@@ -2,21 +2,38 @@
 
 namespace App\Controllers;
 
-use Slim\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
-use Tightenco\Collect\Support\Collection;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class GalleryController extends Controller
 {
     /** Handle an incoming Gallery request and return a response. */
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Response $response, int $page = 1): ResponseInterface
     {
-        $albums = new Collection($this->config('albums', []));
+        if (! is_readable($this->container->get('gallery_path'))) {
+            return $response->withStatus(404, 'Gallery not found');
+        }
 
-        $albums = $albums->map(function ($album, $slug) {
-            return array_merge($album, ['slug' => $slug]);
-        });
+        $images = Finder::create()->in($this->container->get('gallery_path'))
+            ->name(['*.gif', '*.jpeg', '*.jpg', '*.png'])
+            ->filter(fn (SplFileInfo $file) => $this->isImage($file));
 
-        return $this->view->render($response, 'index.twig', ['albums' => $albums]);
+        // TODO: Pagination
+
+        return $this->view->render($response, 'index.twig', [
+            'title' => $this->container->get('gallery_title'),
+            'images' => $images,
+        ]);
+    }
+
+    /** Determine if the file is an image based on it's mime type. */
+    protected function isImage(SplFileInfo $file): bool
+    {
+        return in_array(mime_content_type($file->getPathname()
+    ), [
+            'image/gif', 'image/png', 'image/jpeg', 'image/jpg'
+        ]);
     }
 }

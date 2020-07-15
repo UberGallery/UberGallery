@@ -1,5 +1,11 @@
 module.exports = {
-    purge: [],
+    purge: [
+        // 'app/**/*.php',
+        // 'resources/**/*.js',
+        // 'resources/**/*.scss',
+        // 'resources/**/*.vue',
+        // 'views/**/*.twig'
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -14,7 +20,7 @@ module.exports = {
                 spectrum: '#7B16FF',
                 twitter: '#1DA1F2'
             }
-        },
+        }
     },
     variants: {
         inset: ['responsive', 'hover']
