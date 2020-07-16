@@ -1,6 +1,7 @@
 <?php
 
 use App\Bootstrap\AppManager;
+use App\Support\Helpers;
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 
@@ -15,7 +16,7 @@ $container = (new ContainerBuilder)->addDefinitions(
 );
 
 // Compile the container
-if (filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN) !== true) {
+if (! Helpers::env('APP_DEBUG', false)) {
     $container->enableCompilation(__DIR__ . '/cache');
 }
 
