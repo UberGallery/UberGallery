@@ -10,9 +10,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 Dotenv::createUnsafeImmutable(dirname(__DIR__))->safeLoad();
 
 // Initialize the container
-$container = call_user_func_array(
-    [new ContainerBuilder, 'addDefinitions'],
-    glob(dirname(__DIR__) . '/config/*.php')
+$container = (new ContainerBuilder)->addDefinitions(
+    ...glob(dirname(__DIR__) . '/config/*.php')
 );
 
 // Compile the container
