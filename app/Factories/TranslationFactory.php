@@ -48,13 +48,12 @@ class TranslationFactory
     /** Get an array of available translation languages. */
     protected function translations(): array
     {
-        // TODO: Use short arrow functions
-        return $this->cache->get('translations', function (): array {
-            return array_values(array_map(function (SplFileInfo $file): string {
-                return $file->getBasename('.yaml');
-            }, iterator_to_array(
-                Finder::create()->in($this->config->get('translations_path'))->name('*.yaml')
-            )));
-        });
+        $translations = iterator_to_array(
+            Finder::create()->in($this->config->get('translations_path'))->name('*.yaml')
+        );
+
+        return $this->cache->get('translations', fn (): array => array_values(
+            array_map(fn (SplFileInfo $file): string => $file->getBasename('.yaml'), $translations)
+        ));
     }
 }
