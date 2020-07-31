@@ -15,10 +15,10 @@ class ThumbnailController extends Controller
     {
         try {
             $thumbnail = new Thumbnail(
-                new Image(sprintf('%s/%s', $this->container->get('gallery_path'), $image)),
-                $this->container->get('thumbnail_width'),
-                $this->container->get('thumbnail_height'),
-                $this->container->get('thumbnail_quality')
+                new Image(sprintf('%s/%s', $this->config->get('gallery_path'), $image)),
+                $this->config->get('thumbnail_width'),
+                $this->config->get('thumbnail_height'),
+                $this->config->get('thumbnail_quality')
             );
         } catch (Exception $exception) {
             return $response->withStatus(404, 'Thumbnail not found');

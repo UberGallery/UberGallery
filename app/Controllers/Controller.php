@@ -2,18 +2,18 @@
 
 namespace App\Controllers;
 
-use DI\Container;
+use App\Config;
 use Slim\Views\Twig;
 
 abstract class Controller
 {
-    protected Container $container;
+    protected Config $config;
     protected Twig $view;
 
     /** Create a new Controller object. */
-    public function __construct(Container $container, Twig $view)
+    public function __construct(Config $config, Twig $view)
     {
-        $this->container = $container;
+        $this->config = $config;
         $this->view = $view;
     }
 }

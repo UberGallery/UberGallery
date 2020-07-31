@@ -1,10 +1,10 @@
 <?php
 
+use App\Config;
 use App\Factories;
 use App\Middlewares;
 use App\ViewFunctions;
 use Middlewares as HttpMiddlewares;
-use Psr\Container\ContainerInterface;
 
 return [
     // Path definitions
@@ -18,9 +18,9 @@ return [
     'gallery_path' => DI\string('{base_path}/gallery'),
 
     // Array of application middlewares
-    'middlewares' => fn (ContainerInterface $container): array => [
+    'middlewares' => fn (Config $config): array => [
         Middlewares\WhoopsMiddleware::class,
-        new HttpMiddlewares\Expires($container->get('http_expires')),
+        new HttpMiddlewares\Expires($config->get('http_expires')),
     ],
 
     // Array of view functions

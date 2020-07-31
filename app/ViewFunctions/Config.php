@@ -2,18 +2,18 @@
 
 namespace App\ViewFunctions;
 
-use DI\Container;
+use App\Config as AppConfig;
 use DI\NotFoundException;
 
 class Config extends ViewFunction
 {
     protected string $name = 'config';
-    protected Container $container;
+    protected AppConfig $config;
 
     /** Create a new Config object. */
-    public function __construct(Container $container)
+    public function __construct(AppConfig $config)
     {
-        $this->container = $container;
+        $this->config = $config;
     }
 
     /**
@@ -24,7 +24,7 @@ class Config extends ViewFunction
     public function __invoke(string $key, $default = null)
     {
         try {
-            return $this->container->get($key);
+            return $this->config->get($key);
         } catch (NotFoundException $exception) {
             return $default;
         }

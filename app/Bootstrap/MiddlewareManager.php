@@ -2,32 +2,25 @@
 
 namespace App\Bootstrap;
 
-use DI\Container;
+use App\Config;
 use Slim\App;
 
 class MiddlewareManager
 {
-    /** @var App The application */
-    protected $app;
+    protected App $app;
+    protected Config $config;
 
-    /** @var Container The application container */
-    protected $container;
-
-    /**
-     * Create a new MiddlwareManager object.
-     */
-    public function __construct(App $app, Container $container)
+    /** Create a new MiddlwareManager object. */
+    public function __construct(App $app, Config $config)
     {
         $this->app = $app;
-        $this->container = $container;
+        $this->config = $config;
     }
 
-    /**
-     * Register application middlewares.
-     */
+    /** Register application middlewares. */
     public function __invoke(): void
     {
-        foreach ($this->container->get('middlewares') as $middleware) {
+        foreach ($this->config->get('middlewares') as $middleware) {
             $this->app->add($middleware);
         }
     }

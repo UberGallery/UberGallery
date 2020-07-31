@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Config;
 use DI\Container;
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
@@ -12,6 +13,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 abstract class TestCase extends PHPUnitTestCase
 {
     protected Container $container;
+    protected Config $config;
     protected CacheInterface $cache;
     protected string $testFilesPath = __DIR__ . '/_files';
 
@@ -24,7 +26,8 @@ abstract class TestCase extends PHPUnitTestCase
             ...glob(dirname(__DIR__) . '/config/*.php')
         )->build();
 
-        $this->cache = new ArrayAdapter($this->container->get('cache_lifetime'));
+        $this->config = new Config($this->container);
+        $this->cache = new ArrayAdapter($this->config->get('cache_lifetime'));
 
         $this->container->set('base_path', $this->testFilesPath);
         $this->container->set('asset_path', $this->filePath('app/assets'));
